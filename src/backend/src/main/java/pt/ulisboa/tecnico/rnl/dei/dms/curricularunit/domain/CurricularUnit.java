@@ -1,5 +1,5 @@
 package pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.domain;
-import pt.ulisboa.tecnico.rnl.dei.dms.person.dto.PersonDto;
+import pt.ulisboa.tecnico.rnl.dei.dms.person.domain.Person;
 import pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.dto.CurricularUnitDto;
 
 import jakarta.persistence.*;
@@ -28,12 +28,12 @@ public class CurricularUnit {
 
     @ManyToOne
     @JoinColumn(name = "main_teacher")
-    private PersonDto mainTeacher;
+    private Person mainTeacher;
 
     protected CurricularUnit() {
 	}
 
-	public CurricularUnit(String code, String name, Integer semester, String course, PersonDto mainTeacher) {
+	public CurricularUnit(String code, String name, Integer semester, String course, Person mainTeacher) {
 		this.code = code;
 		this.name = name;
 		this.semester = semester;
