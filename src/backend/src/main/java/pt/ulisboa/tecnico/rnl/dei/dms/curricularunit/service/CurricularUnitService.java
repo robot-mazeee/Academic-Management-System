@@ -44,9 +44,9 @@ public class CurricularUnitService {
 	}
 
 	@Transactional
-	public CurricularUnitDto updateCurricularUnit(long id, CurricularUnitDto CurricularUnitDto) {
+	public CurricularUnitDto updateCurricularUnit(long id, CurricularUnitDto curricularUnitDto) {
 		fetchCurricularUnitOrThrow(id);
-		CurricularUnit curricularUnit = new CurricularUnit(CurricularUnitDto);
+		CurricularUnit curricularUnit = new CurricularUnit(curricularUnitDto);
 		curricularUnit.setId(id);
 		return new CurricularUnitDto(curricularUnitRepository.save(curricularUnit));
 	}

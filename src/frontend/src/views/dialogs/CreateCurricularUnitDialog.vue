@@ -69,7 +69,7 @@ const teachers: PersonDto[] = reactive([]);
 const newCurricularUnit = ref<CurricularUnitDto>({
   code: '',
   name: '',
-  semester: -1,
+  semester: 1,
   course: '',
   mainTeacher: {}
 })
