@@ -50,6 +50,7 @@ import CreatePersonDialog from '../dialogs/CreatePersonDialog.vue'
 import { reactive, ref } from 'vue'
 import { onMounted } from 'vue'
 import { getColorByType, translateType } from '../../mappings/peopleMappings'
+import EditPersonDialog from '../dialogs/EditPersonDialog.vue'
 
 let search = ref('')
 let loading = ref(true)
@@ -109,10 +110,6 @@ async function getPeople() {
 
 	loading.value = false
   console.log(people)
-}
-
-const editPerson = (person: PersonDto) => {
-  console.log('Editing person:', person)
 }
 
 const deletePerson = async (person: PersonDto) => {

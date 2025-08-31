@@ -28,3 +28,10 @@ export const translateType = (type: string) => {
       return "Default";
   }
 };
+
+export const typeMappings = {
+  'Administrador': 'ADMINISTRATOR',
+  'Professor Regente': 'MAIN_TEACHER',
+  'Professor Assistente': 'TEACHING_ASSISTANT',
+  'Aluno': 'STUDENT'
+}

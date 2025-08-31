@@ -51,17 +51,11 @@
 import { ref } from 'vue'
 import type PersonDto from '@/models/people/PersonDto'
 import RemoteService from '@/services/RemoteService'
+import { typeMappings } from '../../mappings/peopleMappings'
 
 const dialog = ref(false)
 
 const emit = defineEmits(['person-created'])
-
-const typeMappings = {
-  'Administrador': 'ADMINISTRATOR',
-  'Professor Regente': 'MAIN_TEACHER',
-  'Professor Assistente': 'TEACHING_ASSISTANT',
-  'Aluno': 'STUDENT'
-}
 
 const newPerson = ref<PersonDto>({
   name: '',
