@@ -92,7 +92,8 @@ const headers = [
     key: 'actions',
     value: 'actions',
     sortable: false,
-    filterable: false
+    filterable: false,
+    align: 'center'
   }
 ]
 

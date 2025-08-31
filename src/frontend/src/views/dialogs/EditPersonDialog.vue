@@ -45,8 +45,7 @@
               text="Save"
               color="primary"
               variant="tonal"
-              @click=" () => { if (isValidPerson()) editPerson() }
-              "
+              @click=" () => { if (isValidPerson()) editPerson() }"
             ></v-btn>
         </v-card-actions>
       </v-card>
@@ -72,33 +71,33 @@ const editablePerson = reactive({ ...props.personToEdit })
 
 function isValidPerson(): boolean {
 	if (!editablePerson.name) {
-		alert('Please provide a valid name.');
+		alert('Nome inválido.')
 		return false;
 	}
 
 	if (!editablePerson.istId) {
-		alert('Please provide a valid IstId.');
+		alert('Ist ID inválido.')
 		return false;
 	}
 
 	if (!/^[0-9]+$/.test(editablePerson.istId)){
-		alert('Invalid IstId. Must be only numbers.');
+		alert('IST ID tem de ser apenas números.')
 		return false;
 	}
 
 	if (!editablePerson.email) {
-		alert('Please provide a valid email.');
+		alert('Email inválido.')
 		return false;
 	}
 
-	const emailRegex = /^[^\s@]+@(gmail\.com|tecnico\.ulisboa\.pt)$/;
+	const emailRegex = /^[^\s@]+@(gmail\.com|tecnico\.ulisboa\.pt)$/
 	if (!emailRegex.test(editablePerson.email)) {
-		alert('Invalid email. The accepted domains are @tecnico.ulisboa.pt or @gmail.com.');
+		alert('Email inválido; os domínios aceites são @tecnico.ulisboa.pt e @gmail.com.')
 		return false;
 	}
 
 	if (!editablePerson.type) {
-		alert('Please select a role.');
+		alert('Por favor, selecione uma categoria.')
 		return false;
 	}
 
@@ -107,20 +106,20 @@ function isValidPerson(): boolean {
 
 const editPerson = async () => {
 	const person = { ...editablePerson }
-	const isValidTypeValue = Object.values(typeMappings).includes(person.type);
+	const isValidTypeValue = Object.values(typeMappings).includes(person.type)
 	if (!isValidTypeValue) {
-		person.type = typeMappings[person.type as keyof typeof typeMappings];
+		person.type = typeMappings[person.type as keyof typeof typeMappings]
 	}
 
 	try {
 		console.log("Editing person: ", person)
-		await RemoteService.editPerson(person);
-		console.log('Person edited!');
+		await RemoteService.editPerson(person)
+		console.log('Person edited!')
 	} catch (error) {
-		console.error("Error deleting person: ", error);
+		console.error("Error deleting person: ", error)
 	}
 
-	emit('close-dialog');
-	dialog.value = false;
+	emit('close-dialog')
+	dialog.value = false
 }
 </script>
