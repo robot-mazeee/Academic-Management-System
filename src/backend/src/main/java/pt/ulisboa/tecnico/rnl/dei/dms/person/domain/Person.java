@@ -34,23 +34,27 @@ public class Person {
 	@Enumerated(EnumType.STRING)
     private PersonType type;
 
-
-	// TODO: maybe add more fields? ...or maybe not? what makes sense here?
+	@Column(name = "ist_id", nullable = false, unique = true)
+	private String email;
 
 	protected Person() {
 	}
 
-	public Person(String name, String istId, PersonType type) {
+	public Person(String name, String istId, PersonType type, String email) {
 		this.name = name;
 		this.istId = istId;
 		this.type = type;
+		this.email = email;
 	}
 
 	public Person(PersonDto personDto) {
-		this(personDto.name(), personDto.istId(),
-				PersonType.valueOf(personDto.type().toUpperCase()));
+		this(
+			personDto.name(), 
+			personDto.istId(),
+			PersonType.valueOf(personDto.type().toUpperCase()),
+			personDto.email()
+		);
 		System.out.println("PersonDto: " + personDto);
 		System.out.println("PersonType: " + personDto.type());
-
 	}
 }
