@@ -29,7 +29,7 @@
   >
     <template v-slot:[`item.actions`]="{ item }">
 			<div class="d-flex align-center justify-center ga-2">
-				<EditCurricularUnitDialog :curricular-unit-to-edit="item" @close-dialog="getCurricularUnits" />
+				<EditCurricularUnitDialog :curricular-unit-to-edit="item" @curricular-unit-edited="getCurricularUnits" />
 				<v-icon @click="deleteCurricularUnit(item)" color="red" class="cursor-pointer">
 					mdi-delete
 				</v-icon>
@@ -40,6 +40,7 @@
 
 <script setup lang="ts">
 import CreateCurricularUnitDialog from '../dialogs/CreateCurricularUnitDialog.vue'
+import EditCurricularUnitDialog from '../dialogs/EditCurricularUnitDialog.vue'
 import CurricularUnitDto from '../../models/CurricularUnitDto'
 import { reactive, ref } from 'vue'
 import { onMounted } from 'vue'
@@ -95,6 +96,7 @@ const headers = [
     value: 'actions',
     sortable: false,
     filterable: false,
+    align: 'center'
   }
 ]
 
