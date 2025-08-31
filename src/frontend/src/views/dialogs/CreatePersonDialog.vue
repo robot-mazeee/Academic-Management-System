@@ -15,6 +15,7 @@
         <v-card-text>
           <v-text-field label="Nome*" required v-model="newPerson.name"></v-text-field>
           <v-text-field label="IST ID*" required v-model="newPerson.istId"></v-text-field>
+          <v-text-field label="Email*" required v-model="newPerson.email"></v-text-field>
 
             <v-select
             :items="['Administrador', 'Professor Regente', 'Professor Assistente', 'Aluno']"
@@ -64,16 +65,26 @@ const typeMappings = {
 
 const newPerson = ref<PersonDto>({
   name: '',
-  type: ''
+  istId: '',
+  type: '',
+  email: ''
 })
 
 const savePerson = async () => {
   newPerson.value.type = typeMappings[newPerson.value.type as keyof typeof typeMappings]
-  await RemoteService.createPerson(newPerson.value)
+
+  try {
+    await RemoteService.createPerson(newPerson.value)
+    emit('person-created')
+  } catch (error) {
+    console.error("Error creating person: ", error)
+  }
+
   newPerson.value = {
     name: '',
-    type: ''
+    istId: '',
+    type: '',
+    email: ''
   }
-  emit('person-created')
 }
 </script>
