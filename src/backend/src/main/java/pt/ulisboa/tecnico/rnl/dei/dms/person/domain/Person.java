@@ -34,7 +34,7 @@ public class Person {
 	@Enumerated(EnumType.STRING)
     private PersonType type;
 
-	@Column(name = "ist_id", nullable = false, unique = true)
+	@Column(name = "email", nullable = false, unique = true)
 	private String email;
 
 	protected Person() {

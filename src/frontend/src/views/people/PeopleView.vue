@@ -1,13 +1,12 @@
 <template>
   <v-row align="center">
     <v-col>
-      <h2 class="text-left ml-1">Listagem de Pessoas</h2>
+      <h2 class="text-left ml-1">Lista de Pessoas</h2>
     </v-col>
     <v-col cols="auto">
       <CreatePersonDialog @person-created="getPeople" />
     </v-col>
   </v-row>
-
 
   <v-text-field
     v-model="search"
@@ -29,36 +28,34 @@
     no-data-text="Sem pessoas a apresentar."
   >
     <template v-slot:[`item.type`]="{ item }">
-      <v-chip v-if="item.type === 'ADMINISTRATOR'" color="purple" text-color="white">
-        Administrador
-      </v-chip>
-      <v-chip v-else-if="item.type === 'MAIN_TEACHER'" color="red" text-color="white">
-        Professor Regente
-      </v-chip>
-      <v-chip v-else-if="item.type === 'TEACHING_ASSISTANT'" color="blue" text-color="white">
-        Professor Assistente
-      </v-chip>
-      <v-chip v-else color="green" text-color="white">
-        Aluno
-      </v-chip>
+      <v-chip :color="getColorByType(item.type)" text-color="white">
+				{{ translateType(item.type) }}
+			</v-chip>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
-      <v-icon @click="editPerson(item)" class="mr-2">mdi-pencil</v-icon>
-      <v-icon @click="deletePerson(item)">mdi-delete</v-icon>
+      <div class="d-flex align-center justify-center ga-2">
+				<EditPersonDialog :person-to-edit="item" :can-alter-type="true" @close-dialog="getPeople" />
+				<v-icon @click="deletePerson(item)" color="red" class="cursor-pointer">
+					mdi-delete
+				</v-icon>
+			</div>
     </template>
-
   </v-data-table>
-
 </template>
 
 <script setup lang="ts">
-import type PeopleDto from '@/models/PeopleDto'
+import type PersonDto from '@/models/PersonDto'
 import RemoteService from '@/services/RemoteService'
 import CreatePersonDialog from './CreatePersonDialog.vue'
 import { reactive, ref } from 'vue'
+import { onMounted } from 'vue'
+import { getColorByType, translateType } from '../../mappings/peopleMappings'
 
 let search = ref('')
 let loading = ref(true)
+
+const people: PersonDto[] = reactive([])
+
 const headers = [
   { title: 'ID', key: 'id', value: 'id', sortable: true, filterable: false },
   {
@@ -76,6 +73,13 @@ const headers = [
     filterable: true
   },
   {
+    title: 'email',
+    key: 'email',
+    value: 'email',
+    sortable: true,
+    filterable: true
+  },
+  {
     title: 'Tipo',
     key: 'type',
     value: 'type',
@@ -89,32 +93,41 @@ const headers = [
     sortable: false,
     filterable: false
   }
-  // TODO: maybe add another column with possible actions? (edit / delete)
 ]
 
-const people: PeopleDto[] = reactive([])
+onMounted(() => {
+	getPeople()
+})
 
-getPeople()
-async function getPeople() {
-  people.splice(0, people.length)
-  people.push(...(await RemoteService.getPeople()))
-  loading.value = false
+async function getPeople() { 
+	people.splice(0, people.length)
+	try {
+		people.push(...(await RemoteService.getPeople()))
+	} catch (error) {
+		console.error("Error getting people: ", error)
+	}
+
+	loading.value = false
   console.log(people)
 }
 
-const editPerson = (person: PeopleDto) => {
+const editPerson = (person: PersonDto) => {
   console.log('Editing person:', person)
 }
 
-const deletePerson = (person: PeopleDto) => {
-  console.log('Deleting person:', person)
+const deletePerson = async (person: PersonDto) => {
+	console.log("Deleting person:", person)
+	try {
+		await RemoteService.deletePerson(person)
+		await getPeople()
+	} catch (error) {
+		console.error("Error deleting person: ", error)
+	}
 }
-
 
 const fuzzySearch = (value: string, search: string) => {
   // Regex to match any character in between the search characters
   let searchRegex = new RegExp(search.split('').join('.*'), 'i')
   return searchRegex.test(value)
 }
-
 </script>
