@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.DEIException;
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.ErrorMessage;
 import pt.ulisboa.tecnico.rnl.dei.dms.person.domain.Person;
+import pt.ulisboa.tecnico.rnl.dei.dms.person.domain.Person.PersonType;
 import pt.ulisboa.tecnico.rnl.dei.dms.person.dto.PersonDto;
 import pt.ulisboa.tecnico.rnl.dei.dms.person.repository.PersonRepository;
 
@@ -28,6 +29,14 @@ public class PersonService {
 	@Transactional
 	public List<PersonDto> getPeople() {
 		return personRepository.findAll().stream()
+				.map(PersonDto::new)
+				.toList();
+	}
+
+	@Transactional
+	public List<PersonDto> getTeachers() {
+		List<PersonType> teacherTypes = List.of(PersonType.MAIN_TEACHER, PersonType.TEACHING_ASSISTANT);
+		return personRepository.findAllByTypeIn(teacherTypes).stream()
 				.map(PersonDto::new)
 				.toList();
 	}
