@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import type PersonDto from '@/models/PersonDto'
+import PersonDto from '../../models/PersonDto'
 import PersonService from '../../services/PersonService'
 import CreatePersonDialog from '../dialogs/CreatePersonDialog.vue'
 import { reactive, ref } from 'vue'
@@ -74,7 +74,7 @@ const headers = [
     filterable: true
   },
   {
-    title: 'email',
+    title: 'Email',
     key: 'email',
     value: 'email',
     sortable: true,
