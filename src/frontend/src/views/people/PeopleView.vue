@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
 import type PersonDto from '@/models/PersonDto'
-import RemoteService from '@/services/RemoteService'
+import PersonService from '../../services/PersonService'
 import CreatePersonDialog from '../dialogs/CreatePersonDialog.vue'
 import { reactive, ref } from 'vue'
 import { onMounted } from 'vue'
@@ -104,7 +104,7 @@ onMounted(() => {
 async function getPeople() { 
 	people.splice(0, people.length)
 	try {
-		people.push(...(await RemoteService.getPeople()))
+		people.push(...(await PersonService.getPeople()))
 	} catch (error) {
 		console.error("Error getting people: ", error)
 	}
@@ -116,7 +116,7 @@ async function getPeople() {
 const deletePerson = async (person: PersonDto) => {
 	console.log("Deleting person:", person)
 	try {
-		await RemoteService.deletePerson(person)
+		await PersonService.deletePerson(person)
 		await getPeople()
 	} catch (error) {
 		console.error("Error deleting person: ", error)

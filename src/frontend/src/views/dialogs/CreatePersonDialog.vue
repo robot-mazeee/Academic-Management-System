@@ -49,8 +49,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import type PersonDto from '@/models/people/PersonDto'
-import RemoteService from '@/services/RemoteService'
+import PersonDto from '../../models/PersonDto'
+import PersonService from '../../services/PersonService'
 import { typeMappings } from '../../mappings/peopleMappings'
 
 const dialog = ref(false)
@@ -68,7 +68,7 @@ const savePerson = async () => {
   newPerson.value.type = typeMappings[newPerson.value.type as keyof typeof typeMappings]
 
   try {
-    await RemoteService.createPerson(newPerson.value)
+    await PersonService.createPerson(newPerson.value)
     emit('person-created')
   } catch (error) {
     console.error("Error creating person: ", error)

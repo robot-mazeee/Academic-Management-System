@@ -56,7 +56,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import PersonDto from '../../models/PersonDto'
-import RemoteService from '../../services/RemoteService'
+import PersonService from '../../services/PersonService'
 import { typeMappings } from '../../mappings/peopleMappings'
 
 const dialog = ref(false)
@@ -113,7 +113,7 @@ const editPerson = async () => {
 
 	try {
 		console.log("Editing person: ", person)
-		await RemoteService.editPerson(person)
+		await PersonService.editPerson(person)
 		console.log('Person edited!')
 	} catch (error) {
 		console.error("Error deleting person: ", error)
