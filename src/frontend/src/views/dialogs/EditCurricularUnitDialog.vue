@@ -21,12 +21,12 @@
             required
             :placeholder="props.curricularUnitToEdit.name"
           />
-          <v-text-field
-            v-model="editableCurricularUnit.semester"
-            label="Semestre"
-            required
-            :placeholder="String(props.curricularUnitToEdit.semester)"
-          />
+          <v-select
+						:items="[1, 2]"
+						label="Semestre"
+						required
+						v-model="props.curricularUnitToEdit.semester"
+					></v-select>
 					<v-text-field
             v-model="editableCurricularUnit.course"
             label="Curso"
@@ -35,7 +35,7 @@
           />
 					<v-select
 						:items="teachers"
-						label="Professor Regente*"
+						label="Professor Regente"
 						required
 						v-model="props.curricularUnitToEdit.mainTeacher"
 					></v-select>

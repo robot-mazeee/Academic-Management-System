@@ -15,7 +15,12 @@
         <v-card-text>
           <v-text-field label="Código*" required v-model="newCurricularUnit.code"></v-text-field>
           <v-text-field label="Nome*" required v-model="newCurricularUnit.name"></v-text-field>
-          <v-text-field label="Semestre*" required v-model="newCurricularUnit.semester"></v-text-field>
+          <v-select
+						:items="[1, 2]"
+						label="Semestre*"
+						required
+						v-model="newCurricularUnit.semester"
+					></v-select>
 					<v-text-field label="Curso*" required v-model="newCurricularUnit.course"></v-text-field>
 
 					<v-select
@@ -70,17 +75,17 @@ const newCurricularUnit = ref<CurricularUnitDto>({
 })
 
 onMounted(() => {
-	fetchTeachers();
+	fetchTeachers()
 })
 
 async function fetchTeachers() {
-	console.log('Fetching teachers');
+	console.log('Fetching teachers')
 
 	try {
 		teachers.push(...(await PersonService.getTeachers()))
-		console.log("Teachers fetched: ", teachers);
+		console.log("Teachers fetched: ", teachers)
 	} catch (error) {
-		console.error('Error fetching teachers: ', error);
+		console.error('Error fetching teachers: ', error)
 	}
 }
 
@@ -95,7 +100,7 @@ const createCurricularUnit = async () => {
   newCurricularUnit.value = {
     code: '',
 		name: '',
-		semester: -1,
+		semester: 1,
 		course: '',
 		mainTeacher: {}
   }
