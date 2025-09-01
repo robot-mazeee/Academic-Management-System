@@ -1,9 +1,14 @@
+import type PersonDto from "@/models/PersonDto";
 import httpClient from "./ApiClient";
 import type CurricularUnitDto from "@/models/CurricularUnitDto";
 
 export default {
   getCurricularUnits(): Promise<CurricularUnitDto[]> {
     return httpClient.get("/curricular-units");
+  },
+
+  getCurricularUnitStudents(id: number): Promise<PersonDto[]> {
+    return httpClient.get(`/curricular-units/${id}/students`);
   },
 
   createCurricularUnit(curricularUnit: CurricularUnitDto): Promise<CurricularUnitDto> {
