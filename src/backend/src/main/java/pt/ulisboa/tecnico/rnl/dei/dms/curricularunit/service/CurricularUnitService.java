@@ -72,6 +72,27 @@ public class CurricularUnitService {
 		return new CurricularUnitDto(curricularUnitRepository.save(curricularUnit));
 	}
 
+	@Transactional
+	public List<PersonDto> getCurricularUnitTeachingAssistants(long id) {
+		CurricularUnit curricularUnit = fetchCurricularUnitOrThrow(id);
+		return curricularUnit.getTeachingAssistants().stream()
+				.map(PersonDto::new)
+				.collect(Collectors.toList());
+	}
+
+	@Transactional
+	public CurricularUnitDto assignCurricularUnitTeachingAssistants(long id, List<PersonDto> teacherDtos) {
+		CurricularUnit curricularUnit = fetchCurricularUnitOrThrow(id);
+
+		List<Person> teachers = teacherDtos.stream()
+			.map(dto -> personRepository.findById(dto.id())
+					.orElseThrow(() -> new RuntimeException("Teaching assistant not found: " + dto.id())))
+			.collect(Collectors.toList());
+
+		curricularUnit.setTeachingAssistants(teachers);
+
+		return new CurricularUnitDto(curricularUnitRepository.save(curricularUnit));
+	}
 
 	@Transactional
 	public CurricularUnitDto updateCurricularUnit(long id, CurricularUnitDto curricularUnitDto) {

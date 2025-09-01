@@ -10,8 +10,8 @@ export default {
     return httpClient.get("/teachers");
   },
 
-  getAssistantTeachers(): Promise<PersonDto[]> {
-    return httpClient.get("/assistant-teachers");
+  getTeachingAssistants(): Promise<PersonDto[]> {
+    return httpClient.get("/teaching-assistants");
   },
 
   getStudents(): Promise<PersonDto[]> {

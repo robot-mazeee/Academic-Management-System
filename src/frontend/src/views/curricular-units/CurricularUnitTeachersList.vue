@@ -78,7 +78,7 @@ async function getCurricularUnitTeachers() {
 	try {
 		teachers.push(...(await CurricularUnitService.getCurricularUnitTeachers(curricularUnitId)))
 	} catch (error) {
-		console.error("Error getting teachers: ", error)
+		console.error("Error fetching curricular unit teachers: ", error)
 	}
 
 	loading.value = false

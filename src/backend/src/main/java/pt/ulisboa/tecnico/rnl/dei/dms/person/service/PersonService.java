@@ -45,6 +45,11 @@ public class PersonService {
 	}
 
 	@Transactional
+	public List<PersonDto> getTeachingAssistants() {
+		return getPeopleByType(List.of(PersonType.TEACHING_ASSISTANT));
+	}
+
+	@Transactional
 	public List<PersonDto> getStudents() {
 		return getPeopleByType(List.of(PersonType.STUDENT));
 	}

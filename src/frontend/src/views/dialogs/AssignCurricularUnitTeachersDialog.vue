@@ -66,14 +66,14 @@ const selectedTeachers = ref<PersonDto[]>(props.curricularUnitTeachers);
 const emit = defineEmits(['teachers-updated'])
 
 onMounted(() => {
-  getAssistantTeachers();
+  getTeachingAssistants();
 })
 
-async function getAssistantTeachers() {
+async function getTeachingAssistants() {
   console.log('getting assistant teachers!')
 
   try {
-    const response = await PersonService.getAssistantTeachers()
+    const response = await PersonService.getTeachingAssistants()
     teachers.value = response;
     console.log('teachers: ', teachers.value)
   } catch (error) {

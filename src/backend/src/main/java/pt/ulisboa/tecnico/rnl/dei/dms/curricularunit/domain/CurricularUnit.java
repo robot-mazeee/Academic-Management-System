@@ -35,11 +35,19 @@ public class CurricularUnit {
 
 	@ManyToMany
 	@JoinTable(
-		name = "course_students",
-		joinColumns = @JoinColumn(name = "course_id"),
+		name = "uc_students",
+		joinColumns = @JoinColumn(name = "uc_id"),
 		inverseJoinColumns = @JoinColumn(name = "student_id")
 	)
 	private List<Person> students = new ArrayList<>();
+
+	@ManyToMany
+	@JoinTable(
+		name = "uc_teachers",
+		joinColumns = @JoinColumn(name = "uc_id"),
+		inverseJoinColumns = @JoinColumn(name = "teacher_id")
+	)
+	private List<Person> teachingAssistants = new ArrayList<>();
 
     protected CurricularUnit() {
 	}

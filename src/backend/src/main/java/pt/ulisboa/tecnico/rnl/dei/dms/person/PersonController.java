@@ -29,6 +29,11 @@ public class PersonController {
 		return personService.getTeachers();
 	}
 
+	@GetMapping("/teaching-assistants")
+	public List<PersonDto> getTeachingAssistants() {
+		return personService.getTeachingAssistants();
+	}
+
 	@GetMapping("/students")
 	public List<PersonDto> getStudents() {
 		return personService.getStudents();

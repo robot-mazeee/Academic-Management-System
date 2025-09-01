@@ -12,7 +12,7 @@ export default {
   },
 
   getCurricularUnitTeachers(id: number): Promise<PersonDto[]> {
-    return httpClient.get(`/curricular-units/${id}/teachers`);
+    return httpClient.get(`/curricular-units/${id}/assistant-teachers`);
   },
 
   createCurricularUnit(curricularUnit: CurricularUnitDto): Promise<CurricularUnitDto> {
@@ -32,6 +32,6 @@ export default {
   },
 
   assignCurricularUnitTeachers(id: number, teachers: PersonDto[]) {
-    return httpClient.patch(`/curricular-units/${id}/teachers`, teachers);
+    return httpClient.patch(`/curricular-units/${id}/assistant-teachers`, teachers);
   },
 };
