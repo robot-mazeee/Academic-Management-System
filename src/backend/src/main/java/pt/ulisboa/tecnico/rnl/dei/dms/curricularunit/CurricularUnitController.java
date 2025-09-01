@@ -3,6 +3,7 @@ package pt.ulisboa.tecnico.rnl.dei.dms.curricularunit;
 import java.util.List;
 
 import pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.service.CurricularUnitService;
+import pt.ulisboa.tecnico.rnl.dei.dms.person.dto.PersonDto;
 import pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.dto.CurricularUnitDto;
 
 import org.springframework.web.bind.annotation.RestController;
@@ -27,8 +28,18 @@ public class CurricularUnitController {
 	}
 
 	@PostMapping("/curricular-units")
-	public CurricularUnitDto createCurricularUnit(@RequestBody CurricularUnitDto CurricularUnitDto) {
-		return curricularUnitService.createCurricularUnit(CurricularUnitDto);
+	public CurricularUnitDto createCurricularUnit(@RequestBody CurricularUnitDto curricularUnitDto) {
+		return curricularUnitService.createCurricularUnit(curricularUnitDto);
+	}
+
+	@PostMapping("/curricular-units/{id}/students")
+	public CurricularUnitDto assignCurricularUnitStudents(@PathVariable long id, @RequestBody List<PersonDto> students) {
+		return curricularUnitService.assignCurricularUnitStudents(id, students);
+	}
+
+	@GetMapping("/curricular-units/{id}/students")
+	public List<PersonDto> getCurricularUnitStudents(@PathVariable long id) {
+		return curricularUnitService.getCurricularUnitStudents(id);
 	}
 
 	@GetMapping("/curricular-units/{id}")
@@ -37,8 +48,8 @@ public class CurricularUnitController {
 	}
 
 	@PutMapping("/curricular-units/{id}")
-	public CurricularUnitDto updateCurricularUnit(@PathVariable long id, @RequestBody CurricularUnitDto CurricularUnitDto) {
-		return curricularUnitService.updateCurricularUnit(id, CurricularUnitDto);
+	public CurricularUnitDto updateCurricularUnit(@PathVariable long id, @RequestBody CurricularUnitDto curricularUnitDto) {
+		return curricularUnitService.updateCurricularUnit(id, curricularUnitDto);
 	}
 
 	@DeleteMapping("/curricular-units/{id}")

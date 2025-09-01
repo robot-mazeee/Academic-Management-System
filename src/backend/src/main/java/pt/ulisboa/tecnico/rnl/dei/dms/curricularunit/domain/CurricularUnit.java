@@ -2,6 +2,9 @@ package pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.domain;
 import pt.ulisboa.tecnico.rnl.dei.dms.person.domain.Person;
 import pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.dto.CurricularUnitDto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -29,6 +32,14 @@ public class CurricularUnit {
     @ManyToOne
     @JoinColumn(name = "main_teacher")
     private Person mainTeacher;
+
+	@ManyToMany
+	@JoinTable(
+		name = "course_students",
+		joinColumns = @JoinColumn(name = "course_id"),
+		inverseJoinColumns = @JoinColumn(name = "student_id")
+	)
+	private List<Person> students = new ArrayList<>();
 
     protected CurricularUnit() {
 	}
