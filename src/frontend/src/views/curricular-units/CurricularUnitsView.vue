@@ -27,13 +27,18 @@
     class="text-left"
     no-data-text="Sem unidades curriculares a apresentar."
   >
-    <template v-if="roleStore.isAdministrator" v-slot:[`item.actions`]="{ item }">
-			<div class="d-flex align-center justify-center ga-2">
+    <template v-slot:[`item.actions`]="{ item }">
+			<div class="d-flex align-center justify-center ga-2" v-if="roleStore.isAdministrator">
 				<EditCurricularUnitDialog :curricular-unit-to-edit="item" @curricular-unit-edited="getCurricularUnits" />
 				<v-icon @click="deleteCurricularUnit(item)" color="red" class="cursor-pointer">
 					mdi-delete
 				</v-icon>
 			</div>
+      <div v-if="roleStore.isMainTeacher">
+        <v-btn @click="openPeopleManagementView(item.id)" class="mb-3" color="primary">
+          Manage People
+        </v-btn>
+      </div>
     </template>
   </v-data-table>
 </template>
@@ -46,12 +51,14 @@ import { reactive, ref } from 'vue'
 import { onMounted } from 'vue'
 import CurricularUnitService from '../../services/CurricularUnitService'
 import { useRoleStore } from '../../stores/role'
+import { useRouter } from 'vue-router'
 
 let search = ref('')
 let loading = ref(true)
 
 const curricularUnits: CurricularUnitDto[] = reactive([])
 const roleStore = useRoleStore();
+const router = useRouter()
 
 const headers = [
   { title: 'ID', key: 'id', value: 'id', sortable: true, filterable: false },
@@ -124,6 +131,10 @@ const deleteCurricularUnit = async (curricularUnit: CurricularUnitDto) => {
 	} catch (error) {
 		console.error("Error deleting curricular unit: ", error)
 	}
+}
+
+function openPeopleManagementView(id: number) {
+  router.push({ name: 'curricular-unit-people-management', params: { id } })
 }
 
 const fuzzySearch = (value: string, search: string) => {
