@@ -26,6 +26,12 @@ public class PersonService {
 				.orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_PERSON, Long.toString(id)));
 	}
 
+	private List<PersonDto> getPeopleByType(List<PersonType> types) {
+		return personRepository.findAllByTypeIn(types).stream()
+				.map(PersonDto::new)
+				.toList();
+	}
+
 	@Transactional
 	public List<PersonDto> getPeople() {
 		return personRepository.findAll().stream()
@@ -35,10 +41,12 @@ public class PersonService {
 
 	@Transactional
 	public List<PersonDto> getTeachers() {
-		List<PersonType> teacherTypes = List.of(PersonType.MAIN_TEACHER, PersonType.TEACHING_ASSISTANT);
-		return personRepository.findAllByTypeIn(teacherTypes).stream()
-				.map(PersonDto::new)
-				.toList();
+		return getPeopleByType(List.of(PersonType.MAIN_TEACHER, PersonType.TEACHING_ASSISTANT));
+	}
+
+	@Transactional
+	public List<PersonDto> getStudents() {
+		return getPeopleByType(List.of(PersonType.STUDENT));
 	}
 
 	@Transactional

@@ -10,6 +10,10 @@ export default {
     return httpClient.get("/teachers");
   },
 
+  getStudents(): Promise<PersonDto[]> {
+    return httpClient.get("/students");
+  },
+
   createPerson(person: PersonDto): Promise<PersonDto> {
     return httpClient.post("/people", person);
   },

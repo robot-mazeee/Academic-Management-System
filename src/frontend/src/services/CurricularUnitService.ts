@@ -22,4 +22,8 @@ export default {
   editCurricularUnit(curricularUnit: CurricularUnitDto) {
     return httpClient.put(`/curricular-units/${curricularUnit.id}`, curricularUnit);
   },
+
+  assignCurricularUnitStudents(id: number, students: PersonDto[]) {
+    return httpClient.patch(`/curricular-units/${id}/students`, students);
+  },
 };

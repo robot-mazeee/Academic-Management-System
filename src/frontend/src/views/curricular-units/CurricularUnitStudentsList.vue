@@ -21,6 +21,12 @@
     no-data-text="Sem alunos a apresentar."
   >
   </v-data-table>
+
+  <AssignCurricularUnitStudentsDialog 
+    :curricular-unit-students="students" 
+    :id="curricularUnitId" 
+    @students-updated="getCurricularUnitStudents" 
+  />
 </template>
 
 <script setup lang="ts">
@@ -29,12 +35,14 @@ import PersonDto from '../../models/PersonDto'
 import CurricularUnitService from '../../services/CurricularUnitService'
 import { reactive, ref } from 'vue'
 import { onMounted } from 'vue'
+import AssignCurricularUnitStudentsDialog from '../dialogs/AssignCurricularUnitStudentsDialog.vue'
 
 let search = ref('')
 let loading = ref(true)
 
 const students: PersonDto[] = reactive([])
 const route = useRoute()
+const curricularUnitId = parseInt(route.params.id as string, 10);
 
 const headers = [
   { title: 'ID', key: 'id', value: 'id', sortable: true, filterable: false },
@@ -68,7 +76,6 @@ onMounted(() => {
 async function getCurricularUnitStudents() { 
 	students.splice(0, students.length)
 	try {
-    const curricularUnitId = parseInt(route.params.id as string, 10);
 		students.push(...(await CurricularUnitService.getCurricularUnitStudents(curricularUnitId)))
 	} catch (error) {
 		console.error("Error getting students: ", error)
