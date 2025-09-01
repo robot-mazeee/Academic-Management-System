@@ -5,21 +5,21 @@
         <v-btn
           class="text-none font-weight-regular"
           prepend-icon="mdi-plus"
-          text="Selecionar Alunos"
+          text="Selecionar Professores Assistentes"
           v-bind="activatorProps"
           color="contrast"
         ></v-btn>
       </template>
 
       <v-card>
-        <v-card-title>Selecione/Remova Alunos</v-card-title>
+        <v-card-title>Selecione/Remova Professores</v-card-title>
         <v-card-text>
           <v-checkbox 
-            v-for="student in students"
-            :key="student.id"
-            :label="student.name"
-            :value="student"
-            v-model="selectedStudents"
+            v-for="teacher in teachers"
+            :key="teacher.id"
+            :label="teacher.name"
+            :value="teacher"
+            v-model="selectedTeachers"
             hide-details
             density="compact"
           ></v-checkbox>
@@ -37,7 +37,7 @@
             color="primary"
             variant="tonal"
             @click="async () => {
-              const success = await assignCurricularUnitStudents();
+              const success = await assignCurricularUnitTeachers();
               if (success) 
                 dialog = false;
             }"
@@ -56,38 +56,38 @@ import PersonService from '../../services/PersonService'
 
 const props = defineProps<{ 
   id: number,
-  curricularUnitStudents: PersonDto[]
+  curricularUnitTeachers: PersonDto[]
 }>();
 
 const dialog = ref(false);
-const students = ref<PersonDto[]>([]);
-const selectedStudents = ref<PersonDto[]>(props.curricularUnitStudents);
+const teachers = ref<PersonDto[]>([]);
+const selectedTeachers = ref<PersonDto[]>(props.curricularUnitTeachers);
 
-const emit = defineEmits(['students-updated'])
+const emit = defineEmits(['teachers-updated'])
 
 onMounted(() => {
-  getStudents();
+  getAssistantTeachers();
 })
 
-async function getStudents() {
-  console.log('getting students!')
+async function getAssistantTeachers() {
+  console.log('getting assistant teachers!')
 
   try {
-    const response = await PersonService.getStudents()
-    students.value = response;
-    console.log('Students: ', students.value)
+    const response = await PersonService.getAssistantTeachers()
+    teachers.value = response;
+    console.log('teachers: ', teachers.value)
   } catch (error) {
-    console.error('Error getting students: ', error)
+    console.error('Error getting teachers: ', error)
   }
 }
 
-async function assignCurricularUnitStudents() {
+async function assignCurricularUnitTeachers() {
   try {
-    await CurricularUnitService.assignCurricularUnitStudents(props.id, selectedStudents.value)
-    emit('students-updated')
+    await CurricularUnitService.assignCurricularUnitTeachers(props.id, selectedTeachers.value)
+    emit('teachers-updated')
     return true;
   } catch (error) {
-    console.log("Error assigning curricular unit students: ", error)
+    console.log("Error assigning curricular unit teachers: ", error)
     return false;
   }
 }
