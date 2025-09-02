@@ -21,6 +21,11 @@ public class TestService {
     @Autowired
 	private CurricularUnitRepository curricularUnitRepository;
 
+    private CurricularUnit getCurricularUnit(long curricularUnitId) {
+        return curricularUnitRepository.findById(curricularUnitId)
+                .orElseThrow(() -> new RuntimeException("UC não encontrada"));
+    }
+
     @Transactional
 	public List<TestDto> getTests() {
 		return testRepository.findAll().stream()
@@ -41,8 +46,10 @@ public class TestService {
 
     @Transactional
     public List<TestDto> getTestsByUc(long curricularUnitId) {
-        return testRepository.findAllByCurricularUnit(curricularUnitId).stream()
-				.map(TestDto::new)
-				.toList();
+        CurricularUnit curricularUnit = getCurricularUnit(curricularUnitId);
+
+        return testRepository.findAllByCurricularUnit(curricularUnit).stream()
+                .map(TestDto::new)
+                .toList();
     }
 }
