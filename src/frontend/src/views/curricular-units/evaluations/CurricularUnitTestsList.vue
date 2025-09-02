@@ -42,9 +42,9 @@ let loading = ref(true)
 
 const tests: TestDto[] = reactive([])
 const route = useRoute()
-const curricularUnitId = parseInt(route.params.id as string, 10);
+const curricularUnitId = parseInt(route.params.id as string, 10)
 
-const roleStore = useRoleStore();
+const roleStore = useRoleStore()
 
 const headers = [
   { title: 'ID', key: 'id', value: 'id', sortable: true, filterable: false },
