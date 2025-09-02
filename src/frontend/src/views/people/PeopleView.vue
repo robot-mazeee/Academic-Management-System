@@ -46,7 +46,7 @@
 <script setup lang="ts">
 import PersonDto from '../../models/PersonDto'
 import PersonService from '../../services/PersonService'
-import CreatePersonDialog from '../dialogs/CreatePersonDialog.vue'
+import CreatePersonDialog from '../dialogs/person/CreatePersonDialog.vue'
 import { reactive, ref } from 'vue'
 import { onMounted } from 'vue'
 import { getColorByType, translateType } from '../../mappings/peopleMappings'

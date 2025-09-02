@@ -24,16 +24,16 @@
 
   <CreateTestDialog
     :id="curricularUnitId" 
-    @test-created="getCurricularUnitTests" 
+    @evaluation-created="getCurricularUnitTests" 
   />
 </template>
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
+import { reactive, ref, onMounted } from 'vue'
 import TestDto from '../../../models/TestDto'
 import CurricularUnitService from '../../../services/CurricularUnitService'
-import { reactive, ref } from 'vue'
-import { onMounted } from 'vue'
+import CreateTestDialog from '../../dialogs/evaluation/CreateTestDialog.vue'
 
 let search = ref('')
 let loading = ref(true)

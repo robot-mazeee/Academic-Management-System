@@ -55,10 +55,10 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
-import CurricularUnitDto from '../../models/CurricularUnitDto'
-import CurricularUnitService from '../../services/CurricularUnitService'
-import PersonDto from '../../models/PersonDto'
-import PersonService from '../../services/PersonService'
+import CurricularUnitDto from '../../../models/CurricularUnitDto'
+import CurricularUnitService from '../../../services/CurricularUnitService'
+import PersonDto from '../../../models/PersonDto'
+import PersonService from '../../../services/PersonService'
 
 const dialog = ref(false)
 

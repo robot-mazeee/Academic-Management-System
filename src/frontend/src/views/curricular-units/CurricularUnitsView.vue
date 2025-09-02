@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import CreateCurricularUnitDialog from '../dialogs/CreateCurricularUnitDialog.vue'
+import CreateCurricularUnitDialog from '../dialogs/curricular-unit/CreateCurricularUnitDialog.vue'
 import EditCurricularUnitDialog from '../dialogs/EditCurricularUnitDialog.vue'
 import CurricularUnitDto from '../../models/CurricularUnitDto'
 import { reactive, ref } from 'vue'

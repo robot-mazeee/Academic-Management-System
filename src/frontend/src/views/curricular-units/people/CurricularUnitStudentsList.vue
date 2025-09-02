@@ -35,7 +35,7 @@ import PersonDto from '../../../models/PersonDto'
 import CurricularUnitService from '../../../services/CurricularUnitService'
 import { reactive, ref } from 'vue'
 import { onMounted } from 'vue'
-import AssignCurricularUnitStudentsDialog from '../../dialogs/AssignCurricularUnitStudentsDialog.vue'
+import AssignCurricularUnitStudentsDialog from '../../dialogs/curricular-unit/AssignCurricularUnitStudentsDialog.vue'
 
 let search = ref('')
 let loading = ref(true)
