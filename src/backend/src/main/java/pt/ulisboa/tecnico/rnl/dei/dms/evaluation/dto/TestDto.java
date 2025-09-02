@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.domain.Test;
 
-public record TestDto(long id, String title, Double weight, long curricularUnitId, LocalDate testdate) {
+public record TestDto(long id, String title, Double weight, long curricularUnitId, LocalDate testDate) {
     public TestDto(Test test) {
         this(
             test.getId(),

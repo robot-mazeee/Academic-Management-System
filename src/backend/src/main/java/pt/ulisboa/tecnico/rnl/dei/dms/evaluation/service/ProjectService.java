@@ -4,13 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
-import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.repository.EvaluationRepository;
+import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.repository.ProjectRepository;
 
 @Transactional
 @Service
-public class EvaluationService {
-
+public class ProjectService {
     @Autowired
-	private EvaluationRepository evaluationRepository;
-    
+	private ProjectRepository projectRepository;
 }

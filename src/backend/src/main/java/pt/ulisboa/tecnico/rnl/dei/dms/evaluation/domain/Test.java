@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 import pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.domain.CurricularUnit;
+import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.dto.TestDto;
 
 @Getter
 @Setter
@@ -23,4 +24,14 @@ public class Test extends Evaluation {
         super(title, weight, curricularUnit);
         this.testDate = testDate;
     }
+
+    public Test(TestDto testDto, CurricularUnit curricularUnit) {
+		this(
+			testDto.title(), 
+			testDto.weight(),
+			curricularUnit,
+            testDto.testDate()
+		);
+		System.out.println("Test Dto: " + testDto);
+	}
 }
