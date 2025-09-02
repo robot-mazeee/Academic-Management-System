@@ -7,6 +7,6 @@ export default {
   },
 
   createTest(testDto: TestDto): Promise<TestDto> {
-    return httpClient.post(`/curricular-unit/${testDto.curricularUnitId}/tests`, testDto);
+    return httpClient.post(`/curricular-units/${testDto.curricularUnitId}/tests`, testDto);
   }
 }

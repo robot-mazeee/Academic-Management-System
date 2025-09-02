@@ -55,9 +55,9 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import PersonDto from '../../models/PersonDto'
-import PersonService from '../../services/PersonService'
-import { typeMappings } from '../../mappings/peopleMappings'
+import PersonDto from '../../../models/PersonDto'
+import PersonService from '../../../services/PersonService'
+import { typeMappings } from '../../../mappings/peopleMappings'
 
 const dialog = ref(false)
 const emit = defineEmits(['close-dialog'])

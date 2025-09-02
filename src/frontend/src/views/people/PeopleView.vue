@@ -50,7 +50,7 @@ import CreatePersonDialog from '../dialogs/person/CreatePersonDialog.vue'
 import { reactive, ref } from 'vue'
 import { onMounted } from 'vue'
 import { getColorByType, translateType } from '../../mappings/peopleMappings'
-import EditPersonDialog from '../dialogs/EditPersonDialog.vue'
+import EditPersonDialog from '../dialogs/person/EditPersonDialog.vue'
 
 let search = ref('')
 let loading = ref(true)

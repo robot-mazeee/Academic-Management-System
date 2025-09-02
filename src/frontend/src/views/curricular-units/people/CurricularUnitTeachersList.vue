@@ -23,6 +23,7 @@
   </v-data-table>
 
   <AssignCurricularUnitTeachersDialog 
+    v-if="roleStore.isMainTeacher"
     :curricular-unit-teachers="teachers" 
     :id="curricularUnitId" 
     @teachers-updated="getCurricularUnitTeachers" 
@@ -36,13 +37,16 @@ import CurricularUnitService from '../../../services/CurricularUnitService'
 import { reactive, ref } from 'vue'
 import { onMounted } from 'vue'
 import AssignCurricularUnitTeachersDialog from '../../dialogs/curricular-unit/AssignCurricularUnitTeachersDialog.vue'
+import { useRoleStore } from '../../../stores/role'
 
 let search = ref('')
 let loading = ref(true)
 
 const teachers: PersonDto[] = reactive([])
 const route = useRoute()
-const curricularUnitId = parseInt(route.params.id as string, 10);
+const curricularUnitId = parseInt(route.params.id as string, 10)
+
+const roleStore = useRoleStore()
 
 const headers = [
   { title: 'ID', key: 'id', value: 'id', sortable: true, filterable: false },

@@ -34,9 +34,16 @@
 					mdi-delete
 				</v-icon>
 			</div>
+
       <div v-if="roleStore.isMainTeacher">
         <v-btn @click="openPeopleManagementView(item.id)" class="mb-3" color="primary">
           Manage People
+        </v-btn>
+      </div>
+
+      <div>
+        <v-btn @click="openEvaluationManagementView(item.id)" class="mb-3" color="primary">
+          Manage Evaluations
         </v-btn>
       </div>
     </template>
@@ -45,7 +52,7 @@
 
 <script setup lang="ts">
 import CreateCurricularUnitDialog from '../dialogs/curricular-unit/CreateCurricularUnitDialog.vue'
-import EditCurricularUnitDialog from '../dialogs/EditCurricularUnitDialog.vue'
+import EditCurricularUnitDialog from '../dialogs/curricular-unit/EditCurricularUnitDialog.vue'
 import CurricularUnitDto from '../../models/CurricularUnitDto'
 import { reactive, ref } from 'vue'
 import { onMounted } from 'vue'
@@ -135,6 +142,10 @@ const deleteCurricularUnit = async (curricularUnit: CurricularUnitDto) => {
 
 function openPeopleManagementView(id: number) {
   router.push({ name: 'curricular-unit-people-management', params: { id } })
+}
+
+function openEvaluationManagementView(id: number) {
+  router.push({ name: 'curricular-unit-evaluations-management', params: { id } })
 }
 
 const fuzzySearch = (value: string, search: string) => {

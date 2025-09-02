@@ -61,11 +61,11 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import CurricularUnitDto from '../../models/CurricularUnitDto'
-import CurricularUnitService from '../../services/CurricularUnitService'
+import CurricularUnitDto from '../../../models/CurricularUnitDto'
+import CurricularUnitService from '../../../services/CurricularUnitService'
 import { onMounted } from 'vue'
-import PersonDto from '../../models/PersonDto'
-import PersonService from '../../services/PersonService'
+import PersonDto from '../../../models/PersonDto'
+import PersonService from '../../../services/PersonService'
 
 const dialog = ref(false)
 const emit = defineEmits(['curricular-unit-edited'])

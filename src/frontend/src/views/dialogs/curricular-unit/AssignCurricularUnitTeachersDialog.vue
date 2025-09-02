@@ -50,9 +50,9 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import PersonDto from '../../models/PersonDto'
-import CurricularUnitService from '../../services/CurricularUnitService'
-import PersonService from '../../services/PersonService'
+import PersonDto from '../../../models/PersonDto'
+import CurricularUnitService from '../../../services/CurricularUnitService';
+import PersonService from '../../../services/PersonService';
 
 const props = defineProps<{ 
   id: number,

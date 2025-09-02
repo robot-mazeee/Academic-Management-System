@@ -22,7 +22,8 @@
   >
   </v-data-table>
 
-  <CreateTestDialog
+  <CreateTestDialog 
+    v-if="roleStore.isMainTeacher"
     :id="curricularUnitId" 
     @evaluation-created="getCurricularUnitTests" 
   />
@@ -34,6 +35,7 @@ import { reactive, ref, onMounted } from 'vue'
 import TestDto from '../../../models/TestDto'
 import CurricularUnitService from '../../../services/CurricularUnitService'
 import CreateTestDialog from '../../dialogs/evaluation/CreateTestDialog.vue'
+import { useRoleStore } from '../../../stores/role'
 
 let search = ref('')
 let loading = ref(true)
@@ -41,6 +43,8 @@ let loading = ref(true)
 const tests: TestDto[] = reactive([])
 const route = useRoute()
 const curricularUnitId = parseInt(route.params.id as string, 10);
+
+const roleStore = useRoleStore();
 
 const headers = [
   { title: 'ID', key: 'id', value: 'id', sortable: true, filterable: false },
@@ -75,6 +79,7 @@ async function getCurricularUnitTests() {
 	tests.splice(0, tests.length)
 	try {
 		tests.push(...(await CurricularUnitService.getCurricularUnitTests(curricularUnitId)))
+    console.log('tests: ', tests);
 	} catch (error) {
 		console.error("Error getting tests: ", error)
 	}

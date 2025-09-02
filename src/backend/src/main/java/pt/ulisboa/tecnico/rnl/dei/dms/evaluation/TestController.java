@@ -26,12 +26,12 @@ class TestController {
         return testService.getTests();
     }
 
-    @GetMapping("/curricular-unit/{ucId}/tests")
+    @GetMapping("/curricular-units/{ucId}/tests")
     public List<TestDto> getTestsByUC(@PathVariable Long ucId) {
         return testService.getTestsByUc(ucId);
     }
 
-    @PostMapping("curricular-unit/{ucId}/tests")
+    @PostMapping("curricular-units/{ucId}/tests")
     public TestDto createTest(@RequestBody TestDto testDto) {
         return testService.createTest(testDto);
     }

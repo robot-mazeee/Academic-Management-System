@@ -48,6 +48,8 @@ public class TestService {
     public List<TestDto> getTestsByUc(long curricularUnitId) {
         CurricularUnit curricularUnit = getCurricularUnit(curricularUnitId);
 
+        System.out.println(curricularUnit);
+
         return testRepository.findAllByCurricularUnit(curricularUnit).stream()
                 .map(TestDto::new)
                 .toList();
