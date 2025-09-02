@@ -3,7 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import PeopleView from '@/views/people/PeopleView.vue'
 import StatisticsView from '@/views/statistics/StatisticsView.vue'
 import CurricularUnitsView from '@/views/curricular-units/CurricularUnitsView.vue'
-import CurricularUnitPeopleManagementView from '@/views/curricular-units/CurricularUnitPeopleManagementView.vue'
+import CurricularUnitPeopleView from '@/views/curricular-units/people/CurricularUnitPeopleView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,7 +26,7 @@ const router = createRouter({
     {
       path: '/curricular-units/:id/people',
       name: 'curricular-unit-people-management',
-      component: CurricularUnitPeopleManagementView
+      component: CurricularUnitPeopleView
     },
     {
       path: '/statistics',

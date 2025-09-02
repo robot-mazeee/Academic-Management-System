@@ -1,5 +1,5 @@
 <template>
-  <h2 class="text-left ml-1">Lista de Professores Assistentes da UC</h2>
+  <h2 class="text-left ml-1">Lista de Testes da UC</h2>
 
   <v-text-field
     v-model="search"
@@ -12,77 +12,75 @@
 
   <v-data-table
     :headers="headers"
-    :items="teachers"
+    :items="tests"
     :search="search"
     :loading="loading"
     :custom-filter="fuzzySearch"
     item-key="id"
     class="text-left"
-    no-data-text="Sem alunos a apresentar."
+    no-data-text="Sem testes a apresentar."
   >
   </v-data-table>
 
-  <AssignCurricularUnitTeachersDialog 
-    :curricular-unit-teachers="teachers" 
+  <CreateTestDialog
     :id="curricularUnitId" 
-    @teachers-updated="getCurricularUnitTeachers" 
+    @test-created="getCurricularUnitTests" 
   />
 </template>
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import PersonDto from '../../models/PersonDto'
-import CurricularUnitService from '../../services/CurricularUnitService'
+import TestDto from '../../../models/TestDto'
+import CurricularUnitService from '../../../services/CurricularUnitService'
 import { reactive, ref } from 'vue'
 import { onMounted } from 'vue'
-import AssignCurricularUnitTeachersDialog from '../dialogs/AssignCurricularUnitTeachersDialog.vue'
 
 let search = ref('')
 let loading = ref(true)
 
-const teachers: PersonDto[] = reactive([])
+const tests: TestDto[] = reactive([])
 const route = useRoute()
 const curricularUnitId = parseInt(route.params.id as string, 10);
 
 const headers = [
   { title: 'ID', key: 'id', value: 'id', sortable: true, filterable: false },
   {
-    title: 'Nome',
-    key: 'name',
-    value: 'name',
+    title: 'Título',
+    key: 'title',
+    value: 'title',
     sortable: true,
     filterable: true
   },
   {
-    title: 'IST ID',
-    key: 'istId',
-    value: 'istId',
+    title: 'Peso',
+    key: 'weight',
+    value: 'weight',
     sortable: true,
     filterable: true
   },
   {
-    title: 'Email',
-    key: 'email',
-    value: 'email',
+    title: 'Data',
+    key: 'date',
+    value: 'date',
     sortable: true,
     filterable: true
   }
 ]
 
 onMounted(() => {
-	getCurricularUnitTeachers()
+	getCurricularUnitTests()
 })
 
-async function getCurricularUnitTeachers() { 
-	teachers.splice(0, teachers.length)
+async function getCurricularUnitTests() { 
+	tests.splice(0, tests.length)
 	try {
-		teachers.push(...(await CurricularUnitService.getCurricularUnitTeachers(curricularUnitId)))
+		tests.push(...(await CurricularUnitService.getCurricularUnitTests(curricularUnitId)))
 	} catch (error) {
-		console.error("Error fetching curricular unit teachers: ", error)
+		console.error("Error getting tests: ", error)
 	}
 
 	loading.value = false
-  console.log(teachers)
+  console.log(tests)
 }
 
 const fuzzySearch = (value: string, search: string) => {
