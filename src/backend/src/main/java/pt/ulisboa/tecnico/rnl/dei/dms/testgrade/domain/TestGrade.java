@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import pt.ulisboa.tecnico.rnl.dei.dms.person.domain.Person;
 import pt.ulisboa.tecnico.rnl.dei.dms.testgrade.dto.TestGradeDto;
+import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.domain.Test;
 
 @Getter
 @Setter
@@ -20,6 +21,9 @@ public class TestGrade {
     private Long id;
 
     @ManyToOne
+    private Test test;
+
+    @ManyToOne
     private Person student;
 
     private double grade;
@@ -28,13 +32,15 @@ public class TestGrade {
 
     protected TestGrade() {}
 
-    public TestGrade(Person student, double grade) {
+    public TestGrade(Test test, Person student, double grade) {
+        this.test = test;
         this.student = student;
         this.grade = grade;
     }
 
     public TestGrade(TestGradeDto testGradeDto) {
 		this(
+            testGradeDto.test(),
 			testGradeDto.student(), 
 			testGradeDto.grade()
 		);

@@ -1,12 +1,14 @@
 package pt.ulisboa.tecnico.rnl.dei.dms.testgrade.dto;
 
 import pt.ulisboa.tecnico.rnl.dei.dms.testgrade.domain.TestGrade;
+import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.domain.Test;
 import pt.ulisboa.tecnico.rnl.dei.dms.person.domain.Person;
 
-public record TestGradeDto(long id, Person student, double grade) {
+public record TestGradeDto(long id, Test test, Person student, double grade) {
     public TestGradeDto(TestGrade testGrade) {
         this(
             testGrade.getId(),
+            testGrade.getTest(),
             testGrade.getStudent(),
             testGrade.getGrade()
         );

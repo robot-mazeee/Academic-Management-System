@@ -1,0 +1,74 @@
+package pt.ulisboa.tecnico.rnl.dei.dms.testgrade.service;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.domain.Test;
+import pt.ulisboa.tecnico.rnl.dei.dms.testgrade.dto.TestGradeDto;
+import pt.ulisboa.tecnico.rnl.dei.dms.testgrade.domain.TestGrade;
+import pt.ulisboa.tecnico.rnl.dei.dms.testgrade.repository.TestGradeRepository;
+import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.repository.TestRepository;
+
+import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.DEIException;
+import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.ErrorMessage;
+
+import pt.ulisboa.tecnico.rnl.dei.dms.person.domain.Person;
+import pt.ulisboa.tecnico.rnl.dei.dms.person.repository.PersonRepository;
+
+@Service
+@Transactional
+public class TestGradeService {
+	@Autowired
+	private TestGradeRepository testGradeRepository;
+
+    @Autowired
+	private PersonRepository personRepository;
+
+    @Autowired
+	private TestRepository testRepository;
+
+    private Person fetchPersonOrThrow(long id) {
+		return personRepository.findById(id)
+				.orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_PERSON, Long.toString(id)));
+	}
+
+    private Test fetchTestOrThrow(long id) {
+		return testRepository.findById(id)
+				.orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_TEST, Long.toString(id)));
+	}
+
+    @Transactional
+	public List<TestGradeDto> getTestGrades() {
+		return testGradeRepository.findAll().stream()
+				.map(TestGradeDto::new)
+				.toList();
+	}
+
+    @Transactional
+	public List<TestGradeDto> getTestGradesByStudent(long studentId) {
+        Person student = fetchPersonOrThrow(studentId);
+
+		return testGradeRepository.findAllByStudent(student).stream()
+				.map(TestGradeDto::new)
+				.toList();
+	}
+
+    @Transactional
+	public TestGradeDto getTestGradesByStudentByTest(long studentId, long testId) {
+        Person student = fetchPersonOrThrow(studentId);
+        Test test = fetchTestOrThrow(testId);
+
+		return new TestGradeDto(testGradeRepository.findByStudentAndTest(student, test));
+	}
+
+    @Transactional
+	public TestGradeDto createTestGrade(TestGradeDto testGradeDto) {
+		TestGrade testGrade = new TestGrade(testGradeDto);
+		testGrade.setId(null);
+		return new TestGradeDto(testGradeRepository.save(testGrade));
+	}
+}
