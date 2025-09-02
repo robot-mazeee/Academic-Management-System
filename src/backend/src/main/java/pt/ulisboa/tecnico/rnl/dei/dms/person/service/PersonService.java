@@ -69,15 +69,14 @@ public class PersonService {
 
 	@Transactional
 	public PersonDto updatePerson(long id, PersonDto personDto) {
-		fetchPersonOrThrow(id); // ensure exists
+		Person existingPerson = fetchPersonOrThrow(id);
+		
+		existingPerson.setName(personDto.name());
+		existingPerson.setEmail(personDto.email());
+		existingPerson.setIstId(personDto.istId());
+		existingPerson.setType(PersonType.valueOf(personDto.type().toUpperCase()));
 
-		// FIXME: hmmm, updatePerson and createPerson are very similar
-		// maybe we should refactor this? have a
-		// `private PersonDto something(Long id, PersonDto personDto)` method?
-		// ...or maybe not... who knows...
-		Person person = new Person(personDto);
-		person.setId(id);
-		return new PersonDto(personRepository.save(person));
+		return new PersonDto(personRepository.save(existingPerson));
 	}
 
 	@Transactional
