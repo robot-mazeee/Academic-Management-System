@@ -64,8 +64,8 @@ const headers = [
   },
   {
     title: 'Data',
-    key: 'date',
-    value: 'date',
+    key: 'testDate',
+    value: 'testDate',
     sortable: true,
     filterable: true
   }

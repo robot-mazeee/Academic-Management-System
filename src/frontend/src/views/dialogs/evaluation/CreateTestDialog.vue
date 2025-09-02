@@ -14,8 +14,12 @@
       <v-card prepend-icon="mdi-account" title="Nova">
         <v-card-text>
           <v-text-field label="Título*" required v-model="newTest.title"></v-text-field>
-          <v-slider label="Peso*" max="100" min="5" required v-model="newTest.weight"></v-slider>
-          <v-date-input label="Data*" required v-model="newTest.testDate"></v-date-input>
+          <v-slider label="Peso*" :min="5" :max="100" :step="1" thumb-label required v-model="newTest.weight"></v-slider>
+            <v-date-picker
+              color="primary"
+              v-model="newTest.testDate"
+              :min="today"
+            ></v-date-picker>
         </v-card-text>
 
         <v-divider></v-divider>
@@ -46,6 +50,8 @@ import TestDto from '../../../models/TestDto'
 import EvaluationService from '../../../services/EvaluationService';
 
 const dialog = ref(false)
+
+const today: string = new Date().toISOString().split('T')[0];
 
 const emit = defineEmits(['evaluation-created'])
 const props = defineProps<{
