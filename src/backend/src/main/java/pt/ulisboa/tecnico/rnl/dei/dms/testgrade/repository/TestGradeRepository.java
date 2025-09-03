@@ -13,5 +13,6 @@ import pt.ulisboa.tecnico.rnl.dei.dms.person.domain.Person;
 @Repository
 public interface TestGradeRepository extends JpaRepository<TestGrade, Long> {
     List<TestGrade> findAllByStudent(Person student);
+    List<TestGrade> findAllByTest(Test test);
     TestGrade findByStudentAndTest(Person student, Test test);
 }

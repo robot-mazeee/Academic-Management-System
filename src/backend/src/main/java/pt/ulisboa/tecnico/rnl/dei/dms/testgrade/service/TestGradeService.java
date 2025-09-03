@@ -65,6 +65,15 @@ public class TestGradeService {
 		return new TestGradeDto(testGradeRepository.findByStudentAndTest(student, test));
 	}
 
+	@Transactional
+	public List<TestGradeDto> getTestGradesByTest(long testId) {
+        Test test = fetchTestOrThrow(testId);
+
+		return testGradeRepository.findAllByTest(test).stream()
+				.map(TestGradeDto::new)
+				.toList();
+	}
+
     @Transactional
 	public TestGradeDto createTestGrade(TestGradeDto testGradeDto) {
 		TestGrade testGrade = new TestGrade(testGradeDto);

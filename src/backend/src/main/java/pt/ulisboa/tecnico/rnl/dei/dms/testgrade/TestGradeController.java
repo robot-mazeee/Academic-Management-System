@@ -17,7 +17,7 @@ public class TestGradeController {
 	@Autowired
 	private TestGradeService testGradeService;
 
-    @GetMapping("/student/{studentId}/test/{testId}")
+    @GetMapping("curricular-units/{curricularUnitId}/tests/{testId}/grades/students/{studentId}")
 	public TestGradeDto getTestGradeByTestAndStudent(@PathVariable long studentId, @PathVariable long testId) {
 	    return testGradeService.getTestGradesByStudentByTest(studentId, testId);
 	}
@@ -25,6 +25,11 @@ public class TestGradeController {
     @GetMapping("/student/{studentId}/test-grades")
 	public List<TestGradeDto> getTestGradesByStudent(@PathVariable long studentId) {
 	    return testGradeService.getTestGradesByStudent(studentId);
+	}
+
+	@GetMapping("curricular-units/{curricularUnitId}/tests/{testId}/grades")
+	public List<TestGradeDto> getTestGradesByTest(@PathVariable long testId) {
+	    return testGradeService.getTestGradesByTest(testId);
 	}
 
     @PostMapping("/test-grades")

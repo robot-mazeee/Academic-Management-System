@@ -20,6 +20,12 @@
     class="text-left"
     no-data-text="Sem testes a apresentar."
   >
+    <!-- <template v-slot:[`item.testSheet`]="{ item }">
+
+    </template> -->
+    <template v-slot:[`item.grades`]="{ item }">
+      <v-btn @click="openTestGradesManagementView(curricularUnitId, item.id)" class="mb-3" color="secondary"></v-btn>
+    </template>
   </v-data-table>
 
   <CreateTestDialog 
@@ -30,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { reactive, ref, onMounted } from 'vue'
 import TestDto from '../../../models/TestDto'
 import CurricularUnitService from '../../../services/CurricularUnitService'
@@ -42,6 +48,7 @@ let loading = ref(true)
 
 const tests: TestDto[] = reactive([])
 const route = useRoute()
+const router = useRouter()
 const curricularUnitId = parseInt(route.params.id as string, 10)
 
 const roleStore = useRoleStore()
@@ -68,6 +75,20 @@ const headers = [
     value: 'testDate',
     sortable: true,
     filterable: true
+  },
+  {
+    title: 'Enunciado',
+    key: 'testSheet',
+    value: 'testSheet',
+    sortable: false,
+    filterable: false
+  },
+  {
+    title: 'Gerir Notas',
+    key: 'grades',
+    value: 'grades',
+    sortable: false,
+    filterable: false
   }
 ]
 
@@ -79,13 +100,17 @@ async function getCurricularUnitTests() {
 	tests.splice(0, tests.length)
 	try {
 		tests.push(...(await CurricularUnitService.getCurricularUnitTests(curricularUnitId)))
-    console.log('tests: ', tests);
+    console.log('tests: ', tests)
 	} catch (error) {
 		console.error("Error getting tests: ", error)
 	}
 
 	loading.value = false
   console.log(tests)
+}
+
+function openTestGradesManagementView(curricularUnitId: number, testId: number) {
+  router.push({ name: 'curricular-unit-test-grades-management', params: { curricularUnitId, testId } })
 }
 
 const fuzzySearch = (value: string, search: string) => {

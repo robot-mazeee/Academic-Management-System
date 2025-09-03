@@ -18,7 +18,7 @@
     :custom-filter="fuzzySearch"
     item-key="id"
     class="text-left"
-    no-data-text="Sem alunos a apresentar."
+    no-data-text="Sem professores a apresentar."
   >
   </v-data-table>
 
