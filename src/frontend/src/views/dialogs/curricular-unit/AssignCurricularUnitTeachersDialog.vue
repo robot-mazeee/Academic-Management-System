@@ -12,17 +12,18 @@
       </template>
 
       <v-card>
-        <v-card-title>Selecione/Remova Professores</v-card-title>
-        <v-card-text>
+        <v-card-title>Adicionar Professores</v-card-title>
+        <v-card-text v-if="teachers.length">
           <v-checkbox 
             v-for="teacher in teachers"
             :key="teacher.id"
             :label="teacher.name"
             :value="teacher"
             v-model="selectedTeachers"
-            hide-details
-            density="compact"
           ></v-checkbox>
+        </v-card-text>
+        <v-card-text v-else>
+          Sem professores.
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -66,14 +67,14 @@ const selectedTeachers = ref<PersonDto[]>(props.curricularUnitTeachers);
 const emit = defineEmits(['teachers-updated'])
 
 onMounted(() => {
-  getTeachingAssistants();
+  getTeachers();
 })
 
-async function getTeachingAssistants() {
+async function getTeachers() {
   console.log('getting assistant teachers!')
 
   try {
-    const response = await PersonService.getTeachingAssistants()
+    const response = await PersonService.getTeachers()
     teachers.value = response;
     console.log('teachers: ', teachers.value)
   } catch (error) {

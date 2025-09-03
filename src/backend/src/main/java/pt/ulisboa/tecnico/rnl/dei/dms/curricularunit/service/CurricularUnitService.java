@@ -1,6 +1,7 @@
 package pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,10 @@ import pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.repository.CurricularUnitRe
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.DEIException;
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.ErrorMessage;
 import pt.ulisboa.tecnico.rnl.dei.dms.person.domain.Person;
+import pt.ulisboa.tecnico.rnl.dei.dms.person.domain.Person.PersonType;
 import pt.ulisboa.tecnico.rnl.dei.dms.person.dto.PersonDto;
 import pt.ulisboa.tecnico.rnl.dei.dms.person.repository.PersonRepository;
+import pt.ulisboa.tecnico.rnl.dei.dms.person.service.PersonService;
 import pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.domain.CurricularUnit;
 import pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.dto.CurricularUnitDto;
 
@@ -26,9 +29,17 @@ public class CurricularUnitService {
 	@Autowired
 	private PersonRepository personRepository;
 
+	@Autowired
+	private PersonService personService;
+
     private CurricularUnit fetchCurricularUnitOrThrow(long id) {
 		return curricularUnitRepository.findById(id)
 				.orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_CURRICULAR_UNIT, Long.toString(id)));
+	}
+
+	private Person fetchPersonOrThrow(long id) {
+		return personRepository.findById(id)
+				.orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_PERSON, Long.toString(id)));
 	}
 
     @Transactional
@@ -42,6 +53,7 @@ public class CurricularUnitService {
 	public CurricularUnitDto createCurricularUnit(CurricularUnitDto curricularUnitDto) {
 		CurricularUnit curricularUnit = new CurricularUnit(curricularUnitDto);
 		curricularUnit.setId(null);
+		personService.updateType(curricularUnitDto.mainTeacher().getId(), PersonType.MAIN_TEACHER);
 		return new CurricularUnitDto(curricularUnitRepository.save(curricularUnit));
 	}
 
@@ -63,8 +75,7 @@ public class CurricularUnitService {
 		CurricularUnit curricularUnit = fetchCurricularUnitOrThrow(id);
 
 		List<Person> students = studentDtos.stream()
-			.map(dto -> personRepository.findById(dto.id())
-					.orElseThrow(() -> new RuntimeException("Student not found: " + dto.id())))
+			.map(dto -> fetchPersonOrThrow(dto.id()))
 			.collect(Collectors.toList());
 
 		curricularUnit.setStudents(students);
@@ -84,12 +95,15 @@ public class CurricularUnitService {
 	public CurricularUnitDto assignCurricularUnitTeachingAssistants(long id, List<PersonDto> teacherDtos) {
 		CurricularUnit curricularUnit = fetchCurricularUnitOrThrow(id);
 
-		List<Person> teachers = teacherDtos.stream()
-			.map(dto -> personRepository.findById(dto.id())
-					.orElseThrow(() -> new RuntimeException("Teaching assistant not found: " + dto.id())))
-			.collect(Collectors.toList());
+		Set<Person> teachers = teacherDtos.stream()
+		.map(dto -> {
+			personService.updateType(dto.id(), PersonType.TEACHING_ASSISTANT);
+			return fetchPersonOrThrow(dto.id());
+		})
+		.collect(Collectors.toSet());
 
-		curricularUnit.setTeachingAssistants(teachers);
+
+		curricularUnit.getTeachingAssistants().addAll(teachers);
 
 		return new CurricularUnitDto(curricularUnitRepository.save(curricularUnit));
 	}
