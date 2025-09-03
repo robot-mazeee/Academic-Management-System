@@ -46,6 +46,10 @@ export default {
     return httpClient.get(`/curricular-units/${id}/projects`)
   },
 
+  createEnrollment(enrollmentDto: EnrollmentDto): Promise<EnrollmentDto[]> {
+    return httpClient.post(`/curricular-units/${enrollmentDto.curricularUnitId}/enrollments`, enrollmentDto);
+  },
+
   getCurricularUnitEnrollments(id: number): Promise<EnrollmentDto[]> {
     return httpClient.get(`/curricular-units/${id}/enrollments`);
   }

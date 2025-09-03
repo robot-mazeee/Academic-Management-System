@@ -20,29 +20,36 @@
     class="text-left"
     no-data-text="Sem alunos a apresentar."
   >
-    <template v-slot:[`enrollment.name`]="{ enrollment }">
-      {{ enrollment.student.name }}
+    <template v-slot:[`item.name`]="{ item }">
+      {{ item.student.name }}
     </template>
 
-    <template v-slot:[`enrollment.istId`]="{ enrollment }">
-      {{ enrollment.student.istId }}
+    <template v-slot:[`item.istId`]="{ item }">
+      {{ item.student.istId }}
     </template>
 
-    <template v-slot:[`enrollment.email`]="{ enrollment }">
-      {{ enrollment.student.email }}
+    <template v-slot:[`item.email`]="{ item }">
+      {{ item.student.email }}
     </template>
 
-    <template v-slot:[`enrollment.status`]="{ enrollment }">
-      <v-chip :color="getColorByStatus(enrollment.type)" text-color="white">
-				{{ translateStatus(enrollment.status) }}
+    <template v-slot:[`item.status`]="{ item }">
+      <v-chip :color="getColorByStatus(item.status)" text-color="white">
+				{{ translateStatus(item.status) }}
 			</v-chip>
+    </template>
+
+    <template v-slot:[`item.finalGrade`]="{ item }">
+      <div v-if="item.status === 'APPROVED'">
+        {{ item.finalGrade }}
+      </div>
     </template>
   </v-data-table>
 
-  <CreateStudentEnrollment 
+  <CreateEnrollmentsDialog 
     v-if="roleStore.isMainTeacher"
-    :id="curricularUnitId" 
-    @students-updated="getCurricularUnitEnrollments" 
+    :enrollments="enrollments"
+    :curricular-unit-id="curricularUnitId" 
+    @enrollments-updated="getCurricularUnitEnrollments" 
   />
 </template>
 
@@ -55,6 +62,7 @@ import { useRoleStore } from '../../../stores/role'
 import EnrollmentDto from '../../../models/EnrollmentDto'
 import { translateStatus } from '../../../mappings/enrollmentMappings'
 import { getColorByStatus } from '../../../mappings/enrollmentMappings'
+import CreateEnrollmentsDialog from '../../dialogs/curricular-unit/CreateEnrollmentsDialog.vue'
 
 let search = ref('')
 let loading = ref(true)
@@ -63,7 +71,7 @@ const enrollments: EnrollmentDto[] = reactive([])
 const route = useRoute()
 const curricularUnitId = parseInt(route.params.id as string, 10)
 
-const roleStore = useRoleStore();
+const roleStore = useRoleStore()
 
 const headers = [
   { title: 'ID', key: 'id', value: 'id', sortable: true, filterable: false },
@@ -94,6 +102,13 @@ const headers = [
     value: 'status',
     sortable: true,
     filterable: true
+  },
+  {
+    title: 'Nota Final',
+    key: 'finalGrade',
+    value: 'finalGrade',
+    sortable: true,
+    filterable: true
   }
 ]
 
@@ -110,7 +125,7 @@ async function getCurricularUnitEnrollments() {
 	}
 
 	loading.value = false
-  console.log(enrollments)
+  console.log('enrollments: ', enrollments)
 }
 
 const fuzzySearch = (value: string, search: string) => {

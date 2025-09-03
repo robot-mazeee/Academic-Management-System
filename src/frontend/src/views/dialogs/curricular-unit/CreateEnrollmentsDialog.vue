@@ -5,25 +5,25 @@
         <v-btn
           class="text-none font-weight-regular"
           prepend-icon="mdi-plus"
-          text="Selecionar Alunos"
+          text="Adicionar Alunos"
           v-bind="activatorProps"
           color="contrast"
         ></v-btn>
       </template>
 
       <v-card>
-        <v-card-title>Gerir Alunos</v-card-title>
-        <v-card-text>
+        <v-card-title>Adicionar Alunos</v-card-title>
+        <v-card-text v-if="unenrolledStudents.length">
           <v-checkbox 
-            v-for="student in students"
+            v-for="student in unenrolledStudents"
             :key="student.id"
-            :label="student.name"
+            :label="`${student.name} (${student.istId})`"
             :value="student"
             v-model="selectedStudents"
-            hide-details
-            density="compact"
+            no-data-text="Sem alunos."
           ></v-checkbox>
         </v-card-text>
+        <v-card-text v-else>Sem alunos.</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn 
@@ -37,7 +37,7 @@
             color="primary"
             variant="tonal"
             @click="async () => {
-              const success = await assignCurricularUnitStudents();
+              const success = await createEnrollments();
               if (success) 
                 dialog = false;
             }"
@@ -49,21 +49,27 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import PersonDto from '../../../models/PersonDto'
 import CurricularUnitService from '../../../services/CurricularUnitService'
 import PersonService from '../../../services/PersonService'
+import EnrollmentDto from '../../../models/EnrollmentDto';
 
 const props = defineProps<{ 
-  id: number,
-  students: PersonDto[]
+  curricularUnitId: number
+  enrollments: EnrollmentDto[]
 }>();
 
 const dialog = ref(false);
 const students = ref<PersonDto[]>([]);
-const selectedStudents = ref<PersonDto[]>(props.students);
+const selectedStudents = ref<PersonDto[]>([])
 
-const emit = defineEmits(['students-updated'])
+const unenrolledStudents = computed(() => {
+  const enrolledStudentIds = new Set(props.enrollments.map(e => e.student.id));
+  return students.value.filter(student => !enrolledStudentIds.has(student.id));
+})
+
+const emit = defineEmits(['enrollments-updated'])
 
 onMounted(() => {
   getStudents();
@@ -81,14 +87,26 @@ async function getStudents() {
   }
 }
 
-async function assignCurricularUnitStudents() {
+async function createEnrollments() {
   try {
-    await CurricularUnitService.assignCurricularUnitStudents(props.id, selectedStudents.value)
-    emit('students-updated')
-    return true;
+    const promises = selectedStudents.value.map(student => {
+      const enrollmentDto: EnrollmentDto = {
+        student,
+        curricularUnitId: props.curricularUnitId,
+        status: 'ENROLLED'
+      }
+      return CurricularUnitService.createEnrollment(enrollmentDto)
+    })
+
+    await Promise.all(promises)
+  
+    emit('enrollments-updated')
+    selectedStudents.value = []
+    return true
   } catch (error) {
     console.log("Error assigning curricular unit students: ", error)
-    return false;
+    return false
   }
 }
+
 </script>
