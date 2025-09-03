@@ -22,13 +22,17 @@
 						v-model="newCurricularUnit.semester"
 					></v-select>
 					<v-text-field label="Curso*" required v-model="newCurricularUnit.course"></v-text-field>
-
-					<v-select
-						:items="teachers"
-						label="Professor Regente*"
-						required
-						v-model="newCurricularUnit.mainTeacher"
-					></v-select>
+          <v-select 
+            :items="teachers" 
+            item-title="name"
+            label="Professor Regente*"
+            v-model="newCurricularUnit.mainTeacher"
+            return-object
+          >
+            <template v-slot:item="{ props: itemProps, item }">
+              <v-list-item v-bind="itemProps" :subtitle="item.raw.istId" />
+            </template>
+          </v-select>
         </v-card-text>
 
         <v-divider></v-divider>
@@ -69,9 +73,9 @@ const teachers: PersonDto[] = reactive([]);
 const newCurricularUnit = ref<CurricularUnitDto>({
   code: '',
   name: '',
-  semester: 1,
+  semester: null,
   course: '',
-  mainTeacher: {}
+  mainTeacher: null
 })
 
 onMounted(() => {
@@ -90,6 +94,7 @@ async function fetchTeachers() {
 }
 
 const createCurricularUnit = async () => {
+  console.log('Creating curricular unit: ', newCurricularUnit.value)
   try {
     await CurricularUnitService.createCurricularUnit(newCurricularUnit.value)
     emit('curricular-unit-created')
@@ -100,9 +105,9 @@ const createCurricularUnit = async () => {
   newCurricularUnit.value = {
     code: '',
 		name: '',
-		semester: 1,
+		semester: null,
 		course: '',
-		mainTeacher: {}
+		mainTeacher: null
   }
 }
 </script>
