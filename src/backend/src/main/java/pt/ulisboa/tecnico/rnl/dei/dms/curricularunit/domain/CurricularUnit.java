@@ -3,6 +3,8 @@ import pt.ulisboa.tecnico.rnl.dei.dms.person.domain.Person;
 import pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.dto.CurricularUnitDto;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -47,7 +49,7 @@ public class CurricularUnit {
 		joinColumns = @JoinColumn(name = "uc_id"),
 		inverseJoinColumns = @JoinColumn(name = "teacher_id")
 	)
-	private List<Person> teachingAssistants = new ArrayList<>();
+	private Set<Person> teachingAssistants = new HashSet<>();
 
     protected CurricularUnit() {
 	}

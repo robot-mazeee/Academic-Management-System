@@ -41,7 +41,7 @@ public class PersonService {
 
 	@Transactional
 	public List<PersonDto> getTeachers() {
-		return getPeopleByType(List.of(PersonType.MAIN_TEACHER, PersonType.TEACHING_ASSISTANT));
+		return getPeopleByType(List.of(PersonType.TEACHER));
 	}
 
 	@Transactional
@@ -77,6 +77,13 @@ public class PersonService {
 		existingPerson.setType(PersonType.valueOf(personDto.type().toUpperCase()));
 
 		return new PersonDto(personRepository.save(existingPerson));
+	}
+
+	@Transactional
+	public PersonDto updateType(long id, PersonType newType) {
+		Person person = fetchPersonOrThrow(id);
+		person.setType(newType);
+		return new PersonDto(personRepository.save(person));
 	}
 
 	@Transactional
