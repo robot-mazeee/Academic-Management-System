@@ -23,7 +23,7 @@
 					></v-select>
 					<v-text-field label="Curso*" required v-model="newCurricularUnit.course"></v-text-field>
           <v-select 
-            :items="teachers" 
+            :items="availableTeachers" 
             item-title="name"
             label="Professor Regente*"
             v-model="newCurricularUnit.mainTeacher"
@@ -58,7 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import CurricularUnitDto from '../../../models/CurricularUnitDto'
 import CurricularUnitService from '../../../services/CurricularUnitService'
 import PersonDto from '../../../models/PersonDto'
@@ -68,7 +68,7 @@ const dialog = ref(false)
 
 const emit = defineEmits(['curricular-unit-created'])
 
-const teachers: PersonDto[] = reactive([]);
+const availableTeachers = ref<PersonDto[]>([])
 
 const newCurricularUnit = ref<CurricularUnitDto>({
   code: '',
@@ -79,15 +79,21 @@ const newCurricularUnit = ref<CurricularUnitDto>({
 })
 
 onMounted(() => {
-	fetchTeachers()
+  fetchAvailableTeachers()
 })
 
-async function fetchTeachers() {
+watch(dialog, async (val) => {
+  if (val) {
+    await fetchAvailableTeachers()
+  }
+})
+
+async function fetchAvailableTeachers() {
 	console.log('Fetching teachers')
 
 	try {
-		teachers.push(...(await PersonService.getTeachers()))
-		console.log("Teachers fetched: ", teachers)
+    availableTeachers.value = await PersonService.getTeachers()
+		console.log("Teachers fetched: ", availableTeachers)
 	} catch (error) {
 		console.error('Error fetching teachers: ', error)
 	}
