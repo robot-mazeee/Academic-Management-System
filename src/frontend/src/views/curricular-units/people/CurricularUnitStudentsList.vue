@@ -12,7 +12,7 @@
 
   <v-data-table
     :headers="headers"
-    :items="students"
+    :items="enrollments"
     :search="search"
     :loading="loading"
     :custom-filter="fuzzySearch"
@@ -20,29 +20,46 @@
     class="text-left"
     no-data-text="Sem alunos a apresentar."
   >
+    <template v-slot:[`enrollment.name`]="{ enrollment }">
+      {{ enrollment.student.name }}
+    </template>
+
+    <template v-slot:[`enrollment.istId`]="{ enrollment }">
+      {{ enrollment.student.istId }}
+    </template>
+
+    <template v-slot:[`enrollment.email`]="{ enrollment }">
+      {{ enrollment.student.email }}
+    </template>
+
+    <template v-slot:[`enrollment.status`]="{ enrollment }">
+      <v-chip :color="getColorByStatus(enrollment.type)" text-color="white">
+				{{ translateStatus(enrollment.status) }}
+			</v-chip>
+    </template>
   </v-data-table>
 
-  <AssignCurricularUnitStudentsDialog 
+  <CreateStudentEnrollment 
     v-if="roleStore.isMainTeacher"
-    :curricular-unit-students="students" 
     :id="curricularUnitId" 
-    @students-updated="getCurricularUnitStudents" 
+    @students-updated="getCurricularUnitEnrollments" 
   />
 </template>
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import PersonDto from '../../../models/PersonDto'
 import CurricularUnitService from '../../../services/CurricularUnitService'
 import { reactive, ref } from 'vue'
 import { onMounted } from 'vue'
-import AssignCurricularUnitStudentsDialog from '../../dialogs/curricular-unit/AssignCurricularUnitStudentsDialog.vue'
 import { useRoleStore } from '../../../stores/role'
+import EnrollmentDto from '../../../models/EnrollmentDto'
+import { translateStatus } from '../../../mappings/enrollmentMappings'
+import { getColorByStatus } from '../../../mappings/enrollmentMappings'
 
 let search = ref('')
 let loading = ref(true)
 
-const students: PersonDto[] = reactive([])
+const enrollments: EnrollmentDto[] = reactive([])
 const route = useRoute()
 const curricularUnitId = parseInt(route.params.id as string, 10)
 
@@ -70,23 +87,30 @@ const headers = [
     value: 'email',
     sortable: true,
     filterable: true
+  },
+  {
+    title: 'Estado',
+    key: 'status',
+    value: 'status',
+    sortable: true,
+    filterable: true
   }
 ]
 
 onMounted(() => {
-	getCurricularUnitStudents()
+	getCurricularUnitEnrollments()
 })
 
-async function getCurricularUnitStudents() { 
-	students.splice(0, students.length)
+async function getCurricularUnitEnrollments() { 
+	enrollments.splice(0, enrollments.length)
 	try {
-		students.push(...(await CurricularUnitService.getCurricularUnitStudents(curricularUnitId)))
+		enrollments.push(...(await CurricularUnitService.getCurricularUnitEnrollments(curricularUnitId)))
 	} catch (error) {
-		console.error("Error getting students: ", error)
+		console.error("Error getting enrollments: ", error)
 	}
 
 	loading.value = false
-  console.log(students)
+  console.log(enrollments)
 }
 
 const fuzzySearch = (value: string, search: string) => {

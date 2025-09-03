@@ -12,7 +12,7 @@
       </template>
 
       <v-card>
-        <v-card-title>Selecione/Remova Alunos</v-card-title>
+        <v-card-title>Gerir Alunos</v-card-title>
         <v-card-text>
           <v-checkbox 
             v-for="student in students"
@@ -56,12 +56,12 @@ import PersonService from '../../../services/PersonService'
 
 const props = defineProps<{ 
   id: number,
-  curricularUnitStudents: PersonDto[]
+  students: PersonDto[]
 }>();
 
 const dialog = ref(false);
 const students = ref<PersonDto[]>([]);
-const selectedStudents = ref<PersonDto[]>(props.curricularUnitStudents);
+const selectedStudents = ref<PersonDto[]>(props.students);
 
 const emit = defineEmits(['students-updated'])
 

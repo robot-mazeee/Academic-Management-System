@@ -3,6 +3,7 @@ import httpClient from "./ApiClient";
 import type CurricularUnitDto from "@/models/CurricularUnitDto";
 import type TestDto from "@/models/TestDto";
 import ProjectDto from "@/models/ProjectDto";
+import type EnrollmentDto from "@/models/EnrollmentDto";
 
 export default {
   getCurricularUnits(): Promise<CurricularUnitDto[]> {
@@ -43,5 +44,9 @@ export default {
 
   getCurricularUnitProjects(id: number): Promise<ProjectDto[]> {
     return httpClient.get(`/curricular-units/${id}/projects`)
+  },
+
+  getCurricularUnitEnrollments(id: number): Promise<EnrollmentDto[]> {
+    return httpClient.get(`/curricular-units/${id}/enrollments`);
   }
 };
