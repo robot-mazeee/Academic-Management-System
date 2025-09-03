@@ -21,10 +21,11 @@
     no-data-text="Sem professores a apresentar."
   >
     <template v-slot:[`item.actions`]="{ item }" v-if="roleStore.isMainTeacher">
-      <div class="d-flex align-center justify-center ga-2"></div>
+      <div class="d-flex align-center justify-center ga-2">
         <v-icon @click="removeTeachingAssistant(item)" color="red" class="cursor-pointer">
           mdi-delete
         </v-icon>
+      </div>
     </template>
   </v-data-table>
 
@@ -76,6 +77,13 @@ const headers = [
     value: 'email',
     sortable: true,
     filterable: true
+  },
+  {
+    title: 'Ações',
+    key: 'actions',
+    value: 'actions',
+    sortable: true,
+    filterable: true
   }
 ]
 
@@ -92,7 +100,7 @@ async function getCurricularUnitTeachers() {
 	}
 
 	loading.value = false
-  console.log(teachers)
+  console.log('curricular unit teachers: ', teachers)
 }
 
 async function removeTeachingAssistant(teacher: PersonDto) {
@@ -100,7 +108,7 @@ async function removeTeachingAssistant(teacher: PersonDto) {
   try {
     await CurricularUnitService.removeTeachingAssistant(curricularUnitId, teacher.id)
     console.log('Teaching assistant deleted')
-    getCurricularUnitTeachers()
+    await getCurricularUnitTeachers()
   } catch (error) {
     console.error('Error deleting teaching assistant from curricular unit')
   }

@@ -13,18 +13,21 @@
 
       <v-card>
         <v-card-title>Adicionar Professores</v-card-title>
-        <v-card-text v-if="teachers.length">
+
+        <v-card-text v-if="availableTeachers.length">
           <v-checkbox 
-            v-for="teacher in teachers"
+            v-for="teacher in availableTeachers"
             :key="teacher.id"
             :label="teacher.name"
             :value="teacher"
             v-model="selectedTeachers"
           ></v-checkbox>
         </v-card-text>
+
         <v-card-text v-else>
           Sem professores.
         </v-card-text>
+
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn 
@@ -37,11 +40,7 @@
             text="Save"
             color="primary"
             variant="tonal"
-            @click="async () => {
-              const success = await assignCurricularUnitTeachers();
-              if (success) 
-                dialog = false;
-            }"
+            @click="saveTeachers"
           ></v-btn>
         </v-card-actions>
       </v-card>
@@ -50,46 +49,60 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import PersonDto from '../../../models/PersonDto'
-import CurricularUnitService from '../../../services/CurricularUnitService';
-import PersonService from '../../../services/PersonService';
+import CurricularUnitService from '../../../services/CurricularUnitService'
+import PersonService from '../../../services/PersonService'
 
 const props = defineProps<{ 
   id: number,
   curricularUnitTeachers: PersonDto[]
-}>();
+}>()
 
-const dialog = ref(false);
-const teachers = ref<PersonDto[]>([]);
-const selectedTeachers = ref<PersonDto[]>(props.curricularUnitTeachers);
+const dialog = ref(false)
+const availableTeachers = ref<PersonDto[]>([])
+const selectedTeachers = ref<PersonDto[]>([])
 
 const emit = defineEmits(['teachers-updated'])
 
+
 onMounted(() => {
-  getTeachers();
+  getAvailableTeachers()
 })
 
-async function getTeachers() {
-  console.log('getting assistant teachers!')
+watch(dialog, async (val) => {
+  if (val) {
+    await getAvailableTeachers()
+  }
+})
 
+async function getAvailableTeachers() {
   try {
     const response = await PersonService.getTeachers()
-    teachers.value = response;
-    console.log('teachers: ', teachers.value)
+    availableTeachers.value = response
+    console.log('available teachers: ', availableTeachers.value)
   } catch (error) {
-    console.error('Error getting teachers: ', error)
+    console.error('Error getting available teachers: ', error)
   }
 }
 
 async function assignCurricularUnitTeachers() {
   try {
     await CurricularUnitService.assignCurricularUnitTeachers(props.id, selectedTeachers.value)
+    selectedTeachers.value = []
     emit('teachers-updated')
-    return true;
+    return true
   } catch (error) {
-    console.log("Error assigning curricular unit teachers: ", error)
-    return false;
+    console.error("Error assigning curricular unit teachers: ", error)
+    return false
+  }
+}
+
+async function saveTeachers() {
+  const success = await assignCurricularUnitTeachers()
+  if (success) {
+    await getAvailableTeachers()
+    dialog.value = false
   }
 }
 </script>
