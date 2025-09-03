@@ -132,7 +132,9 @@ public class CurricularUnitService {
 
 	@Transactional
 	public void deleteCurricularUnit(long id) {
-		fetchCurricularUnitOrThrow(id);
+		CurricularUnit curricularUnit = fetchCurricularUnitOrThrow(id);
+		personService.updateType(curricularUnit.getMainTeacher().getId(), PersonType.TEACHER);
+
 		curricularUnitRepository.deleteById(id);
 	}
 }
