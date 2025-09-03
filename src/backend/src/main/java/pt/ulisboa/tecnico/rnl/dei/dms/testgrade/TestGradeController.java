@@ -22,7 +22,7 @@ public class TestGradeController {
 	    return testGradeService.getTestGradesByStudentByTest(studentId, testId);
 	}
 
-    @GetMapping("/student/{studentId}/test-grades")
+    @GetMapping("/students/{studentId}/test-grades")
 	public List<TestGradeDto> getTestGradesByStudent(@PathVariable long studentId) {
 	    return testGradeService.getTestGradesByStudent(studentId);
 	}

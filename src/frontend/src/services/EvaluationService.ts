@@ -22,4 +22,8 @@ export default {
   createTestGrade(testGrade: TestGradeDto) {
     return httpClient.post("test-grades", testGrade)
   },
+
+  getStudentTestGrades(studentId: number): Promise<TestGradeDto[]> {
+    return httpClient.get(`/students/${studentId}/test-grades`)
+  }
 }
