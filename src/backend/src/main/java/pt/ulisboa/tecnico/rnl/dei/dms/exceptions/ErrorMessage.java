@@ -6,7 +6,8 @@ public enum ErrorMessage {
 	PERSON_NAME_NOT_VALID("O nome da pessoa especificado não é válido.", 1002),
 	PERSON_ALREADY_EXISTS("Já existe uma pessoa com o ID %s", 1003),
 	NO_SUCH_CURRICULAR_UNIT("Não existe nenhuma unidade curricular com o ID %s", 1004),
-	NO_SUCH_TEST("Não existe nenhum teste com o ID %s", 1005);
+	NO_SUCH_TEST("Não existe nenhum teste com o ID %s", 1005),
+	NO_SUCH_ENROLLMENT("Não existe nenhuma incrição com o ID %s", 1006);
 
 	private final String label;
 	private final int code;
