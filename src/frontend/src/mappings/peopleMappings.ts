@@ -8,6 +8,8 @@ export const getColorByType = (type: string) => {
       return "blue";
     case "STUDENT":
       return "green";
+    case "TEACHER":
+      return "yellow";
     default:
       return "grey"
   }
@@ -24,6 +26,8 @@ export const translateType = (type: string) => {
       return "Professor Assistente";
     case "STUDENT":
       return "Aluno";
+    case "TEACHER":
+      return "Professor";
     default:
       return "Default";
   }
@@ -33,5 +37,6 @@ export const typeMappings = {
   'Administrador': 'ADMINISTRATOR',
   'Professor Regente': 'MAIN_TEACHER',
   'Professor Assistente': 'TEACHING_ASSISTANT',
-  'Aluno': 'STUDENT'
+  'Aluno': 'STUDENT',
+  'Professor': 'TEACHER'
 }

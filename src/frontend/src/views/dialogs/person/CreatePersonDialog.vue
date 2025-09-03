@@ -18,7 +18,7 @@
           <v-text-field label="Email*" required v-model="newPerson.email"></v-text-field>
 
             <v-select
-            :items="['Administrador', 'Professor Regente', 'Professor Assistente', 'Aluno']"
+            :items="['Administrador', 'Professor', 'Aluno']"
             label="Categoria*"
             required
             v-model="newPerson.type"
