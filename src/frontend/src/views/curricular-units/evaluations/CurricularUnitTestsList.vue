@@ -20,9 +20,9 @@
     class="text-left"
     no-data-text="Sem testes a apresentar."
   >
-    <!-- <template v-slot:[`item.testSheet`]="{ item }">
-
-    </template> -->
+    <template v-slot:[`item.testSheet`]="{ item }">
+      <FileUpload :test="item"/>
+    </template>
     <template v-slot:[`item.grades`]="{ item }">
       <v-btn @click="openTestGradesManagementView(curricularUnitId, item.id)" class="mb-3" color="secondary"></v-btn>
     </template>
@@ -42,6 +42,7 @@ import TestDto from '../../../models/TestDto'
 import CurricularUnitService from '../../../services/CurricularUnitService'
 import CreateTestDialog from '../../dialogs/evaluation/CreateTestDialog.vue'
 import { useRoleStore } from '../../../stores/role'
+import FileUpload from '../../../components/file/FileUpload.vue'
 
 let search = ref('')
 let loading = ref(true)
