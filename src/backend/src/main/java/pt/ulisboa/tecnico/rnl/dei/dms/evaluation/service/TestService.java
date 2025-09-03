@@ -11,6 +11,8 @@ import pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.domain.CurricularUnit;
 import pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.repository.CurricularUnitRepository;
 import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.domain.Test;
 import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.dto.TestDto;
+import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.DEIException;
+import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.ErrorMessage;
 
 @Transactional
 @Service
@@ -23,7 +25,12 @@ public class TestService {
 
     private CurricularUnit getCurricularUnit(long curricularUnitId) {
         return curricularUnitRepository.findById(curricularUnitId)
-                .orElseThrow(() -> new RuntimeException("UC não encontrada"));
+                .orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_CURRICULAR_UNIT, Long.toString(curricularUnitId)));
+    }
+
+    private Test fetchTestOrThrow(long testId) {
+        return testRepository.findById(testId)
+                .orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_TEST, Long.toString(testId)));
     }
 
     @Transactional
@@ -34,9 +41,14 @@ public class TestService {
 	}
 
     @Transactional
+	public TestDto getTest(long testId) {
+        Test test = fetchTestOrThrow(testId);
+		return new TestDto(test);
+	}
+
+    @Transactional
 	public TestDto createTest(TestDto testDto) {
-        CurricularUnit curricularUnit = curricularUnitRepository.findById(testDto.curricularUnitId())
-            .orElseThrow(() -> new RuntimeException("UC não encontrada"));
+        CurricularUnit curricularUnit = getCurricularUnit(testDto.curricularUnitId());
 
         Test test = new Test(testDto, curricularUnit);
 

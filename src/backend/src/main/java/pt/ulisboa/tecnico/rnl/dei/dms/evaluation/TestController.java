@@ -26,6 +26,11 @@ class TestController {
         return testService.getTests();
     }
 
+    @GetMapping("/tests/{id}")
+    public TestDto getTest(@PathVariable long testId) {
+        return testService.getTest(testId);
+    }
+
     @GetMapping("/curricular-units/{ucId}/tests")
     public List<TestDto> getTestsByUC(@PathVariable Long ucId) {
         return testService.getTestsByUc(ucId);

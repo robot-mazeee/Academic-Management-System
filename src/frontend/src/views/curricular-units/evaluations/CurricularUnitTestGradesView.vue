@@ -8,7 +8,7 @@
     variant="outlined"
     hide-details
     single-line
-  ></v-text-field>
+  />
 
   <v-data-table
     :headers="headers"
@@ -17,7 +17,39 @@
     item-value="id"
     title="Alunos sem Nota"
     no-data-text="Sem alunos a apresentar."
-  />
+  >
+    <template v-slot:[`item.test`]="{ item }">
+      {{ test.title }}
+    </template>
+
+    <template v-slot:[`item.student`]="{ item }">
+      {{ item.name }} ({{ item.istId }})
+    </template>
+
+    <template v-slot:[`item.grade`]="{ item }">
+      <v-text-field
+        v-model="gradesDraft[item.id]"
+        label="Nota"
+        type="number"
+      />
+      <v-btn
+        @click="gradeTest(item, gradesDraft[item.id])"
+        color="secondary"
+        class="mb-3"
+      >
+        Submit
+      </v-btn>
+    </template>
+
+    <template v-slot:[`item.testCorrection`]="{ item }">
+      <div
+        class="d-flex align-center justify-center ga-2"
+        v-if="roleStore.isMainTeacher || roleStore.isTeachingAssistant"
+      >
+        <FileUpload :test="test"/>
+      </div>
+    </template>
+  </v-data-table>
 
   <v-data-table
     :headers="headers"
@@ -30,14 +62,26 @@
     no-data-text="Sem alunos a apresentar."
     title="Alunos com Nota"
   >
-    <!-- <template v-slot:[`item.actions`]="{ item }">
-			<div class="d-flex align-center justify-center ga-2" v-if="roleStore.isAdministrator">
-				<EditCurricularUnitDialog :curricular-unit-to-edit="item" @curricular-unit-edited="getTestGrades" />
-				<v-icon @click="deleteCurricularUnit(item)" color="red" class="cursor-pointer">
-					mdi-delete
-				</v-icon>
-			</div>
-    </template> -->
+    <template v-slot:[`item.test`]="{ item }">
+      {{ item.test.title }}
+    </template>
+
+    <template v-slot:[`item.student`]="{ item }">
+      {{ item.student.name }} ({{ item.student.istId }})
+    </template>
+
+    <template v-slot:[`item.grade`]="{ item }">
+      {{ item.grade }}
+    </template>
+
+    <template v-slot:[`item.testCorrection`]="{ item }">
+      <div
+        class="d-flex align-center justify-center ga-2"
+        v-if="roleStore.isMainTeacher || roleStore.isTeachingAssistant"
+      >
+        <FileUpload :test="test" />
+      </div>
+    </template>
   </v-data-table>
 </template>
 
@@ -48,12 +92,20 @@ import EvaluationService from '../../../services/EvaluationService'
 import TestGradeDto from '../../../models/TestGradeDto'
 import CurricularUnitService from '../../../services/CurricularUnitService'
 import PersonDto from '../../../models/PersonDto'
+import TestDto from '../../../models/TestDto'
+import { useRoleStore } from '../../../stores/role'
+import FileUpload from '../../../components/file/FileUpload.vue'
 
-let search = ref('')
-let loading = ref(true)
+const search = ref('')
+const loading = ref(true)
 
 const grades: TestGradeDto[] = reactive([])
 const students: PersonDto[] = reactive([])
+
+// store draft grades per student id
+const gradesDraft: Record<number, number | null> = reactive({})
+
+const roleStore = useRoleStore()
 
 const ungradedStudents = computed(() => {
   const gradedIds = new Set(grades.map(g => g.student.id))
@@ -61,79 +113,74 @@ const ungradedStudents = computed(() => {
 })
 
 const filteredUngradedStudents = computed(() => {
-  const list = ungradedStudents.value
-
-  if (!search.value) 
-    return list
-
-  return list.filter(s => fuzzySearch(s.name, search.value))
+  if (!search.value) return ungradedStudents.value
+  return ungradedStudents.value.filter(s => fuzzySearch(s.name, search.value))
 })
 
 const route = useRoute()
-const curricularUnitId = route.params.curricularUnitId;
-const testId = route.params.testId;
+const curricularUnitId = Number(route.params.curricularUnitId)
+const testId = Number(route.params.testId)
+const test = ref<TestDto | null>(null)
 
 const headers = [
-  { title: 'ID', key: 'id', value: 'id', sortable: true, filterable: false },
-  {
-    title: 'Teste',
-    key: 'test',
-    value: 'test',
-    sortable: true,
-    filterable: true
-  },
-  {
-    title: 'Aluno',
-    key: 'student',
-    value: 'student',
-    sortable: true,
-    filterable: true
-  },
-  {
-    title: 'Nota',
-    key: 'grade',
-    value: 'grade',
-    sortable: true,
-    filterable: true
-  },
-  {
-    title: 'Correção',
-    key: 'testSheet',
-    value: 'testSheet',
-    sortable: false,
-    filterable: false
-  }
+  { title: 'ID', key: 'id', sortable: true },
+  { title: 'Teste', key: 'test', sortable: true },
+  { title: 'Aluno', key: 'student', sortable: true },
+  { title: 'Nota', key: 'grade', sortable: true },
+  { title: 'Correção', key: 'testCorrection', sortable: false }
 ]
 
 onMounted(async () => {
-	await getCurricularUnitStudents()
+  await getTest()
+  await getCurricularUnitStudents()
   await getTestGrades()
 })
 
+async function getTest() {
+  try {
+    test.value = await EvaluationService.getTest(testId)
+  } catch (error) {
+    console.error('Error fetching test: ', error)
+  }
+}
+
 async function getCurricularUnitStudents() {
   try {
-    const response = await CurricularUnitService.getCurricularUnitStudents(Number(curricularUnitId))
+    const response = await CurricularUnitService.getCurricularUnitStudents(curricularUnitId)
     students.push(...response)
-  } catch(error) {
+  } catch (error) {
     console.error('Error fetching curricular unit students: ', error)
   }
 }
 
-async function getTestGrades() { 
-	grades.splice(0, grades.length)
-	try {
-		grades.push(...(await EvaluationService.getTestGrades(Number(curricularUnitId), Number(testId))))
-	} catch (error) {
-		console.error("Error getting grades: ", error)
-	}
-
-	loading.value = false
-  console.log(grades)
+async function getTestGrades() {
+  grades.splice(0, grades.length)
+  try {
+    grades.push(...(await EvaluationService.getTestGrades(curricularUnitId, testId)))
+  } catch (error) {
+    console.error('Error getting grades: ', error)
+  }
+  loading.value = false
 }
 
-const fuzzySearch = (value: string, search: string) => {
-  // Regex to match any character in between the search characters
-  let searchRegex = new RegExp(search.split('').join('.*'), 'i')
+async function gradeTest(student: PersonDto, grade: number | null) {
+  if (!test.value || grade == null) return
+  const testGrade: TestGradeDto = {
+    test: test.value,
+    student,
+    grade
+  }
+  try {
+    const response = await EvaluationService.createTestGrade(testGrade)
+    console.log('created test grade: ', response)
+    await getTestGrades() // refresh after submit
+  } catch (error) {
+    console.error('Error creating test grade: ', error)
+  }
+}
+
+function fuzzySearch(value: string, search: string) {
+  const searchRegex = new RegExp(search.split('').join('.*'), 'i')
   return searchRegex.test(value)
 }
 </script>

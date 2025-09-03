@@ -11,6 +11,10 @@ export default {
     return httpClient.post(`/curricular-units/${testDto.curricularUnitId}/tests`, testDto);
   },
 
+  getTest(testId: number): Promise<TestDto> {
+    return httpClient.get(`/tests/${testId}`);
+  },
+
   getTestGrades(curricularUnitId: number, testId: number): Promise<TestGradeDto[]> {
     return httpClient.get(`curricular-units/${curricularUnitId}/tests/${testId}/grades`);
   },

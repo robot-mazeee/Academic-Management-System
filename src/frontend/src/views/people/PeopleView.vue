@@ -3,7 +3,7 @@
     <v-col>
       <h2 class="text-left ml-1">Lista de Pessoas</h2>
     </v-col>
-    <v-col cols="auto">
+    <v-col cols="auto" v-if="useRoleStore.isAdministrator">
       <CreatePersonDialog @person-created="getPeople" />
     </v-col>
   </v-row>
@@ -51,11 +51,10 @@ import { reactive, ref } from 'vue'
 import { onMounted } from 'vue'
 import { getColorByType, translateType } from '../../mappings/peopleMappings'
 import EditPersonDialog from '../dialogs/person/EditPersonDialog.vue'
+import { useRoleStore } from '../../stores/role'
 
 let search = ref('')
 let loading = ref(true)
-
-const people: PersonDto[] = reactive([])
 
 const headers = [
   { title: 'ID', key: 'id', value: 'id', sortable: true, filterable: false },
