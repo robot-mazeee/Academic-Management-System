@@ -12,58 +12,17 @@
 
   <v-data-table
     :headers="headers"
-    :items="filteredUngradedStudents"
-    :loading="loading"
-    item-value="id"
-    title="Alunos sem Nota"
-    no-data-text="Sem alunos a apresentar."
-  >
-    <template v-slot:[`item.test`]="{ item }">
-      {{ test.title }}
-    </template>
-
-    <template v-slot:[`item.student`]="{ item }">
-      {{ item.name }} ({{ item.istId }})
-    </template>
-
-    <template v-slot:[`item.grade`]="{ item }">
-      <v-text-field
-        v-model="gradesDraft[item.id]"
-        label="Nota"
-        type="number"
-      />
-      <v-btn
-        @click="gradeTest(item, gradesDraft[item.id])"
-        color="secondary"
-        class="mb-3"
-      >
-        Submit
-      </v-btn>
-    </template>
-
-    <template v-slot:[`item.testCorrection`]="{ item }">
-      <div
-        class="d-flex align-center justify-center ga-2"
-        v-if="roleStore.isMainTeacher || roleStore.isTeachingAssistant"
-      >
-        <FileUpload :test="test"/>
-      </div>
-    </template>
-  </v-data-table>
-
-  <v-data-table
-    :headers="headers"
-    :items="grades"
+    :items="allStudentsWithGrades"
     :search="search"
     :loading="loading"
     :custom-filter="fuzzySearch"
     item-key="id"
     class="text-left"
     no-data-text="Sem alunos a apresentar."
-    title="Alunos com Nota"
+    title="Notas"
   >
     <template v-slot:[`item.test`]="{ item }">
-      {{ item.test.title }}
+      {{ item.test?.title }}
     </template>
 
     <template v-slot:[`item.student`]="{ item }">
@@ -71,7 +30,23 @@
     </template>
 
     <template v-slot:[`item.grade`]="{ item }">
-      {{ item.grade }}
+      <div v-if="item.grade !== null">
+        {{ item.grade }}
+      </div>
+      <div v-else>
+        <v-text-field
+          v-model="gradesDraft[item.id]"
+          label="Nota"
+          type="number"
+        />
+        <v-btn
+          @click="gradeTest(item.student, gradesDraft[item.id])"
+          color="secondary"
+          class="mb-3"
+        >
+          Submit
+        </v-btn>
+      </div>
     </template>
 
     <template v-slot:[`item.testCorrection`]="{ item }">
@@ -79,7 +54,7 @@
         class="d-flex align-center justify-center ga-2"
         v-if="roleStore.isMainTeacher || roleStore.isTeachingAssistant"
       >
-        <FileUpload :test="test" />
+        <FileUpload :test="item.test"/>
       </div>
     </template>
   </v-data-table>
@@ -99,28 +74,28 @@ import FileUpload from '../../../components/file/FileUpload.vue'
 const search = ref('')
 const loading = ref(true)
 
+const route = useRoute()
+const curricularUnitId = Number(route.params.curricularUnitId)
+const testId = Number(route.params.testId)
+
 const grades: TestGradeDto[] = reactive([])
 const students: PersonDto[] = reactive([])
-
-// store draft grades per student id
+const test = ref<TestDto | null>(null)
 const gradesDraft: Record<number, number | null> = reactive({})
 
 const roleStore = useRoleStore()
 
-const ungradedStudents = computed(() => {
-  const gradedIds = new Set(grades.map(g => g.student.id))
-  return students.filter(s => !gradedIds.has(s.id))
+const allStudentsWithGrades = computed(() => {
+  return students.map(student => {
+    const grade = grades.find(g => g.student.id === student.id) || null
+    return {
+      id: student.id,
+      student,
+      grade: grade?.grade ?? null,
+      test: test.value,
+    }
+  })
 })
-
-const filteredUngradedStudents = computed(() => {
-  if (!search.value) return ungradedStudents.value
-  return ungradedStudents.value.filter(s => fuzzySearch(s.name, search.value))
-})
-
-const route = useRoute()
-const curricularUnitId = Number(route.params.curricularUnitId)
-const testId = Number(route.params.testId)
-const test = ref<TestDto | null>(null)
 
 const headers = [
   { title: 'ID', key: 'id', sortable: true },
@@ -138,6 +113,7 @@ onMounted(async () => {
 
 async function getTest() {
   try {
+    console.log('Fetching test: ', testId)
     test.value = await EvaluationService.getTest(testId)
   } catch (error) {
     console.error('Error fetching test: ', error)
@@ -164,7 +140,8 @@ async function getTestGrades() {
 }
 
 async function gradeTest(student: PersonDto, grade: number | null) {
-  if (!test.value || grade == null) return
+  if (!test.value || grade == null) 
+    return
   const testGrade: TestGradeDto = {
     test: test.value,
     student,
@@ -173,7 +150,7 @@ async function gradeTest(student: PersonDto, grade: number | null) {
   try {
     const response = await EvaluationService.createTestGrade(testGrade)
     console.log('created test grade: ', response)
-    await getTestGrades() // refresh after submit
+    await getTestGrades()
   } catch (error) {
     console.error('Error creating test grade: ', error)
   }

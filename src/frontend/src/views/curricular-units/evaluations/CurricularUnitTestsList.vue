@@ -24,7 +24,9 @@
       <FileUpload :test="item"/>
     </template>
     <template v-slot:[`item.grades`]="{ item }" v-if="roleStore.isTeachingAssistant || roleStore.isMainTeacher">
-      <v-btn @click="openTestGradesManagementView(curricularUnitId, item.id)" class="mb-3" color="secondary"></v-btn>
+      <v-btn @click="openTestGradesManagementView(curricularUnitId, item.id)" class="mb-3" color="secondary">
+        Ver Notas
+      </v-btn>
     </template>
   </v-data-table>
 
