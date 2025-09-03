@@ -12,6 +12,7 @@ import pt.ulisboa.tecnico.rnl.dei.dms.enrollment.repository.EnrollmentRepository
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.DEIException;
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.ErrorMessage;
 import pt.ulisboa.tecnico.rnl.dei.dms.enrollment.domain.Enrollment;
+import pt.ulisboa.tecnico.rnl.dei.dms.enrollment.domain.EnrollmentStatus;
 
 @Transactional
 @Service
@@ -51,9 +52,24 @@ public class EnrollmentService {
 	}
 
     @Transactional
-	public void deleteEnrollment(long id) {
-		fetchEnrollmentOrThrow(id);
+    public EnrollmentDto assignEnrollmentFinalGrade(long enrollmentId, double finalGrade) {
+        Enrollment enrollment = fetchEnrollmentOrThrow(enrollmentId);
 
-		enrollmentRepository.deleteById(id);
+        enrollment.setFinalGrade(finalGrade);
+
+        if (finalGrade >= 9.5) {
+            enrollment.setStatus(EnrollmentStatus.APPROVED);
+        } else {
+            enrollment.setStatus(EnrollmentStatus.FAILED);
+        }
+
+        return new EnrollmentDto(enrollment);
+    }
+
+    @Transactional
+	public void deleteEnrollment(long enrollmentId) {
+		fetchEnrollmentOrThrow(enrollmentId);
+
+		enrollmentRepository.deleteById(enrollmentId);
 	}
 }

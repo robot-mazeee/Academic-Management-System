@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +27,11 @@ public class EnrollmentController {
     @PostMapping("/curricular-units/{curricularUnitId}/enrollments")
     public EnrollmentDto createEnrollment(@PathVariable long curricularUnitId, @RequestBody EnrollmentDto enrollmentDto) {
         return enrollmentService.createEnrollment(enrollmentDto);
+    }
+
+    @PatchMapping("/curricular-units/{curricularUnitId}/enrollments/{enrollmentId}") 
+    public EnrollmentDto assignEnrollmentFinalGrade(@PathVariable long enrollmentId, double finalGrade) {
+        return enrollmentService.assignEnrollmentFinalGrade(enrollmentId, finalGrade);
     }
 
     @DeleteMapping("/curricular-units/{curricularUnitId}/enrollments/{enrollmentId}")
