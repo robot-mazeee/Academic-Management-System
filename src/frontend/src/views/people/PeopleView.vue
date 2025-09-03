@@ -3,7 +3,7 @@
     <v-col>
       <h2 class="text-left ml-1">Lista de Pessoas</h2>
     </v-col>
-    <v-col cols="auto" v-if="useRoleStore.isAdministrator">
+    <v-col cols="auto" v-if="roleStore.isAdministrator">
       <CreatePersonDialog @person-created="getPeople" />
     </v-col>
   </v-row>
@@ -32,7 +32,7 @@
 				{{ translateType(item.type) }}
 			</v-chip>
     </template>
-    <template v-slot:[`item.actions`]="{ item }">
+    <template v-slot:[`item.actions`]="{ item }" v-if="roleStore.isAdministrator">
       <div class="d-flex align-center justify-center ga-2">
 				<EditPersonDialog :person-to-edit="item" :can-alter-type="true" @close-dialog="getPeople" />
 				<v-icon @click="deletePerson(item)" color="red" class="cursor-pointer">
@@ -55,6 +55,10 @@ import { useRoleStore } from '../../stores/role'
 
 let search = ref('')
 let loading = ref(true)
+
+const people: PersonDto[] = reactive([])
+
+const roleStore = useRoleStore()
 
 const headers = [
   { title: 'ID', key: 'id', value: 'id', sortable: true, filterable: false },

@@ -23,7 +23,7 @@
     <template v-slot:[`item.testSheet`]="{ item }">
       <FileUpload :test="item"/>
     </template>
-    <template v-slot:[`item.grades`]="{ item }">
+    <template v-slot:[`item.grades`]="{ item }" v-if="roleStore.isTeachingAssistant || roleStore.isMainTeacher">
       <v-btn @click="openTestGradesManagementView(curricularUnitId, item.id)" class="mb-3" color="secondary"></v-btn>
     </template>
   </v-data-table>
