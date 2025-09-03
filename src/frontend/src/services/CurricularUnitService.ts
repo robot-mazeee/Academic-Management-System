@@ -1,6 +1,6 @@
 import type PersonDto from "@/models/PersonDto";
 import httpClient from "./ApiClient";
-import type CurricularUnitDto from "@/models/CurricularUnitDto";
+import CurricularUnitDto from "@/models/CurricularUnitDto";
 import type TestDto from "@/models/TestDto";
 import ProjectDto from "@/models/ProjectDto";
 import type EnrollmentDto from "@/models/EnrollmentDto";
@@ -36,6 +36,10 @@ export default {
 
   assignCurricularUnitTeachers(id: number, teachers: PersonDto[]) {
     return httpClient.patch(`/curricular-units/${id}/assistant-teachers`, teachers)
+  },
+
+  removeTeachingAssistant(curricularUnitId: number, teacherId: number) {
+    return httpClient.delete(`/curricular-units/${curricularUnitId}/assistant-teachers/${teacherId}`)
   },
 
   getCurricularUnitTests(id: number): Promise<TestDto[]> {

@@ -20,6 +20,12 @@
     class="text-left"
     no-data-text="Sem professores a apresentar."
   >
+    <template v-slot:[`item.actions`]="{ item }" v-if="roleStore.isMainTeacher">
+      <div class="d-flex align-center justify-center ga-2"></div>
+        <v-icon @click="removeTeachingAssistant(item)" color="red" class="cursor-pointer">
+          mdi-delete
+        </v-icon>
+    </template>
   </v-data-table>
 
   <AssignCurricularUnitTeachersDialog 
@@ -87,6 +93,17 @@ async function getCurricularUnitTeachers() {
 
 	loading.value = false
   console.log(teachers)
+}
+
+async function removeTeachingAssistant(teacher: PersonDto) {
+  console.log('Deleting teaching assistant from curricular unit')
+  try {
+    await CurricularUnitService.removeTeachingAssistant(curricularUnitId, teacher.id)
+    console.log('Teaching assistant deleted')
+    getCurricularUnitTeachers()
+  } catch (error) {
+    console.error('Error deleting teaching assistant from curricular unit')
+  }
 }
 
 const fuzzySearch = (value: string, search: string) => {

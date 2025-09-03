@@ -67,4 +67,9 @@ public class CurricularUnitController {
 	public void deleteCurricularUnit(@PathVariable long id) {
 		curricularUnitService.deleteCurricularUnit(id);
 	}
+
+	@DeleteMapping("/curricular-units/{curricularUnitId}/assistant-teachers/{teacherId}")
+	public void removeTeachingAssistant(@PathVariable long curricularUnitId, @PathVariable long teacherId) {
+		curricularUnitService.removeTeachingAssistant(curricularUnitId, teacherId);
+	}
 }

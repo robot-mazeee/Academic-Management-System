@@ -109,6 +109,20 @@ public class CurricularUnitService {
 	}
 
 	@Transactional
+	public void removeTeachingAssistant(long curricularUnitId, long teacherId) {
+		CurricularUnit curricularUnit = fetchCurricularUnitOrThrow(curricularUnitId);
+		Person teacher = fetchPersonOrThrow(teacherId);
+
+		boolean removed = curricularUnit.getTeachingAssistants().remove(teacher);
+		if (!removed) {
+			throw new DEIException(ErrorMessage.NO_SUCH_TEACHING_ASSISTANT_FOR_UC);
+		}
+		
+		personService.updateType(teacherId, PersonType.TEACHER);
+		curricularUnitRepository.save(curricularUnit);
+	}
+
+	@Transactional
 	public CurricularUnitDto updateCurricularUnit(long id, CurricularUnitDto curricularUnitDto) {
 		fetchCurricularUnitOrThrow(id);
 		CurricularUnit curricularUnit = new CurricularUnit(curricularUnitDto);
