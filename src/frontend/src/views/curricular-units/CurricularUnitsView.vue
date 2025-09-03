@@ -27,6 +27,9 @@
     class="text-left"
     no-data-text="Sem unidades curriculares a apresentar."
   >
+    <template v-slot:[`item.mainTeacher`]="{ item }">
+      {{ item.mainTeacher.name }} ({{ item.mainTeacher.istId }})
+    </template>
     <template v-slot:[`item.actions`]="{ item }">
 			<div class="d-flex align-center justify-center ga-2" v-if="roleStore.isAdministrator">
 				<EditCurricularUnitDialog :curricular-unit-to-edit="item" @curricular-unit-edited="getCurricularUnits" />
