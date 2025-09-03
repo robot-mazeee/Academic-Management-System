@@ -43,6 +43,13 @@
         {{ item.finalGrade }}
       </div>
     </template>
+
+    <template v-slot:[`item.actions`]="{ item }" v-if="roleStore.isMainTeacher">
+      <div class="d-flex align-center justify-center ga-2"></div>
+				<v-icon @click="deleteEnrollment(item)" color="red" class="cursor-pointer">
+					mdi-delete
+				</v-icon>
+    </template>
   </v-data-table>
 
   <CreateEnrollmentsDialog 
@@ -109,6 +116,13 @@ const headers = [
     value: 'finalGrade',
     sortable: true,
     filterable: true
+  },
+  {
+    title: 'Ações',
+    key: 'actions',
+    value: 'actions',
+    sortable: false,
+    filterable: false
   }
 ]
 
@@ -127,6 +141,17 @@ async function getCurricularUnitEnrollments() {
 	loading.value = false
   console.log('enrollments: ', enrollments)
 }
+
+const deleteEnrollment = async (enrollment: EnrollmentDto) => {
+	console.log("Deleting enrollment:", enrollment)
+	try {
+		await CurricularUnitService.deleteEnrollment(enrollment.id)
+		await getCurricularUnitEnrollments()
+	} catch (error) {
+		console.error("Error deleting enrollment: ", error)
+	}
+}
+
 
 const fuzzySearch = (value: string, search: string) => {
   // Regex to match any character in between the search characters

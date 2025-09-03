@@ -34,7 +34,7 @@ public class EnrollmentController {
         return enrollmentService.assignEnrollmentFinalGrade(enrollmentId, finalGrade);
     }
 
-    @DeleteMapping("/curricular-units/{curricularUnitId}/enrollments/{enrollmentId}")
+    @DeleteMapping("/enrollments/{enrollmentId}")
     public void deleteEnrollment(@PathVariable long enrollmentId) {
         enrollmentService.deleteEnrollment(enrollmentId);
     }

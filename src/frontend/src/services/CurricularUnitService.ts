@@ -52,5 +52,9 @@ export default {
 
   getCurricularUnitEnrollments(id: number): Promise<EnrollmentDto[]> {
     return httpClient.get(`/curricular-units/${id}/enrollments`);
+  },
+
+  deleteEnrollment(enrollmentId: number) {
+    return httpClient.delete(`/enrollments/${enrollmentId}`);
   }
 };
