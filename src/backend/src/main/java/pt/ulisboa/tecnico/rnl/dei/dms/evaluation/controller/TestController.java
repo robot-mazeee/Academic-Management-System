@@ -1,4 +1,4 @@
-package pt.ulisboa.tecnico.rnl.dei.dms.evaluation;
+package pt.ulisboa.tecnico.rnl.dei.dms.evaluation.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
