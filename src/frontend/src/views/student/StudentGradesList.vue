@@ -20,20 +20,20 @@
     class="text-left"
     no-data-text="Sem notas a apresentar."
   >
-    <template v-slot:[`grade.test`]="{ grade }">
-      {{ grade.test.name }}
+    <template v-slot:[`item.test`]="{ item }">
+      {{ item.test.title }}
     </template>
-    <template v-slot:[`grade.weight`]="{ grade }">
-      {{ grade.test.weight }}
+    <template v-slot:[`item.weight`]="{ item }">
+      {{ item.test.weight }}
     </template>
-    <template v-slot:[`grade.grade`]="{ grade }">
-      {{ grade.grade }}
+    <template v-slot:[`item.grade`]="{ item }">
+      {{ item.grade }}
     </template>
-    <template v-slot:[`grade.testSheet`]="{ grade }">
-      <!--FileDownload v-if="grade.test.testSheet"-->
+    <template v-slot:[`item.testSheet`]="{ item }">
+      <!--FileDownload v-if="item.test.testSheet"-->
     </template>
-    <template v-slot:[`grade.correction`]="{ grade }">
-      <!--FileDownload v-if="grade.correction"-->
+    <template v-slot:[`item.correction`]="{ item }">
+      <!--FileDownload v-if="item.correction"-->
     </template>
   </v-data-table>
 </template>
