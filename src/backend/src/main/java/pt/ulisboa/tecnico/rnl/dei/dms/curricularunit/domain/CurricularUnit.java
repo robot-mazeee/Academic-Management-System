@@ -1,5 +1,6 @@
 package pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.domain;
 import pt.ulisboa.tecnico.rnl.dei.dms.person.domain.Person;
+import pt.ulisboa.tecnico.rnl.dei.dms.course.domain.Course;
 import pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.dto.CurricularUnitDto;
 
 import java.util.ArrayList;
@@ -27,9 +28,8 @@ public class CurricularUnit {
     @Column(name = "semester", nullable = false)
 	private Integer semester;
 
-    // Later, this is a relationship with CourseDto
-    @Column(name = "course", nullable = false)
-	private String course;
+	@ManyToOne
+	private Course course;
 
     @ManyToOne
     @JoinColumn(name = "main_teacher")
@@ -54,7 +54,7 @@ public class CurricularUnit {
     protected CurricularUnit() {
 	}
 
-	public CurricularUnit(String code, String name, Integer semester, String course, Person mainTeacher) {
+	public CurricularUnit(String code, String name, Integer semester, Course course, Person mainTeacher) {
 		this.code = code;
 		this.name = name;
 		this.semester = semester;

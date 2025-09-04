@@ -1,3 +1,4 @@
+import type CourseDto from "./CourseDto"
 import type PersonDto from "./PersonDto"
 
 export default class CurricularUnitDto {
@@ -5,7 +6,7 @@ export default class CurricularUnitDto {
   code?: string
   name?: string
   semester?: number
-  course?: string
+  course?: CourseDto
   mainTeacher?: PersonDto
 
   constructor(obj?: Partial<CurricularUnitDto>) {

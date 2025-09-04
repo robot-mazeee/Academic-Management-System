@@ -30,6 +30,9 @@
     <template v-slot:[`item.mainTeacher`]="{ item }">
       {{ item.mainTeacher.name }} ({{ item.mainTeacher.istId }})
     </template>
+    <template v-slot:[`item.course`]="{ item }">
+      {{ item.course.name }} ({{ item.course.code }})
+    </template>
     <template v-slot:[`item.actions`]="{ item }">
 			<div class="d-flex align-center justify-center ga-2" v-if="roleStore.isAdministrator">
 				<EditCurricularUnitDialog :curricular-unit-to-edit="item" @curricular-unit-edited="getCurricularUnits" />

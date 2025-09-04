@@ -21,7 +21,17 @@
 						required
 						v-model="newCurricularUnit.semester"
 					></v-select>
-					<v-text-field label="Curso*" required v-model="newCurricularUnit.course"></v-text-field>
+					<v-select 
+            :items="courses" 
+            item-title="name"
+            label="Curso*"
+            v-model="newCurricularUnit.course"
+            return-object
+          >
+            <template v-slot:item="{ props: itemProps, item }">
+              <v-list-item v-bind="itemProps" :subtitle="item.raw.code" />
+            </template>
+          </v-select>
           <v-select 
             :items="availableTeachers" 
             item-title="name"
@@ -63,23 +73,27 @@ import CurricularUnitDto from '../../../models/CurricularUnitDto'
 import CurricularUnitService from '../../../services/CurricularUnitService'
 import PersonDto from '../../../models/PersonDto'
 import PersonService from '../../../services/PersonService'
+import CourseDto from '../../../models/CourseDto'
+import CourseService from '../../../services/CourseService'
 
 const dialog = ref(false)
 
 const emit = defineEmits(['curricular-unit-created'])
 
 const availableTeachers = ref<PersonDto[]>([])
+const courses = ref<CourseDto[]>([])
 
 const newCurricularUnit = ref<CurricularUnitDto>({
   code: '',
   name: '',
   semester: null,
-  course: '',
+  course: null,
   mainTeacher: null
 })
 
 onMounted(() => {
   fetchAvailableTeachers()
+  getCourses()
 })
 
 watch(dialog, async (val) => {
@@ -112,8 +126,19 @@ const createCurricularUnit = async () => {
     code: '',
 		name: '',
 		semester: null,
-		course: '',
+		course: null,
 		mainTeacher: null
   }
+}
+
+async function getCourses() {
+	console.log('Fetching courses')
+
+	try {
+    courses.value = await CourseService.getCourses()
+		console.log("Courses fetched: ", courses.value)
+	} catch (error) {
+		console.error('Error fetching courses: ', error)
+	}
 }
 </script>

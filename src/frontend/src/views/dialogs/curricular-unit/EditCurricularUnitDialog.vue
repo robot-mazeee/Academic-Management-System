@@ -28,12 +28,17 @@
 						required
 						:placeholder="String(props.curricularUnitToEdit.semester)"
 					></v-select>
-					<v-text-field
+          <v-select 
+            :items="courses" 
+            item-title="name"
+            label="Curso*"
             v-model="editableCurricularUnit.course"
-            label="Curso"
-            required
-            :placeholder="props.curricularUnitToEdit.course"
-          />
+            return-object
+          >
+            <template v-slot:item="{ props: itemProps, item }">
+              <v-list-item v-bind="itemProps" :subtitle="item.raw.code" />
+            </template>
+          </v-select>
 					<v-select 
             :items="availableTeachers" 
             item-title="name"
@@ -71,6 +76,8 @@ import CurricularUnitService from '../../../services/CurricularUnitService'
 import { onMounted } from 'vue'
 import PersonDto from '../../../models/PersonDto'
 import PersonService from '../../../services/PersonService'
+import CourseDto from '../../../models/CourseDto'
+import CourseService from '../../../services/CourseService'
 
 const dialog = ref(false)
 const emit = defineEmits(['curricular-unit-edited'])
@@ -82,8 +89,11 @@ const props = defineProps<{
 const editableCurricularUnit = reactive({ ...props.curricularUnitToEdit })
 const availableTeachers = ref<PersonDto[]>([])
 
+const courses = ref<CourseDto[]>([])
+
 onMounted(() => {
-	fetchAvailableTeachers();
+	fetchAvailableTeachers()
+  getCourses()
 })
 
 watch(dialog, async (val) => {
@@ -115,5 +125,16 @@ const editCurricularUnit = async () => {
 
 	emit('curricular-unit-edited')
 	dialog.value = false
+}
+
+async function getCourses() {
+	console.log('Fetching courses')
+
+	try {
+    courses.value = await CourseService.getCourses()
+		console.log("Courses fetched: ", courses.value)
+	} catch (error) {
+		console.error('Error fetching courses: ', error)
+	}
 }
 </script>
