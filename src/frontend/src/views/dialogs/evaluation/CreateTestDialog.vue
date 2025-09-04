@@ -11,15 +11,15 @@
         ></v-btn>
       </template>
 
-      <v-card prepend-icon="mdi-account" title="Nova">
+      <v-card prepend-icon="mdi-account" title="Novo Teste">
         <v-card-text>
           <v-text-field label="Título*" required v-model="newTest.title"></v-text-field>
           <v-slider label="Peso*" :min="5" :max="100" :step="1" thumb-label required v-model="newTest.weight"></v-slider>
-            <v-date-picker
-              color="primary"
-              v-model="newTest.testDate"
-              :min="today"
-            ></v-date-picker>
+          <v-date-picker
+            color="primary"
+            v-model="newTest.testDate"
+            :min="today"
+          ></v-date-picker>
         </v-card-text>
 
         <v-divider></v-divider>

@@ -15,21 +15,21 @@
         <v-card-text>
           <v-text-field label="Título*" required v-model="newProject.title"></v-text-field>
           <v-slider label="Peso*" :min="5" :max="100" :step="1" thumb-label required v-model="newProject.weight"></v-slider>
-          <v-date-picker
-              color="primary"
-              v-model="newProject.deadline"
-              :min="today"
-          ></v-date-picker>
           <v-number-input
             :reverse="false"
             controlVariant="default"
-            label="Duração (anos)"
+            label="Tamanho Máximo dos Grupos*"
             :hideInput="false"
             :inset="false"
             :min="1"
             :max="7"
             v-model="newProject.maxGroupSize"
           ></v-number-input>
+          <v-date-picker
+              color="primary"
+              v-model="newProject.deadline"
+              :min="today"
+          ></v-date-picker>
         </v-card-text>
 
         <v-divider></v-divider>
