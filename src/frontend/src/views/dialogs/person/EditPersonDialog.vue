@@ -29,7 +29,7 @@
           />
           <v-select v-if="props.canAlterType"
             v-model="editablePerson.type"
-            :items="['Administrador', 'Professor Regente', 'Professor Assistente', 'Aluno']"
+            :items="['Administrador', 'Professor', 'Aluno']"
             label="Role"
             required
             :placeholder="props.personToEdit.type"
@@ -45,7 +45,7 @@
               text="Save"
               color="primary"
               variant="tonal"
-              @click=" () => { if (isValidPerson()) editPerson() }"
+              @click="editPerson"
             ></v-btn>
         </v-card-actions>
       </v-card>
@@ -68,41 +68,6 @@ const props = defineProps<{
 }>()
 
 const editablePerson = reactive({ ...props.personToEdit })
-
-function isValidPerson(): boolean {
-	if (!editablePerson.name) {
-		alert('Nome inválido.')
-		return false;
-	}
-
-	if (!editablePerson.istId) {
-		alert('Ist ID inválido.')
-		return false;
-	}
-
-	if (!/^[0-9]+$/.test(editablePerson.istId)){
-		alert('IST ID tem de ser apenas números.')
-		return false;
-	}
-
-	if (!editablePerson.email) {
-		alert('Email inválido.')
-		return false;
-	}
-
-	const emailRegex = /^[^\s@]+@(gmail\.com|tecnico\.ulisboa\.pt)$/
-	if (!emailRegex.test(editablePerson.email)) {
-		alert('Email inválido; os domínios aceites são @tecnico.ulisboa.pt e @gmail.com.')
-		return false;
-	}
-
-	if (!editablePerson.type) {
-		alert('Por favor, selecione uma categoria.')
-		return false;
-	}
-
-	return true;
-}
 
 const editPerson = async () => {
 	const person = { ...editablePerson }

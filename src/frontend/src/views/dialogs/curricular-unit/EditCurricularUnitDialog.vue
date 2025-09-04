@@ -34,12 +34,17 @@
             required
             :placeholder="props.curricularUnitToEdit.course"
           />
-					<v-select
-						:items="teachers"
-						label="Professor Regente"
-						required
-						v-model="props.curricularUnitToEdit.mainTeacher"
-					></v-select>
+					<v-select 
+            :items="availableTeachers" 
+            item-title="name"
+            label="Professor Regente"
+            v-model="editableCurricularUnit.mainTeacher"
+            return-object
+          >
+            <template v-slot:item="{ props: itemProps, item }">
+              <v-list-item v-bind="itemProps" :subtitle="item.raw.istId" />
+            </template>
+          </v-select>
         </v-card-text>
 
         <v-divider />
@@ -60,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import CurricularUnitDto from '../../../models/CurricularUnitDto'
 import CurricularUnitService from '../../../services/CurricularUnitService'
 import { onMounted } from 'vue'
@@ -75,20 +80,26 @@ const props = defineProps<{
 }>()
 
 const editableCurricularUnit = reactive({ ...props.curricularUnitToEdit })
-const teachers: PersonDto[] = reactive([]);
+const availableTeachers = ref<PersonDto[]>([])
 
 onMounted(() => {
-	fetchTeachers();
+	fetchAvailableTeachers();
 })
 
-async function fetchTeachers() {
-	console.log('Fetching teachers');
+watch(dialog, async (val) => {
+  if (val) {
+    await fetchAvailableTeachers()
+  }
+})
+
+async function fetchAvailableTeachers() {
+	console.log('Fetching teachers')
 
 	try {
-		teachers.push(...(await PersonService.getTeachers()))
-		console.log("Teachers fetched: ", teachers);
+    availableTeachers.value = await PersonService.getTeachers()
+		console.log("Teachers fetched: ", availableTeachers)
 	} catch (error) {
-		console.error('Error fetching teachers: ', error);
+		console.error('Error fetching teachers: ', error)
 	}
 }
 
