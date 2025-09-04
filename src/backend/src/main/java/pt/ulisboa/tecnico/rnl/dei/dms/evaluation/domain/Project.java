@@ -1,9 +1,14 @@
 package pt.ulisboa.tecnico.rnl.dei.dms.evaluation.domain;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import javax.swing.GroupLayout.Group;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 import pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.domain.CurricularUnit;
@@ -18,6 +23,9 @@ public class Project extends Evaluation {
 
     @Column(name = "max_group_size")
     private int maxGroupSize;
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Group> groups;
 
     protected Project() {}
 

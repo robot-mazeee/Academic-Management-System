@@ -11,6 +11,7 @@ import pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.repository.CurricularUnitRe
 import pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.domain.CurricularUnit;
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.DEIException;
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.ErrorMessage;
+import pt.ulisboa.tecnico.rnl.dei.dms.projectsubmission.service.GroupService;
 import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.domain.Project;
 import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.dto.ProjectDto;
 
@@ -19,6 +20,9 @@ import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.dto.ProjectDto;
 public class ProjectService {
     @Autowired
 	private ProjectRepository projectRepository;
+
+    @Autowired
+    private GroupService groupService;
 
     @Autowired
 	private CurricularUnitRepository curricularUnitRepository;
@@ -51,8 +55,10 @@ public class ProjectService {
         CurricularUnit curricularUnit = fetchCurricularUnitOrThrow(projectDto.curricularUnitId());
 
         Project project = new Project(projectDto, curricularUnit);
-
 		project.setId(null);
+
+        groupService.generateGroups(project);
+
 		return new ProjectDto(projectRepository.save(project));
 	}
 
