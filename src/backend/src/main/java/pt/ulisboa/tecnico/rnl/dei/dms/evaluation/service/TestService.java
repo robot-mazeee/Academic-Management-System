@@ -23,7 +23,7 @@ public class TestService {
     @Autowired
 	private CurricularUnitRepository curricularUnitRepository;
 
-    private CurricularUnit getCurricularUnit(long curricularUnitId) {
+    private CurricularUnit fetchCurricularUnitOrThrow(long curricularUnitId) {
         return curricularUnitRepository.findById(curricularUnitId)
                 .orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_CURRICULAR_UNIT, Long.toString(curricularUnitId)));
     }
@@ -48,7 +48,7 @@ public class TestService {
 
     @Transactional
 	public TestDto createTest(TestDto testDto) {
-        CurricularUnit curricularUnit = getCurricularUnit(testDto.curricularUnitId());
+        CurricularUnit curricularUnit = fetchCurricularUnitOrThrow(testDto.curricularUnitId());
 
         Test test = new Test(testDto, curricularUnit);
 
@@ -58,7 +58,7 @@ public class TestService {
 
     @Transactional
     public List<TestDto> getTestsByUc(long curricularUnitId) {
-        CurricularUnit curricularUnit = getCurricularUnit(curricularUnitId);
+        CurricularUnit curricularUnit = fetchCurricularUnitOrThrow(curricularUnitId);
 
         System.out.println(curricularUnit);
 
@@ -66,4 +66,24 @@ public class TestService {
                 .map(TestDto::new)
                 .toList();
     }
+
+    @Transactional
+	public TestDto updateTest(long testId, TestDto testDto) {
+		Test existingTest = fetchTestOrThrow(testId);
+        CurricularUnit curricularUnit = fetchCurricularUnitOrThrow(testDto.curricularUnitId());
+		
+		existingTest.setTitle(testDto.title());
+		existingTest.setWeight(testDto.weight());
+		existingTest.setCurricularUnit(curricularUnit);
+        existingTest.setTestDate(testDto.testDate());
+
+		return new TestDto(testRepository.save(existingTest));
+	}
+
+    @Transactional
+	public void deleteTest(long testId) {
+		fetchTestOrThrow(testId);
+
+		testRepository.deleteById(testId);
+	}
 }
