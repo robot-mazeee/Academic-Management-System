@@ -9,7 +9,8 @@ import NavBar from '@/components/NavBar.vue'
 
 const navbarItems = [
   { name: 'Pessoal', path: '/people', icon: 'mdi-account-group' },
-  { name: 'Unidades Curiculares', path: '/curricular-units', icon: 'mdi-shcool' },
+  { name: 'Cursos', path: '/courses', icon: 'mdi-book' },
+  { name: 'Unidades Curiculares', path: '/curricular-units', icon: 'mdi-school' },
   { name: 'Estatísticas', path: '/statistics', icon: 'mdi-chart-bar' }
 ]
 </script>
