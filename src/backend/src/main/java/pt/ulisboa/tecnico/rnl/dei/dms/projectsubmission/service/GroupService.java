@@ -26,14 +26,12 @@ public class GroupService {
     @Autowired
 	private ProjectRepository projectRepository;
 
-    private Project fetchProjectOrThrow(long projectId) {
+    public Project fetchProjectOrThrow(long projectId) {
 		return projectRepository.findById(projectId)
 				.orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_PROJECT, Long.toString(projectId)));
 	}
 
-    public List<GroupDto> generateGroups(long projectId) {
-        Project project = fetchProjectOrThrow(projectId);
-
+    public List<GroupDto> generateGroups(Project project) {
         int maxGroupSize = project.getMaxGroupSize();
         List<Person> students = project.getCurricularUnit().getStudents();
 

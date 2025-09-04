@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import pt.ulisboa.tecnico.rnl.dei.dms.projectsubmission.dto.GroupDto;
 import pt.ulisboa.tecnico.rnl.dei.dms.projectsubmission.service.GroupService;
+import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.domain.Project;
 
 @RestController
 public class GroupController {
@@ -16,7 +17,8 @@ public class GroupController {
 
     @PostMapping("groups/project/{projectId}/generate-groups")
     public List<GroupDto> generateGroups(@PathVariable long projectId) {
-        return groupService.generateGroups(projectId);
+        Project project = groupService.fetchProjectOrThrow(projectId);
+        return groupService.generateGroups(project);
     }
 
     @GetMapping("groups/project/{projectId}")
