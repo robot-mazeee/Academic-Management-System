@@ -1,6 +1,7 @@
 import type TestGradeDto from "@/models/TestGradeDto";
 import httpClient from "./ApiClient";
 import type TestDto from "@/models/TestDto";
+import type ProjectDto from "@/models/ProjectDto";
 
 export default {
   getTests(): Promise<TestDto[]> {
@@ -15,6 +16,14 @@ export default {
     return httpClient.get(`/tests/${testId}`);
   },
 
+  updateTest(testDto: TestDto): Promise<TestDto> {
+    return httpClient.put(`tests/${testDto.id}`)
+  },
+
+  deleteTest(testId: number) {
+    return httpClient.delete(`tests/${testId}`)
+  },
+
   getTestGrades(curricularUnitId: number, testId: number): Promise<TestGradeDto[]> {
     return httpClient.get(`curricular-units/${curricularUnitId}/tests/${testId}/grades`);
   },
@@ -25,5 +34,25 @@ export default {
 
   getStudentTestGrades(studentId: number): Promise<TestGradeDto[]> {
     return httpClient.get(`/students/${studentId}/test-grades`)
+  },
+
+  getProjects(): Promise<ProjectDto[]> {
+    return httpClient.get("/projects");
+  },
+
+  createProject(projectDto: ProjectDto): Promise<ProjectDto> {
+    return httpClient.post(`/curricular-units/${projectDto.curricularUnitId}/projects`, projectDto);
+  },
+
+  getProject(projectId: number): Promise<ProjectDto> {
+    return httpClient.get(`/projects/${projectId}`);
+  },
+
+  updateProject(projectDto: ProjectDto): Promise<ProjectDto> {
+    return httpClient.put(`projects/${projectDto.id}`)
+  },
+
+  deleteProject(projectId: number) {
+    return httpClient.delete(`projects/${projectId}`)
   }
 }
