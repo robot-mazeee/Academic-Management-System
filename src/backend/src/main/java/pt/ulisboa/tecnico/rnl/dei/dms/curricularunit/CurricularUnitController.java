@@ -53,6 +53,11 @@ public class CurricularUnitController {
 		return curricularUnitService.getCurricularUnitTeachingAssistants(id);
 	}
 
+	@GetMapping("/curricular-units/{curricularUnitId}/main-teacher")
+	public PersonDto getCurricularUnitMainTeacher(@PathVariable long curricularUnitId) {
+		return curricularUnitService.getCurricularUnitMainTeacher(curricularUnitId);
+	}
+
 	@GetMapping("/curricular-units/{id}")
 	public CurricularUnitDto getCurricularUnit(@PathVariable long id) {
 		return curricularUnitService.getCurricularUnit(id);

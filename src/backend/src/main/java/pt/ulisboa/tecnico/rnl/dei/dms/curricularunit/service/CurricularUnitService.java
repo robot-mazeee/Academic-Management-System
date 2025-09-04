@@ -92,6 +92,12 @@ public class CurricularUnitService {
 	}
 
 	@Transactional
+	public PersonDto getCurricularUnitMainTeacher(long id) {
+		CurricularUnit curricularUnit = fetchCurricularUnitOrThrow(id);
+		return new PersonDto(curricularUnit.getMainTeacher());
+	}
+
+	@Transactional
 	public CurricularUnitDto assignCurricularUnitTeachingAssistants(long id, List<PersonDto> teacherDtos) {
 		CurricularUnit curricularUnit = fetchCurricularUnitOrThrow(id);
 

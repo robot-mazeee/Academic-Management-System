@@ -20,8 +20,13 @@
     class="text-left"
     no-data-text="Sem professores a apresentar."
   >
+    <template v-slot:[`item.type`]="{ item }">
+      <v-chip :color="getColorByType(item?.type)" text-color="white">
+				{{ translateType(item?.type) }}
+			</v-chip>
+    </template>
     <template v-slot:[`item.actions`]="{ item }" v-if="roleStore.isMainTeacher">
-      <div class="d-flex align-center justify-center ga-2">
+      <div class="d-flex align-center justify-center ga-2" v-if="item?.type !== 'MAIN_TEACHER'">
         <v-icon @click="removeTeachingAssistant(item)" color="red" class="cursor-pointer">
           mdi-delete
         </v-icon>
@@ -45,11 +50,14 @@ import { reactive, ref } from 'vue'
 import { onMounted } from 'vue'
 import AssignCurricularUnitTeachersDialog from '../../dialogs/curricular-unit/AssignCurricularUnitTeachersDialog.vue'
 import { useRoleStore } from '../../../stores/role'
+import { getColorByType, translateType } from '../../../mappings/peopleMappings'
 
 let search = ref('')
 let loading = ref(true)
 
 const teachers: PersonDto[] = reactive([])
+const teachingAssistants: PersonDto[] = reactive([])
+const mainTeacher = ref<PersonDto | null>(null)
 const route = useRoute()
 const curricularUnitId = parseInt(route.params.id as string, 10)
 
@@ -79,6 +87,13 @@ const headers = [
     filterable: true
   },
   {
+    title: 'Tipo',
+    key: 'type',
+    value: 'type',
+    sortable: true,
+    filterable: true
+  },
+  {
     title: 'Ações',
     key: 'actions',
     value: 'actions',
@@ -87,14 +102,26 @@ const headers = [
   }
 ]
 
-onMounted(() => {
-	getCurricularUnitTeachers()
+onMounted(async () => {
+  await getMainTeacher()
+	await getCurricularUnitTeachers()
 })
 
+async function getMainTeacher() {
+  try {
+    mainTeacher.value = await CurricularUnitService.getCurricularUnitMainTeacher(curricularUnitId)
+    console.log('main teacher: ', mainTeacher.value)
+  } catch (error) {
+    console.error('Error fetching main teacher: ', error)
+  }
+}
+
 async function getCurricularUnitTeachers() { 
-	teachers.splice(0, teachers.length)
+	teachingAssistants.splice(0, teachers.length)
+  teachers.splice(0, teachers.length)
 	try {
-		teachers.push(...(await CurricularUnitService.getCurricularUnitTeachers(curricularUnitId)))
+		teachingAssistants.push(...(await CurricularUnitService.getCurricularUnitTeachers(curricularUnitId)))
+    teachers.push(mainTeacher.value, ...teachingAssistants)
 	} catch (error) {
 		console.error("Error fetching curricular unit teachers: ", error)
 	}
