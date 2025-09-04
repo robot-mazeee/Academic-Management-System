@@ -43,6 +43,11 @@ public class CurricularUnitController {
 		return curricularUnitService.getCurricularUnitStudents(id);
 	}
 
+	@GetMapping("/curricular-units/{curricularUnitId}/people")
+	public List<PersonDto> getCurricularUnitPeople(@PathVariable long curricularUnitId) {
+		return curricularUnitService.getCurricularUnitPeople(curricularUnitId);
+	}
+
 	@PatchMapping("/curricular-units/{id}/assistant-teachers")
 	public CurricularUnitDto assignCurricularUnitTeachingAssistants(@PathVariable long id, @RequestBody List<PersonDto> teachingAssistants) {
 		return curricularUnitService.assignCurricularUnitTeachingAssistants(id, teachingAssistants);

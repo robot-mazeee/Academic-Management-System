@@ -1,5 +1,5 @@
 <template>
-  <h2 class="text-left ml-1">Lista de Professores Assistentes da UC</h2>
+  <h2 class="text-left ml-1">Lista de Professores da UC</h2>
 
   <v-text-field
     v-model="search"

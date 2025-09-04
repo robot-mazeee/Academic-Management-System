@@ -22,6 +22,10 @@ export default {
     return httpClient.get(`/curricular-units/${curricularUnitId}/main-teacher`)
   },
 
+  getCurricularUnitPeople(curricularUnitId: number): Promise<PersonDto[]> {
+    return httpClient.get(`/curricular-units/${curricularUnitId}/people`)
+  },
+
   createCurricularUnit(curricularUnit: CurricularUnitDto): Promise<CurricularUnitDto> {
     return httpClient.post("/curricular-units", curricularUnit)
   },

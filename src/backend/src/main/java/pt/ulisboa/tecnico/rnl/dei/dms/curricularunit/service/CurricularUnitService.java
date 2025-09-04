@@ -1,5 +1,6 @@
 package pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -95,6 +96,28 @@ public class CurricularUnitService {
 	public PersonDto getCurricularUnitMainTeacher(long id) {
 		CurricularUnit curricularUnit = fetchCurricularUnitOrThrow(id);
 		return new PersonDto(curricularUnit.getMainTeacher());
+	}
+
+	@Transactional
+	public List<PersonDto> getCurricularUnitPeople(long id) {
+		CurricularUnit curricularUnit = fetchCurricularUnitOrThrow(id);
+
+		PersonDto mainTeacher = new PersonDto(curricularUnit.getMainTeacher());
+
+		List<PersonDto> teachingAssistants = curricularUnit.getTeachingAssistants().stream()
+				.map(PersonDto::new)
+				.collect(Collectors.toList());
+
+		List<PersonDto> students = curricularUnit.getStudents().stream()
+				.map(PersonDto::new)
+				.collect(Collectors.toList());
+
+		List<PersonDto> allPeople = new ArrayList<>();
+		allPeople.add(mainTeacher);
+		allPeople.addAll(teachingAssistants);
+		allPeople.addAll(students);
+
+		return allPeople;
 	}
 
 	@Transactional
