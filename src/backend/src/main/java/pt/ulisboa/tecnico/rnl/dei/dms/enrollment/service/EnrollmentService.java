@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.domain.CurricularUnit;
 import pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.repository.CurricularUnitRepository;
+import pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.service.CurricularUnitService;
 import pt.ulisboa.tecnico.rnl.dei.dms.enrollment.dto.EnrollmentDto;
 import pt.ulisboa.tecnico.rnl.dei.dms.enrollment.repository.EnrollmentRepository;
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.DEIException;
@@ -23,6 +24,9 @@ public class EnrollmentService {
     @Autowired
     private CurricularUnitRepository curricularUnitRepository;
 
+    @Autowired
+    private CurricularUnitService curricularUnitService;
+
     private CurricularUnit fetchCurricularUnitOrThrow(long curricularUnitId) {
         return curricularUnitRepository.findById(curricularUnitId)
                 .orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_CURRICULAR_UNIT, Long.toString(curricularUnitId)));
@@ -36,6 +40,7 @@ public class EnrollmentService {
     @Transactional
 	public EnrollmentDto createEnrollment(EnrollmentDto enrollmentDto) {
         CurricularUnit curricularUnit = fetchCurricularUnitOrThrow(enrollmentDto.curricularUnitId());
+        curricularUnitService.addCurricularUnitStudent(curricularUnit.getId(), enrollmentDto.student().getId());
 
 		Enrollment enrollment = new Enrollment(enrollmentDto, curricularUnit);
 		enrollment.setId(null);
@@ -68,7 +73,9 @@ public class EnrollmentService {
 
     @Transactional
 	public void deleteEnrollment(long enrollmentId) {
-		fetchEnrollmentOrThrow(enrollmentId);
+		Enrollment enrollment = fetchEnrollmentOrThrow(enrollmentId);
+        CurricularUnit curricularUnit = fetchCurricularUnitOrThrow(enrollment.getCurricularUnit().getId());
+        curricularUnitService.removeCurricularUnitStudent(curricularUnit.getId(), enrollment.getStudent().getId());
 
 		enrollmentRepository.deleteById(enrollmentId);
 	}

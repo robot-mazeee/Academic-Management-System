@@ -144,6 +144,35 @@ public class CurricularUnitService {
 	}
 
 	@Transactional
+	public List<PersonDto> addCurricularUnitStudent(long curricularUnitId, long studentId) {
+		CurricularUnit curricularUnit = fetchCurricularUnitOrThrow(curricularUnitId);
+		Person student = fetchPersonOrThrow(studentId);
+
+		if (!curricularUnit.getStudents().contains(student)) {
+			curricularUnit.getStudents().add(student);
+		}
+
+		CurricularUnit saved = curricularUnitRepository.save(curricularUnit);
+
+		return saved.getStudents().stream()
+				.map(PersonDto::new)
+				.collect(Collectors.toList());
+	}
+
+	@Transactional
+	public void removeCurricularUnitStudent(long curricularUnitId, long studentId) {
+		CurricularUnit curricularUnit = fetchCurricularUnitOrThrow(curricularUnitId);
+		Person student = fetchPersonOrThrow(studentId);
+
+		boolean removed = curricularUnit.getStudents().remove(student);
+		if (!removed) {
+			throw new DEIException(ErrorMessage.NO_SUCH_STUDENT_FOR_UC);
+		}
+
+		curricularUnitRepository.save(curricularUnit);
+	}
+
+	@Transactional
 	public void deleteCurricularUnit(long id) {
 		CurricularUnit curricularUnit = fetchCurricularUnitOrThrow(id);
 		personService.updateType(curricularUnit.getMainTeacher().getId(), PersonType.TEACHER);

@@ -115,6 +115,7 @@ async function getTest() {
   try {
     console.log('Fetching test: ', testId)
     test.value = await EvaluationService.getTest(testId)
+    console.log('Fetched test: ', test.value)
   } catch (error) {
     console.error('Error fetching test: ', error)
   }
@@ -124,6 +125,7 @@ async function getCurricularUnitStudents() {
   try {
     const response = await CurricularUnitService.getCurricularUnitStudents(curricularUnitId)
     students.push(...response)
+    console.log('Fetched curricular unit students: ', students)
   } catch (error) {
     console.error('Error fetching curricular unit students: ', error)
   }
@@ -133,6 +135,7 @@ async function getTestGrades() {
   grades.splice(0, grades.length)
   try {
     grades.push(...(await EvaluationService.getTestGrades(curricularUnitId, testId)))
+    console.log('Fetched test grades: ', grades)
   } catch (error) {
     console.error('Error getting grades: ', error)
   }

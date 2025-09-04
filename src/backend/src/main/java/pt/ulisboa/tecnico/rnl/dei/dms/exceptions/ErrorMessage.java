@@ -9,7 +9,8 @@ public enum ErrorMessage {
 	NO_SUCH_TEST("Não existe nenhum teste com o ID %s", 1005),
 	NO_SUCH_ENROLLMENT("Não existe nenhuma incrição com o ID %s", 1006),
 	NO_SUCH_TEACHING_ASSISTANT_FOR_UC("Não existe na UC nenhum professor assistente com ID %s", 1007),
-	NO_SUCH_COURSE("Não existe nenhum curso com ID %s", 1008);
+	NO_SUCH_STUDENT_FOR_UC("Não existe na UC nenhum aluno com ID %s", 1008),
+	NO_SUCH_COURSE("Não existe nenhum curso com ID %s", 1009);
 
 	private final String label;
 	private final int code;
