@@ -21,7 +21,7 @@
     no-data-text="Sem testes a apresentar."
   >
     <template v-slot:[`item.testSheet`]="{ item }">
-      <FileUpload :test="item"/>
+      <FileUpload :test="item" v-if="roleStore.isMainTeacher || roleStore.isTeachingAssistant" />
     </template>
     <template v-slot:[`item.grades`]="{ item }" v-if="roleStore.isTeachingAssistant || roleStore.isMainTeacher">
       <v-btn @click="openTestGradesManagementView(curricularUnitId, item.id)" class="mb-3" color="secondary">
