@@ -33,23 +33,24 @@ public class GroupService {
 
     public List<GroupDto> generateGroups(Project project) {
         int maxGroupSize = project.getMaxGroupSize();
-        List<Person> students = project.getCurricularUnit().getStudents();
-
-        Collections.shuffle(students);
+        List<Person> students = new ArrayList<>(project.getCurricularUnit().getStudents());
+        Collections.shuffle(students);  // randomize order
 
         List<Group> groups = new ArrayList<>();
-        for (int i = 0; i < students.size(); i += maxGroupSize) {
-            int end = Math.min(i + maxGroupSize, students.size());
-            List<Person> groupMembers = students.subList(i, end);
 
-            Group group = new Group();
-            group.setProject(project);
-            group.setMembers(new ArrayList<>(groupMembers));
+        while (!students.isEmpty()) {
+            int end = Math.min(maxGroupSize, students.size());
+            List<Person> groupMembers = new ArrayList<>(students.subList(0, end));
+
+            Group group = new Group(groupMembers, project);
             groups.add(group);
+
+            students.subList(0, end).clear();
         }
 
         return groupRepository.saveAll(groups).stream()
-                    .map(GroupDto::new).toList();
+                     .map(GroupDto::new)
+                     .toList();
     }
 
     @Transactional

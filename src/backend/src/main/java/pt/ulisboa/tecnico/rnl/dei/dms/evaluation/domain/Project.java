@@ -3,7 +3,7 @@ package pt.ulisboa.tecnico.rnl.dei.dms.evaluation.domain;
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.swing.GroupLayout.Group;
+import pt.ulisboa.tecnico.rnl.dei.dms.projectsubmission.domain.Group;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

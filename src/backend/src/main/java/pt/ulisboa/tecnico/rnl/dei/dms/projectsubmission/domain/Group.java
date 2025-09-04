@@ -3,6 +3,7 @@ package pt.ulisboa.tecnico.rnl.dei.dms.projectsubmission.domain;
 import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.ManyToOne;
@@ -17,6 +18,7 @@ import pt.ulisboa.tecnico.rnl.dei.dms.projectsubmission.dto.GroupDto;
 @Getter
 @Setter
 @Entity
+@Table(name = "project_group")
 public class Group {
     @Id
     @GeneratedValue
@@ -35,11 +37,10 @@ public class Group {
         this.project = project;
     }
 
-    public Group(GroupDto groupDto) {
+    public Group(GroupDto groupDto, Project project) {
         this(
             groupDto.members(),
-            groupDto.project()
+            project   
         );
-        System.out.println("Group Dto: " + groupDto);
     }
 }

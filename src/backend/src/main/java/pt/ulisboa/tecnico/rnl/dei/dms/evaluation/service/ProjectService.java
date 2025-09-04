@@ -56,10 +56,11 @@ public class ProjectService {
 
         Project project = new Project(projectDto, curricularUnit);
 		project.setId(null);
-
+        
+        projectRepository.save(project);
         groupService.generateGroups(project);
 
-		return new ProjectDto(projectRepository.save(project));
+		return new ProjectDto(project);
 	}
 
     @Transactional
