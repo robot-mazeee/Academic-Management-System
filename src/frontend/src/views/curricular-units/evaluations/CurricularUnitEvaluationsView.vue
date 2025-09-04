@@ -29,5 +29,5 @@ import { ref } from 'vue'
 import CurricularUnitTestsList from './CurricularUnitTestsList.vue'
 import CurricularUnitProjectsList from './CurricularUnitProjectsList.vue'
 
-const activeTab = ref('workflows')
+const activeTab = ref('tests')
 </script>

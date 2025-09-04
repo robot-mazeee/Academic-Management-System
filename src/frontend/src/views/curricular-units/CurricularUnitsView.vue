@@ -43,13 +43,13 @@
 
       <div v-if="roleStore.isMainTeacher">
         <v-btn @click="openPeopleManagementView(item.id)" class="mb-3" color="primary">
-          Ver Pessoas
+          Pessoas
         </v-btn>
       </div>
 
       <div v-if="roleStore.isMainTeacher || roleStore.isTeachingAssistant">
         <v-btn @click="openEvaluationManagementView(item.id)" class="mb-3" color="contrast">
-          Ver Avaliações
+          Avaliações
         </v-btn>
       </div>
     </template>

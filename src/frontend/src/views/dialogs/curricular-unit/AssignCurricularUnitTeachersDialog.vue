@@ -5,7 +5,7 @@
         <v-btn
           class="text-none font-weight-regular"
           prepend-icon="mdi-plus"
-          text="Selecionar Professores Assistentes"
+          text="Adicionar Professores Assistentes"
           v-bind="activatorProps"
           color="contrast"
         ></v-btn>
