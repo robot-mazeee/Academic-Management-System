@@ -25,7 +25,7 @@
     </template>
     <template v-slot:[`item.submissions`]="{ item }" v-if="roleStore.isTeachingAssistant || roleStore.isMainTeacher">
       <v-btn @click="openProjectSubmissionsManagementView(curricularUnitId, item.id)" class="mb-3" color="secondary">
-        Ver Notas
+        Notas
       </v-btn>
     </template>
   </v-data-table>
