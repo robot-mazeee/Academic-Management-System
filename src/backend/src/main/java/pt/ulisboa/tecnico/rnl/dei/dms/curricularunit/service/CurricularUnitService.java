@@ -124,9 +124,16 @@ public class CurricularUnitService {
 
 	@Transactional
 	public CurricularUnitDto updateCurricularUnit(long id, CurricularUnitDto curricularUnitDto) {
-		fetchCurricularUnitOrThrow(id);
-		CurricularUnit curricularUnit = new CurricularUnit(curricularUnitDto);
-		curricularUnit.setId(id);
+		CurricularUnit curricularUnit = fetchCurricularUnitOrThrow(id);
+		personService.updateType(curricularUnit.getMainTeacher().getId(), PersonType.TEACHER);
+
+		curricularUnit.setCode(curricularUnitDto.code());
+		curricularUnit.setName(curricularUnitDto.name());
+		curricularUnit.setSemester(curricularUnitDto.semester());
+		curricularUnit.setCourse(curricularUnitDto.course());
+		curricularUnit.setMainTeacher(curricularUnitDto.mainTeacher());
+		personService.updateType(curricularUnit.getMainTeacher().getId(), PersonType.MAIN_TEACHER);
+
 		return new CurricularUnitDto(curricularUnitRepository.save(curricularUnit));
 	}
 
