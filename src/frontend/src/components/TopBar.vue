@@ -6,11 +6,23 @@
 <script setup lang="ts">
 import UtilBar from '@/components/UtilBar.vue'
 import NavBar from '@/components/NavBar.vue'
+import { computed } from 'vue'
+import { useRoleStore } from '../stores/role'
 
-const navbarItems = [
-  { name: 'Pessoal', path: '/people', icon: 'mdi-account-group' },
-  { name: 'Cursos', path: '/courses', icon: 'mdi-book' },
-  { name: 'Unidades Curiculares', path: '/curricular-units', icon: 'mdi-school' },
-  { name: 'Estatísticas', path: '/statistics', icon: 'mdi-chart-bar' }
-]
+const roleStore = useRoleStore()
+
+const navbarItems = computed(() => {
+  const items = [
+    { name: 'Pessoal', path: '/people', icon: 'mdi-account-group' },
+    { name: 'Cursos', path: '/courses', icon: 'mdi-book' },
+    { name: 'Unidades Curiculares', path: '/curricular-units', icon: 'mdi-school' },
+    { name: 'Estatísticas', path: '/statistics', icon: 'mdi-chart-bar' }
+  ]
+
+  if (roleStore.isStudent) {
+    items.push({ name: 'Avaliações', path: '/evaluations', icon: 'mdi-file-document' })
+  }
+
+  return items
+})
 </script>

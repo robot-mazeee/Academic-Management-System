@@ -42,6 +42,7 @@
 import { reactive, ref, onMounted } from 'vue'
 import EvaluationService from '../../services/EvaluationService'
 import TestGradeDto from '../../models/TestGradeDto'
+import PersonDto from '../../models/PersonDto'
 
 let search = ref('')
 let loading = ref(true)
@@ -49,7 +50,7 @@ let loading = ref(true)
 const grades: TestGradeDto[] = reactive([])
 
 const props = defineProps<{
-  studentId: number
+  student: PersonDto
 }>()
 
 const headers = [
@@ -61,14 +62,14 @@ const headers = [
   { title: 'Correção', key: 'correction', sortable: false, filterable: false }
 ]
 
-onMounted(() => {
-	getStudentTestGrades()
+onMounted(async () => {
+	await getStudentTestGrades()
 })
 
 async function getStudentTestGrades() { 
 	grades.splice(0, grades.length)
 	try {
-		grades.push(...(await EvaluationService.getStudentTestGrades(props.studentId)))
+		grades.push(...(await EvaluationService.getStudentTestGrades(props.student.id)))
     console.log('grades: ', grades)
 	} catch (error) {
 		console.error("Error getting grades: ", error)
