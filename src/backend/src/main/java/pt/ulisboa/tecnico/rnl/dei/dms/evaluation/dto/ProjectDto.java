@@ -4,14 +4,14 @@ import java.time.LocalDate;
 
 import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.domain.Project;
 
-public record ProjectDto(long id, String title, Double weight, long curricularUnitId, LocalDate submissionDeadline, int maxGroupSize) {
+public record ProjectDto(long id, String title, Double weight, long curricularUnitId, LocalDate deadline, int maxGroupSize) {
     public ProjectDto(Project project) {
         this(
             project.getId(),
             project.getTitle(),
             project.getWeight(),
             project.getCurricularUnit().getId(),
-            project.getSubmissionDeadline(),
+            project.getDeadline(),
             project.getMaxGroupSize()
         );
     } 

@@ -14,7 +14,7 @@ import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.dto.ProjectDto;
 @Entity
 public class Project extends Evaluation {
     @Column(name = "submission_deadline")
-    private LocalDate submissionDeadline;
+    private LocalDate deadline;
 
     @Column(name = "max_group_size")
     private int maxGroupSize;
@@ -25,11 +25,11 @@ public class Project extends Evaluation {
         String title, 
         Double weight, 
         CurricularUnit curricularUnit, 
-        LocalDate submissionDeadline, 
+        LocalDate deadline, 
         int maxGroupSize
     ) {
             super(title, weight, curricularUnit);
-            this.submissionDeadline = submissionDeadline;
+            this.deadline = deadline;
             this.maxGroupSize = maxGroupSize;
     }
 
@@ -38,7 +38,7 @@ public class Project extends Evaluation {
 			projectDto.title(), 
 			projectDto.weight(),
 			curricularUnit,
-            projectDto.submissionDeadline(),
+            projectDto.deadline(),
             projectDto.maxGroupSize()
 		);
 		System.out.println("Project Dto: " + projectDto);

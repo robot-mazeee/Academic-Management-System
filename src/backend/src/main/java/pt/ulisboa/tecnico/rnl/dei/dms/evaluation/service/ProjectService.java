@@ -73,7 +73,7 @@ public class ProjectService {
 		existingProject.setTitle(projectDto.title());
 		existingProject.setWeight(projectDto.weight());
 		existingProject.setCurricularUnit(curricularUnit);
-        existingProject.setSubmissionDeadline(projectDto.submissionDeadline());
+        existingProject.setDeadline(projectDto.deadline());
         existingProject.setMaxGroupSize(projectDto.maxGroupSize());
 
 		return new ProjectDto(projectRepository.save(existingProject));

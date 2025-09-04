@@ -78,6 +78,7 @@ const newProject = ref<ProjectDto>({
 
 const createProject = async () => {
   try {
+    console.log('Creating project: ', newProject.value)
     await EvaluationService.createProject(newProject.value)
     emit('evaluation-created')
   } catch (error) {
