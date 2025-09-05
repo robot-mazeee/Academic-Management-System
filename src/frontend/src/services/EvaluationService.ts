@@ -19,7 +19,7 @@ export default {
   },
 
   updateTest(testDto: TestDto): Promise<TestDto> {
-    return httpClient.put(`/tests/${testDto.id}`)
+    return httpClient.put(`/tests/${testDto.id}`, testDto)
   },
 
   deleteTest(testId: number) {

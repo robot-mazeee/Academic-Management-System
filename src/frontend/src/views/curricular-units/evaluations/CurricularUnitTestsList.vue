@@ -54,6 +54,7 @@ import CreateTestDialog from '../../dialogs/evaluation/CreateTestDialog.vue'
 import { useRoleStore } from '../../../stores/role'
 import FileUpload from '../../../components/file/FileUpload.vue'
 import EvaluationService from '../../../services/EvaluationService'
+import EditTestDialog from '../../dialogs/evaluation/EditTestDialog.vue'
 
 let search = ref('')
 let loading = ref(true)
