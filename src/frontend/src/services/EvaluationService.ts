@@ -51,7 +51,7 @@ export default {
   },
 
   updateProject(projectDto: ProjectDto): Promise<ProjectDto> {
-    return httpClient.put(`/projects/${projectDto.id}`)
+    return httpClient.put(`/projects/${projectDto.id}`, projectDto)
   },
 
   deleteProject(projectId: number) {

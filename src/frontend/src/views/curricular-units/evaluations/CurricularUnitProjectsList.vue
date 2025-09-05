@@ -55,6 +55,7 @@ import { useRoleStore } from '../../../stores/role'
 import FileUpload from '../../../components/file/FileUpload.vue'
 import CreateProjectDialog from '../../dialogs/evaluation/CreateProjectDialog.vue'
 import EvaluationService from '../../../services/EvaluationService'
+import EditProjectDialog from '../../dialogs/evaluation/EditProjectDialog.vue'
 
 let search = ref('')
 let loading = ref(true)
