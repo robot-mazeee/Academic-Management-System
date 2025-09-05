@@ -28,6 +28,14 @@
         Notas
       </v-btn>
     </template>
+    <template v-slot:[`item.actions`]="{ item }" v-if="roleStore.isTeachingAssistant || roleStore.isMainTeacher">
+			<div class="d-flex align-center justify-center ga-2">
+				<EditTestDialog :test-to-edit="item" @test-edited="getCurricularUnitTests" />
+				<v-icon @click="deleteTest(item.id)" color="red" class="cursor-pointer">
+					mdi-delete
+				</v-icon>
+			</div>
+    </template>
   </v-data-table>
 
   <CreateTestDialog 
@@ -45,6 +53,7 @@ import CurricularUnitService from '../../../services/CurricularUnitService'
 import CreateTestDialog from '../../dialogs/evaluation/CreateTestDialog.vue'
 import { useRoleStore } from '../../../stores/role'
 import FileUpload from '../../../components/file/FileUpload.vue'
+import EvaluationService from '../../../services/EvaluationService'
 
 let search = ref('')
 let loading = ref(true)
@@ -92,6 +101,13 @@ const headers = [
     value: 'grades',
     sortable: false,
     filterable: false
+  },
+  {
+    title: 'Ações',
+    key: 'actions',
+    value: 'actions',
+    sortable: false,
+    filterable: false 
   }
 ]
 
@@ -110,6 +126,17 @@ async function getCurricularUnitTests() {
 
 	loading.value = false
   console.log(tests)
+}
+
+async function deleteTest(testId: number) {
+  console.log('Deleting test: ', testId)
+  try {
+    const response = await EvaluationService.deleteTest(testId)
+    await getCurricularUnitTests()
+    console.log('Test deleted: ', response)
+  } catch (error) {
+    console.log('Error deleting test: ', error)
+  }
 }
 
 function openTestGradesManagementView(curricularUnitId: number, testId: number) {

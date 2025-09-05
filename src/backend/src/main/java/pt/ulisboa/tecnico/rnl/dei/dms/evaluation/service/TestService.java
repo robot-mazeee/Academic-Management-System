@@ -13,6 +13,7 @@ import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.domain.Test;
 import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.dto.TestDto;
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.DEIException;
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.ErrorMessage;
+import pt.ulisboa.tecnico.rnl.dei.dms.testgrade.repository.TestGradeRepository;
 
 @Transactional
 @Service
@@ -22,6 +23,9 @@ public class TestService {
 
     @Autowired
 	private CurricularUnitRepository curricularUnitRepository;
+
+    @Autowired
+	private TestGradeRepository testGradeRepository;
 
     private CurricularUnit fetchCurricularUnitOrThrow(long curricularUnitId) {
         return curricularUnitRepository.findById(curricularUnitId)
@@ -83,6 +87,7 @@ public class TestService {
     @Transactional
 	public void deleteTest(long testId) {
 		fetchTestOrThrow(testId);
+        testGradeRepository.deleteByTest_Id(testId);
 
 		testRepository.deleteById(testId);
 	}
