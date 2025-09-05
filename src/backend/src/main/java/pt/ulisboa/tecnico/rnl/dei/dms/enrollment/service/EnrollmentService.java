@@ -56,6 +56,10 @@ public class EnrollmentService {
 				.toList();
 	}
 
+    public List<Enrollment> findByCurricularUnitId(Long curricularUnitId) {
+        return enrollmentRepository.findByCurricularUnit_Id(curricularUnitId);
+    }
+
     @Transactional
     public EnrollmentDto assignEnrollmentFinalGrade(long enrollmentId, double finalGrade) {
         Enrollment enrollment = fetchEnrollmentOrThrow(enrollmentId);

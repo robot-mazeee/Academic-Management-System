@@ -11,7 +11,8 @@ public enum ErrorMessage {
 	NO_SUCH_TEACHING_ASSISTANT_FOR_UC("Não existe na UC nenhum professor assistente com ID %s", 1007),
 	NO_SUCH_STUDENT_FOR_UC("Não existe na UC nenhum aluno com ID %s", 1008),
 	NO_SUCH_COURSE("Não existe nenhum curso com ID %s", 1009),
-	NO_SUCH_PROJECT("Não existe nenhum projeto com ID %s", 1010);
+	NO_SUCH_PROJECT("Não existe nenhum projeto com ID %s", 1010),
+	CANNOT_DELETE_UC("Cannot delete curricular unit %s (ID) with active enrollments", 1011);
 
 	private final String label;
 	private final int code;

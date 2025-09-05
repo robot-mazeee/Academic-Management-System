@@ -10,6 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.repository.CurricularUnitRepository;
+import pt.ulisboa.tecnico.rnl.dei.dms.enrollment.repository.EnrollmentRepository;
+import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.domain.Evaluation;
+import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.repository.EvaluationRepository;
+import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.service.EvaluationService;
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.DEIException;
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.ErrorMessage;
 import pt.ulisboa.tecnico.rnl.dei.dms.person.domain.Person;
@@ -29,6 +33,15 @@ public class CurricularUnitService {
 
 	@Autowired
 	private PersonRepository personRepository;
+
+	@Autowired
+	private EnrollmentRepository enrollmentRepository;
+
+	@Autowired
+	private EvaluationRepository evaluationRepository;
+
+	@Autowired
+	private EvaluationService evaluationService;
 
 	@Autowired
 	private PersonService personService;
@@ -197,6 +210,15 @@ public class CurricularUnitService {
 
 	@Transactional
 	public void deleteCurricularUnit(long id) {
+		List<Evaluation> evaluations = evaluationRepository.findByCurricularUnit_Id(id);
+        for (Evaluation e : evaluations) {
+            evaluationService.deleteEvaluation(e.getId());
+        }
+
+		if (!enrollmentRepository.findByCurricularUnit_Id(id).isEmpty()) {
+			throw new DEIException(ErrorMessage.CANNOT_DELETE_UC, Long.toString(id));
+		}
+		
 		CurricularUnit curricularUnit = fetchCurricularUnitOrThrow(id);
 		personService.updateType(curricularUnit.getMainTeacher().getId(), PersonType.TEACHER);
 

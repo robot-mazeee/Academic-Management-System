@@ -15,4 +15,5 @@ public interface TestGradeRepository extends JpaRepository<TestGrade, Long> {
     List<TestGrade> findAllByStudent(Person student);
     List<TestGrade> findAllByTest(Test test);
     TestGrade findByStudentAndTest(Person student, Test test);
+    void deleteByTest_Id(long testId);
 }
