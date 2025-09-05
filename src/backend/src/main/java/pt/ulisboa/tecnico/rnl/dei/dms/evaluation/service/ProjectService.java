@@ -12,6 +12,7 @@ import pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.domain.CurricularUnit;
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.DEIException;
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.ErrorMessage;
 import pt.ulisboa.tecnico.rnl.dei.dms.projectsubmission.dto.GroupDto;
+import pt.ulisboa.tecnico.rnl.dei.dms.projectsubmission.repository.ProjectSubmissionRepository;
 import pt.ulisboa.tecnico.rnl.dei.dms.projectsubmission.service.GroupService;
 import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.domain.Project;
 import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.dto.ProjectDto;
@@ -27,6 +28,9 @@ public class ProjectService {
 
     @Autowired
 	private CurricularUnitRepository curricularUnitRepository;
+
+    @Autowired
+    private ProjectSubmissionRepository projectSubmissionRepository;
 
     private CurricularUnit fetchCurricularUnitOrThrow(long curricularUnitId) {
         return curricularUnitRepository.findById(curricularUnitId)
@@ -95,6 +99,7 @@ public class ProjectService {
     @Transactional
 	public void deleteProject(long projectId) {
 		fetchProjectOrThrow(projectId);
+        projectSubmissionRepository.deleteByProject_Id(projectId);
 
 		projectRepository.deleteById(projectId);
 	}

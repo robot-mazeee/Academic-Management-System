@@ -28,7 +28,7 @@
         Notas
       </v-btn>
     </template>
-    <template v-slot:[`item.actions`]="{ item }" v-if="roleStore.isTeachingAssistant || roleStore.isMainTeacher">
+    <template v-slot:[`item.actions`]="{ item }" v-if="roleStore.isMainTeacher">
 			<div class="d-flex align-center justify-center ga-2">
 				<EditTestDialog :test-to-edit="item" @test-edited="getCurricularUnitTests" />
 				<v-icon @click="deleteTest(item.id)" color="red" class="cursor-pointer">

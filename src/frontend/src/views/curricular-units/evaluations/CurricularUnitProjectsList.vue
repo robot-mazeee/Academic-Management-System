@@ -28,6 +28,15 @@
         Submissões
       </v-btn>
     </template>
+
+    <template v-slot:[`item.actions`]="{ item }" v-if="roleStore.isMainTeacher">
+			<div class="d-flex align-center justify-center ga-2">
+				<EditProjectDialog :project-to-edit="item" @project-edited="getCurricularUnitProjects" />
+				<v-icon @click="deleteProject(item.id)" color="red" class="cursor-pointer">
+					mdi-delete
+				</v-icon>
+			</div>
+    </template>
   </v-data-table>
 
   <CreateProjectDialog 
@@ -45,6 +54,7 @@ import CurricularUnitService from '../../../services/CurricularUnitService'
 import { useRoleStore } from '../../../stores/role'
 import FileUpload from '../../../components/file/FileUpload.vue'
 import CreateProjectDialog from '../../dialogs/evaluation/CreateProjectDialog.vue'
+import EvaluationService from '../../../services/EvaluationService'
 
 let search = ref('')
 let loading = ref(true)
@@ -92,6 +102,13 @@ const headers = [
     value: 'submissions',
     sortable: false,
     filterable: false
+  },
+  {
+    title: 'Ações',
+    key: 'actions',
+    value: 'actions',
+    sortable: false,
+    filterable: false
   }
 ]
 
@@ -110,6 +127,17 @@ async function getCurricularUnitProjects() {
 
 	loading.value = false
   console.log(projects)
+}
+
+async function deleteProject(projectId: number) {
+  console.log('Deleting test: ', projectId)
+  try {
+    const response = await EvaluationService.deleteProject(projectId)
+    await getCurricularUnitProjects()
+    console.log('Test deleted: ', response)
+  } catch (error) {
+    console.log('Error deleting test: ', error)
+  }
 }
 
 function openProjectSubmissionsManagementView(curricularUnitId: number, projectId: number) {
