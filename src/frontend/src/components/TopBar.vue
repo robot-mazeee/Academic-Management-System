@@ -16,10 +16,11 @@ const navbarItems = computed(() => {
     { name: 'Pessoal', path: '/people', icon: 'mdi-account-group' },
     { name: 'Cursos', path: '/courses', icon: 'mdi-book' },
     { name: 'Unidades Curiculares', path: '/curricular-units', icon: 'mdi-school' },
-    { name: 'Estatísticas', path: '/statistics', icon: 'mdi-chart-bar' }
+    { name: 'Calendário', path: '/calendar', icon: 'mdi-calendar' },
+    { name: 'Estatísticas', path: '/statistics', icon: 'mdi-chart-bar' },
   ]
 
-  if (roleStore.isStudent) {
+  if (roleStore.isStudent || roleStore.isAdministrator) {
     items.push({ name: 'Avaliações', path: '/evaluations', icon: 'mdi-file-document' })
   }
 

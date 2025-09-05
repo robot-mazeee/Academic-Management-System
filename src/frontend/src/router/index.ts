@@ -9,6 +9,7 @@ import CurricularUnitTestGradesView from '@/views/curricular-units/evaluations/C
 import CoursesView from '@/views/courses/CoursesView.vue'
 import StudentEvaluationsView from '@/views/student/StudentEvaluationsView.vue'
 import CurricularUnitProjectSubmissionsView from '@/views/curricular-units/evaluations/CurricularUnitProjectSubmissionsView.vue'
+import CalendarView from '@/views/calendar/CalendarView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,6 +28,21 @@ const router = createRouter({
       path: '/courses',
       name: 'courses',
       component: CoursesView
+    },
+    {
+      path: '/evaluations',
+      name: 'evaluations',
+      component: StudentEvaluationsView
+    },
+    {
+      path: '/statistics',
+      name: 'statistics',
+      component: StatisticsView
+    },
+    {
+      path: '/calendar',
+      name: 'calendar',
+      component: CalendarView
     },
     {
       path: '/curricular-units',
@@ -52,16 +68,6 @@ const router = createRouter({
       path: '/curricular-units/:curricularUnitId/tests/:projectId/submissions',
       name: 'curricular-unit-project-submissions-management',
       component: CurricularUnitProjectSubmissionsView
-    },
-    {
-      path: '/evaluations',
-      name: 'evaluations',
-      component: StudentEvaluationsView
-    },
-    {
-      path: '/statistics',
-      name: 'statistics',
-      component: StatisticsView
     }
   ]
 })
