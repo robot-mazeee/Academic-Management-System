@@ -60,4 +60,8 @@ public class GroupService {
 		return groupRepository.findAllByProject(project).stream()
 				.map(GroupDto::new).toList();
 	}
+
+    public GroupDto getGroupByProjectAndStudent(Long projectId, Long studentId) {
+        return new GroupDto(groupRepository.findByProjectAndStudent(projectId, studentId));
+    }
 }

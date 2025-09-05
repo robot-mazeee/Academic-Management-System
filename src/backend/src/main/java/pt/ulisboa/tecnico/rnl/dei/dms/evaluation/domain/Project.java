@@ -3,6 +3,8 @@ package pt.ulisboa.tecnico.rnl.dei.dms.evaluation.domain;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import pt.ulisboa.tecnico.rnl.dei.dms.projectsubmission.domain.Group;
 
 import jakarta.persistence.CascadeType;
@@ -25,6 +27,7 @@ public class Project extends Evaluation {
     private int maxGroupSize;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     private List<Group> groups;
 
     protected Project() {}

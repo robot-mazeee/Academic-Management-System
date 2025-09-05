@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.RestController;
 
 import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.service.ProjectService;
+import pt.ulisboa.tecnico.rnl.dei.dms.projectsubmission.dto.GroupDto;
 import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.dto.ProjectDto;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,11 @@ class ProjectController {
     @GetMapping("/curricular-units/{ucId}/projects")
     public List<ProjectDto> getProjectsByUC(@PathVariable Long ucId) {
         return projectService.getProjectsByUc(ucId);
+    }
+
+    @GetMapping("/projects/{projectId}/students/{studentId}/group")
+    public GroupDto getGroupByProjectAndStudent(@PathVariable Long projectId, @PathVariable long studentId) {
+        return projectService.getGroupByProjectAndStudent(projectId, studentId);
     }
 
     @PostMapping("curricular-units/{ucId}/projects")

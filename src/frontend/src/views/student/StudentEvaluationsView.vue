@@ -1,16 +1,41 @@
 <template>
-  <template v-if="student">
-    <h1>Testes</h1>
-    <StudentGradesList :student="student" />
-  </template>
-  <h1 v-else>Nao há nenhum aluno registado no sistema.</h1>
+	<v-container>
+		<v-row justify="center">
+			<v-col cols="12" v-if="student">
+        <v-tabs v-model="activeTab" background-color="primary" dark>
+          <v-tab value="tests">Notas de Testes</v-tab>
+          <v-tab value="projects">Submissões de Projetos</v-tab>
+          <v-tab value="evaluations">Avaliações Pendentes</v-tab>
+        </v-tabs>
+
+        <v-window v-model="activeTab" class="mt-4">
+          <v-window-item value="tests">
+            <div>
+              <StudentTestGradesList :student="student" />
+            </div>
+          </v-window-item>
+          <v-window-item value="projects">
+            <div>
+              <StudentProjectSubmissionsView :student-id="student.id" />
+            </div>
+          </v-window-item>
+        </v-window>
+			</v-col>
+      <v-col v-else>
+        <h1>Nenhum aluno registado no sistema.</h1>
+      </v-col>
+		</v-row>
+	</v-container>
 </template>
 
 <script setup lang="ts">
-import StudentGradesList from './StudentGradesList.vue';
+import StudentTestGradesList from './StudentTestGradesList.vue';
 import PersonService from '../../services/PersonService';
 import PersonDto from '../../models/PersonDto';
 import { onMounted, ref } from 'vue';
+import StudentProjectSubmissionsView from './StudentProjectSubmissionsView.vue';
+
+const activeTab = ref('tests')
 
 const student = ref<PersonDto | null>(null)
 

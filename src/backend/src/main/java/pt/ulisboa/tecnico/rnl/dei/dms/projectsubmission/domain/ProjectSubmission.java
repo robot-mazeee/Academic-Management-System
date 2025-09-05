@@ -32,7 +32,7 @@ public class ProjectSubmission {
 
     private double grade;
 
-    protected ProjectSubmission() {}
+    public ProjectSubmission() {}
 
     public ProjectSubmission(Project project, Group group, LocalDateTime subDateTime, double grade) {
         this.project = project;
