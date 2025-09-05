@@ -100,7 +100,7 @@ async function getProjectSubmissions() {
 }
 
 function beforeSubmissionDeadline(submission: ProjectSubmissionDto) {
-  const deadline = new Date(submission.date)
+  const deadline = new Date(submission.subDateTime)
 
   const today = new Date()
   today.setHours(0, 0, 0, 0)
