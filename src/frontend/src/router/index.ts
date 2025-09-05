@@ -8,6 +8,7 @@ import CurricularUnitEvaluationsView from '@/views/curricular-units/evaluations/
 import CurricularUnitTestGradesView from '@/views/curricular-units/evaluations/CurricularUnitTestGradesView.vue'
 import CoursesView from '@/views/courses/CoursesView.vue'
 import StudentEvaluationsView from '@/views/student/StudentEvaluationsView.vue'
+import CurricularUnitProjectSubmissionsView from '@/views/curricular-units/evaluations/CurricularUnitProjectSubmissionsView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -46,6 +47,11 @@ const router = createRouter({
       path: '/curricular-units/:curricularUnitId/tests/:testId/grades',
       name: 'curricular-unit-test-grades-management',
       component: CurricularUnitTestGradesView
+    },
+    {
+      path: '/curricular-units/:curricularUnitId/tests/:projectId/submissions',
+      name: 'curricular-unit-project-submissions-management',
+      component: CurricularUnitProjectSubmissionsView
     },
     {
       path: '/evaluations',

@@ -14,13 +14,9 @@
 
 <script setup lang="ts">
 import { ref } from "vue"
-import TestDto from "../../models/TestDto"
-
-const props = defineProps<{
-  test: TestDto
-}>()
 
 const selectedFile = ref<File | null>(null)
+const emit = defineEmits(['file-uploaded'])
 
 const onFileSelect = async (event: Event) => {
 	const input = event.target as HTMLInputElement
@@ -35,7 +31,7 @@ const uploadFile = async () => {
 	formData.append("file", selectedFile.value)
 
 	try {
-		
+		emit('file-uploaded')
 	} catch (error) {
 		console.error("Upload failed:", error)
 	}

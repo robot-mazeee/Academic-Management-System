@@ -14,27 +14,27 @@ public class ProjectSubmissionController {
     @Autowired
     private ProjectSubmissionService submissionService;
 
-    @PostMapping("/submissions")
-    public ProjectSubmissionDto createSubmission(@RequestBody ProjectSubmissionDto submissionDto) {
-        return submissionService.createProjectSubmission(submissionDto);
+    @PostMapping("/project/{projectId}/student/{studentId}")
+    public ProjectSubmissionDto createSubmission(@PathVariable Long projectId, @PathVariable Long studentId) {
+        return submissionService.createSubmission(projectId, studentId);
     }
 
-    @GetMapping("submissions/project/{projectId}")
+    @GetMapping("/submissions/project/{projectId}")
     public List<ProjectSubmissionDto> getSubmissionsByProject(@PathVariable long projectId) {
         return submissionService.getProjectSubmissionsByProject(projectId);
     }
 
-    @GetMapping("submissions/student/{personId}")
+    @GetMapping("/submissions/student/{personId}")
     public List<ProjectSubmissionDto> getSubmissionsByStudent(@PathVariable long personId) {
         return submissionService.getProjectSubmissionsByStudent(personId);
     }
 
-    @GetMapping("submissions/student/{personId}/project/{projectId}")
+    @GetMapping("/submissions/student/{personId}/project/{projectId}")
     public List<ProjectSubmissionDto> getSubmissionsByStudentAndProject(@PathVariable long personId, @PathVariable long projectId) {
         return submissionService.getProjectSubmissionsByStudentAndProject(personId, projectId);
     }
 
-    @GetMapping("submissions/group/{groupId}")
+    @GetMapping("/submissions/group/{groupId}")
     public List<ProjectSubmissionDto> getSubmissionsByGroup(@PathVariable long groupId) {
         return submissionService.getProjectSubmissionsByGroup(groupId);
     }
