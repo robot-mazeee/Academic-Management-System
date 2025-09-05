@@ -14,6 +14,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue"
+import FileService from "../../services/FileService"
 
 const selectedFile = ref<File | null>(null)
 const emit = defineEmits(['file-uploaded'])
@@ -25,15 +26,18 @@ const onFileSelect = async (event: Event) => {
 }
 
 const uploadFile = async () => {
-	if (!selectedFile.value) return
+    if (!selectedFile.value) return
 
-	const formData = new FormData();
-	formData.append("file", selectedFile.value)
+    const formData = new FormData();
+    formData.append("file", selectedFile.value);
 
-	try {
-		emit('file-uploaded')
-	} catch (error) {
-		console.error("Upload failed:", error)
-	}
+    try {
+        const response = await FileService.uploadFile(selectedFile.value)
+		console.log('Uploaded file')
+        emit('file-uploaded', selectedFile.value.name);
+        selectedFile.value = null;
+    } catch (error) {
+        console.error("Upload failed:", error);
+    }
 }
 </script>
