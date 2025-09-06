@@ -39,7 +39,7 @@ public class RevisionController {
     }
 
     @PatchMapping("/revisions/{revisionId}")
-    public RevisionDto updateStatus(@PathVariable long revisionId, @RequestBody String status) {
-        return revisionService.updateStatus(revisionId, status);
+    public RevisionDto updateStatus(@RequestBody RevisionDto revision) {
+        return revisionService.updateStatus(revision);
     }
 }

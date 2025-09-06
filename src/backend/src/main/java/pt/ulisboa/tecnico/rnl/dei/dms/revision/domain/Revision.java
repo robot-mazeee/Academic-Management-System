@@ -21,7 +21,7 @@ public class Revision {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "workflow_status")
+    @Column(name = "revision_status")
     private RevisionStatus status;
 
     @ManyToOne

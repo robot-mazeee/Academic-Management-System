@@ -74,9 +74,9 @@ public class RevisionService {
     }
 
     @Transactional
-    public RevisionDto updateStatus(long revisionId, String newStatus) {
-        Revision revision = fetchRevisionOrThrow(revisionId);
-        revision.setStatus(RevisionStatus.valueOf(newStatus.toUpperCase()));
+    public RevisionDto updateStatus(RevisionDto revisionDto) {
+        Revision revision = fetchRevisionOrThrow(revisionDto.id());
+        revision.setStatus(RevisionStatus.valueOf(revisionDto.status().toUpperCase()));
         revisionRepository.save(revision);
         return new RevisionDto(revision);
     }

@@ -10,6 +10,7 @@ import CoursesView from '@/views/courses/CoursesView.vue'
 import StudentEvaluationsView from '@/views/student/StudentEvaluationsView.vue'
 import CurricularUnitProjectSubmissionsView from '@/views/curricular-units/evaluations/CurricularUnitProjectSubmissionsView.vue'
 import CalendarView from '@/views/calendar/CalendarView.vue'
+import RevisionsView from '@/views/revisions/RevisionsView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,6 +34,11 @@ const router = createRouter({
       path: '/evaluations',
       name: 'evaluations',
       component: StudentEvaluationsView
+    },
+    {
+      path: '/revisions',
+      name: 'revisions',
+      component: RevisionsView
     },
     {
       path: '/statistics',
