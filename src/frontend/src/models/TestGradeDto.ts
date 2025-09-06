@@ -6,6 +6,7 @@ export default class TestGradeDto {
   test?: TestDto
   student?: PersonDto
   grade?: number
+  correction?: string
 
   constructor(obj?: Partial<TestGradeDto>) {
     Object.assign(this, obj)

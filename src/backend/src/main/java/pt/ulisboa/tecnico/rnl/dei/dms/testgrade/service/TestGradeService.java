@@ -96,9 +96,10 @@ public class TestGradeService {
 	}
 
 	@Transactional
-    public void assignCorrection(Long testGradeId, String correction) {
-        TestGrade testGrade = fetchTestGradeOrThrow(testGradeId);
-        testGrade.setCorrection(correction);
+    public TestGradeDto assignCorrection(Long testGradeId, String correction) {
+        TestGrade grade = fetchTestGradeOrThrow(testGradeId);
+        grade.setCorrection(correction);
+        return new TestGradeDto(grade);
     }
 
     @Transactional

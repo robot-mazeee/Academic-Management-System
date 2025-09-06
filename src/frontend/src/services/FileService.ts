@@ -25,4 +25,12 @@ export default class FileService {
   static async assignProjectSheet(projectSheet: string, projectId: number) {
     return httpClient.patch(`/projects/${projectId}/project-sheet`, projectSheet)
   }
+
+  static async assignTestGradeCorrection(correction: string, testGradeId: number) {
+    return httpClient.patch(`/test-grades/${testGradeId}/correction`, correction)
+  }
+
+  static async assignProjectSubmission(submission: string, projectId: number) {
+    return httpClient.patch(`/project-submissions/${projectId}/submission`, submission)
+  }
 }

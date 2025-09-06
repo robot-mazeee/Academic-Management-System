@@ -30,10 +30,12 @@
       {{ item.grade }}
     </template>
     <template v-slot:[`item.testSheet`]="{ item }">
-      <!--FileDownload v-if="item.test.testSheet"-->
+      <FileDownload v-if="item.test.testSheet" :file-name="item.test.testSheet" />
+      <span v-else>Não disponível</span>
     </template>
     <template v-slot:[`item.correction`]="{ item }">
-      <!--FileDownload v-if="item.correction"-->
+      <FileDownload v-if="item.correction" :file-name="item.correction" />
+      <span v-else>Não disponível</span>
     </template>
   </v-data-table>
 </template>
@@ -43,6 +45,7 @@ import { reactive, ref, onMounted } from 'vue'
 import EvaluationService from '../../services/EvaluationService'
 import TestGradeDto from '../../models/TestGradeDto'
 import PersonDto from '../../models/PersonDto'
+import FileDownload from '../../components/file/FileDownload.vue'
 
 let search = ref('')
 let loading = ref(true)

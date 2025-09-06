@@ -49,12 +49,22 @@
       </div>
     </template>
 
-    <template v-slot:[`item.testCorrection`]="{ item }">
-      <div
-        class="d-flex align-center justify-center ga-2"
-        v-if="roleStore.isMainTeacher || roleStore.isTeachingAssistant"
-      >
-        <FileUpload :test="item.test"/>
+    <template v-slot:[`item.correction`]="{ item }">
+      <div class="d-flex align-center ga-2">
+        <template v-if="item.correction">
+          <FileDownload :file-name="item.correction" />
+          <FileUpload
+            v-if="roleStore.isMainTeacher || roleStore.isTeachingAssistant"
+            @file-uploaded="(fileName) => assignCorrection(item.id, fileName)"
+          />
+        </template>
+
+        <template v-else>
+          <FileUpload
+            v-if="roleStore.isMainTeacher || roleStore.isTeachingAssistant"
+            @file-uploaded="(fileName) => assignCorrection(item.id, fileName)"
+          />
+        </template>
       </div>
     </template>
   </v-data-table>
@@ -70,6 +80,8 @@ import PersonDto from '../../../models/PersonDto'
 import TestDto from '../../../models/TestDto'
 import { useRoleStore } from '../../../stores/role'
 import FileUpload from '../../../components/file/FileUpload.vue'
+import FileService from '../../../services/FileService'
+import FileDownload from '../../../components/file/FileDownload.vue'
 
 const search = ref('')
 const loading = ref(true)
@@ -93,6 +105,7 @@ const allStudentsWithGrades = computed(() => {
       student,
       grade: grade?.grade ?? null,
       test: test.value,
+      correction: grade?.correction ?? null
     }
   })
 })
@@ -102,7 +115,7 @@ const headers = [
   { title: 'Teste', key: 'test', sortable: true },
   { title: 'Aluno', key: 'student', sortable: true },
   { title: 'Nota', key: 'grade', sortable: true },
-  { title: 'Correção', key: 'testCorrection', sortable: false }
+  { title: 'Correção', key: 'correction', sortable: false }
 ]
 
 onMounted(async () => {
@@ -156,6 +169,17 @@ async function gradeTest(student: PersonDto, grade: number | null) {
     await getTestGrades()
   } catch (error) {
     console.error('Error creating test grade: ', error)
+  }
+}
+
+async function assignCorrection(testGradeId: number, fileName: string) {
+  try {
+    console.log('file: ', fileName)
+    const response = await FileService.assignTestGradeCorrection(fileName, testGradeId)
+    console.log('Assigned correction: ', response)
+    await getTestGrades()
+  } catch (error) {
+    console.error("Error assigning correction:", error)
   }
 }
 
