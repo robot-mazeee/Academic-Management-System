@@ -50,6 +50,11 @@
       </div>
     </template>
 
+    <template v-slot:[`item.projectSheet`]="{ item }">
+      <FileDownload v-if="item.project.projectSheet" :file-name="item.project.projectSheet" />
+      <span v-else>Não disponível</span>
+    </template>
+
     <template v-slot:[`item.submit`]="{ item }">
       <FileUpload v-if="roleStore.isStudent"
         @file-uploaded="createProjectSubmission(item.project)"
@@ -66,6 +71,7 @@ import ProjectSubmissionDto from '../../models/ProjectSubmissionDto'
 import ProjectDto from '../../models/ProjectDto'
 import { useRoleStore } from '../../stores/role'
 import FileUpload from '../../components/file/FileUpload.vue'
+import FileDownload from '../../components/file/FileDownload.vue'
 
 const search = ref('')
 const loading = ref(true)
