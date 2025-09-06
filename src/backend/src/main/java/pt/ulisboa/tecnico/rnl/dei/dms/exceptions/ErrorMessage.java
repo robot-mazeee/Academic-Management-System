@@ -12,7 +12,10 @@ public enum ErrorMessage {
 	NO_SUCH_STUDENT_FOR_UC("Não existe na UC nenhum aluno com ID %s", 1008),
 	NO_SUCH_COURSE("Não existe nenhum curso com ID %s", 1009),
 	NO_SUCH_PROJECT("Não existe nenhum projeto com ID %s", 1010),
-	CANNOT_DELETE_UC("Cannot delete curricular unit %s (ID) with active enrollments", 1011);
+	CANNOT_DELETE_UC("Não é permitido apagar a UC %s (ID) com inscrições ativas", 1011),
+	NO_SUCH_PROJECT_SUBMISSION("Não existe nenhuma submissão de projeto com ID %s", 1012),
+	NO_SUCH_TEST_GRADE("Não existe nenhuma nota de teste com ID %s", 1013),
+	NO_SUCH_FILE("Não existe nenhum ficheiro com nome %s", 1014);
 
 	private final String label;
 	private final int code;

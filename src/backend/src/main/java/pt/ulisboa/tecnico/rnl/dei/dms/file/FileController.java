@@ -1,7 +1,6 @@
 package pt.ulisboa.tecnico.rnl.dei.dms.file;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,24 +9,45 @@ import org.springframework.web.multipart.MultipartFile;
 import pt.ulisboa.tecnico.rnl.dei.dms.file.service.FileService;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
+@RequestMapping("/files")
 public class FileController {
-	@Autowired
-	private FileService fileService;
+    @Autowired
+    private FileService fileService;
 
-	@PostMapping("files/upload")
-	public ResponseEntity<?> uploadFile(@RequestParam MultipartFile file) throws IOException {
-		String uploadFile = fileService.uploadFile(file);
-		return ResponseEntity.status(HttpStatus.OK)
-				.body(uploadFile);
-	}
+    @PostMapping("/upload")
+    public ResponseEntity<Map<String, String>> uploadFile(@RequestParam MultipartFile file) throws IOException {
+        String fileName = fileService.uploadFile(file);
+        Map<String, String> response = new HashMap<>();
+        response.put("fileName", fileName);
+        return ResponseEntity.ok(response);
+    }
 
-	@GetMapping("files//download/{fileName}")
-	public ResponseEntity<?> downloadFile(@PathVariable String fileName){
-		byte[] file = fileService.downloadFile(fileName);
-		return ResponseEntity.status(HttpStatus.OK)
-				.contentType(MediaType.ALL)
-				.body(file);
-	}
+    // @GetMapping("files/download/{fileName}")
+    // public ResponseEntity<byte[]> downloadFile(@PathVariable String fileName) {
+    //     byte[] fileData = fileService.downloadFile(fileName);
+
+    //     return ResponseEntity.ok()
+    //         .contentType(MediaType.APPLICATION_OCTET_STREAM)
+    //         .header("Content-Disposition", "attachment; filename=\"" + fileName + "\"")
+    //         .body(fileData);
+    // }
+
+    @GetMapping("/download/{fileName}")
+    public ResponseEntity<byte[]> downloadFile(@PathVariable String fileName) {
+        try {
+            byte[] fileData = fileService.downloadFile(fileName);
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .header("Content-Disposition", "attachment; filename=\"" + fileName + "\"")
+                    .body(fileData);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
+

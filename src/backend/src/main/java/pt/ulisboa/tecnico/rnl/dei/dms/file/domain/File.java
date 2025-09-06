@@ -1,5 +1,6 @@
 package pt.ulisboa.tecnico.rnl.dei.dms.file.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -22,8 +23,12 @@ public class File {
     private Long id;
 
     private String type;
+
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
+    private Long curricularUnitId;
 
     @Lob
+    @Column(nullable = false)
     private byte[] data;
 }
