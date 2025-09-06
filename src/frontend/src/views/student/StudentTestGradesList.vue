@@ -85,7 +85,7 @@ const headers = [
   { title: 'Nota', key: 'grade', sortable: true, filterable: true },
   { title: 'Enunciado', key: 'testSheet', sortable: false, filterable: false },
   { title: 'Correção', key: 'correction', sortable: false, filterable: false },
-  { title: 'Revisão', key: 'revision', sortable: false }
+  { title: 'Revisão', key: 'revision', sortable: false, align: 'center' }
 ]
 
 onMounted(async () => {

@@ -44,7 +44,7 @@
       </div>
     </template>
 
-    <template v-slot:[`item.testCorrection`]="{ item }">
+    <template v-slot:[`item.submission`]="{ item }">
       <div
         class="d-flex align-center justify-center ga-2"
         v-if="roleStore.isMainTeacher || roleStore.isTeachingAssistant"

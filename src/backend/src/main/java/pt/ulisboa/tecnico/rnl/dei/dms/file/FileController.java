@@ -26,16 +26,6 @@ public class FileController {
         return ResponseEntity.ok(response);
     }
 
-    // @GetMapping("files/download/{fileName}")
-    // public ResponseEntity<byte[]> downloadFile(@PathVariable String fileName) {
-    //     byte[] fileData = fileService.downloadFile(fileName);
-
-    //     return ResponseEntity.ok()
-    //         .contentType(MediaType.APPLICATION_OCTET_STREAM)
-    //         .header("Content-Disposition", "attachment; filename=\"" + fileName + "\"")
-    //         .body(fileData);
-    // }
-
     @GetMapping("/download/{fileName}")
     public ResponseEntity<byte[]> downloadFile(@PathVariable String fileName) {
         try {

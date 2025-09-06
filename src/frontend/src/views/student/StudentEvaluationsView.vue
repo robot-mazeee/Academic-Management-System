@@ -5,7 +5,6 @@
         <v-tabs v-model="activeTab" background-color="primary" dark>
           <v-tab value="tests">Notas de Testes</v-tab>
           <v-tab value="projects">Submissões de Projetos</v-tab>
-          <v-tab value="evaluations">Avaliações Pendentes</v-tab>
         </v-tabs>
 
         <v-window v-model="activeTab" class="mt-4">
