@@ -1,9 +1,10 @@
 <template>
 	<v-file-input
-		accept=".pdf"
-		@change="onFileSelect"
-		class="upload-btn"
-	>
+    multiple
+    show-size
+    @change="onFileSelect"
+    class="upload-btn"
+  >
 		<template v-if="selectedFile" v-slot:prepend>
 			<v-btn icon color="primary" elevation="2" class="rounded-circle" @click="uploadFile">
 				<v-icon>mdi-upload</v-icon>
@@ -26,18 +27,17 @@ const onFileSelect = async (event: Event) => {
 }
 
 const uploadFile = async () => {
-    if (!selectedFile.value) return
+  if (!selectedFile.value) return
 
-    const formData = new FormData();
-    formData.append("file", selectedFile.value);
+  try {
+    console.log(selectedFile.value)
+    const storedFileName = await FileService.uploadFile(selectedFile.value)
+    console.log('Uploaded file:', storedFileName.fileName)
 
-    try {
-        const response = await FileService.uploadFile(selectedFile.value)
-		console.log('Uploaded file')
-        emit('file-uploaded', selectedFile.value.name);
-        selectedFile.value = null;
-    } catch (error) {
-        console.error("Upload failed:", error);
-    }
+    emit('file-uploaded', storedFileName.fileName)
+    selectedFile.value = null
+  } catch (error) {
+    console.error("Upload failed:", error)
+  }
 }
 </script>

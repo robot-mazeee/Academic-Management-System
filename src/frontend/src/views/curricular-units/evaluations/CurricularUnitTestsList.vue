@@ -21,7 +21,22 @@
     no-data-text="Sem testes a apresentar."
   >
     <template v-slot:[`item.testSheet`]="{ item }">
-      <FileUpload :test="item" v-if="roleStore.isMainTeacher || roleStore.isTeachingAssistant" />
+      <div class="d-flex align-center ga-2">
+        <template v-if="item.testSheet">
+          <FileDownload :file-name="item.testSheet" />
+          <FileUpload
+            v-if="roleStore.isMainTeacher || roleStore.isTeachingAssistant"
+            @file-uploaded="(fileName) => assignTestSheet(item.id, fileName)"
+          />
+        </template>
+
+        <template v-else>
+          <FileUpload
+            v-if="roleStore.isMainTeacher || roleStore.isTeachingAssistant"
+            @file-uploaded="(fileName) => assignTestSheet(item.id, fileName)"
+          />
+        </template>
+      </div>
     </template>
     <template v-slot:[`item.grades`]="{ item }" v-if="roleStore.isTeachingAssistant || roleStore.isMainTeacher">
       <v-btn @click="openTestGradesManagementView(curricularUnitId, item.id)" class="mb-3" color="secondary">
@@ -54,7 +69,9 @@ import CreateTestDialog from '../../dialogs/evaluation/CreateTestDialog.vue'
 import { useRoleStore } from '../../../stores/role'
 import FileUpload from '../../../components/file/FileUpload.vue'
 import EvaluationService from '../../../services/EvaluationService'
+import FileService from '../../../services/FileService'
 import EditTestDialog from '../../dialogs/evaluation/EditTestDialog.vue'
+import FileDownload from '../../../components/file/FileDownload.vue'
 
 let search = ref('')
 let loading = ref(true)
@@ -137,6 +154,17 @@ async function deleteTest(testId: number) {
     console.log('Test deleted: ', response)
   } catch (error) {
     console.log('Error deleting test: ', error)
+  }
+}
+
+async function assignTestSheet(testId: number, fileName: string) {
+  try {
+    console.log('file: ', fileName)
+    const response = await FileService.assignTestSheet(fileName, testId)
+    console.log('Assigned teste sheet: ', response)
+    await getCurricularUnitTests()
+  } catch (error) {
+    console.error("Error assigning test sheet:", error)
   }
 }
 

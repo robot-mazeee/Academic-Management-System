@@ -4,6 +4,7 @@ export default class TestDto {
   weight?: number
   testDate?: string
   curricularUnitId?: number
+  testSheet?: string
 
   constructor(obj?: Partial<TestDto>) {
     Object.assign(this, obj)

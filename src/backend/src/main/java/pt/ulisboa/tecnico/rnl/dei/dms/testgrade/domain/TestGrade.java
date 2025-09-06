@@ -28,7 +28,7 @@ public class TestGrade {
 
     private double grade;
 
-    // correction
+    private String correction;
 
     protected TestGrade() {}
 

@@ -16,7 +16,7 @@ public class Test extends Evaluation {
     @Column(name = "test_date")
     private LocalDate testDate;
 
-    // private List<TestGrades> testGrades;
+    private String testSheet;
 
     protected Test() {}
 

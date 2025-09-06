@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.service.TestService;
 import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.dto.TestDto;
+import pt.ulisboa.tecnico.rnl.dei.dms.file.domain.File;
 
 @RestController
 class TestController {
@@ -49,5 +51,15 @@ class TestController {
     @DeleteMapping("tests/{testId}")
     public void deleteTest(@PathVariable long testId) {
         testService.deleteTest(testId);
+    }
+
+    @PatchMapping("/tests/{testId}/test-sheet")
+    public TestDto assignTestSheet(@PathVariable Long testId, @RequestBody String testSheet) {
+        return testService.assignTestSheet(testId, testSheet);
+    }
+
+    @GetMapping("/tests/{testId}/test-sheet")
+    public File getTestSheet(@PathVariable long testId) {
+        return testService.getTestSheet(testId);
     }
 }

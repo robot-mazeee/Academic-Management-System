@@ -13,6 +13,8 @@ import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.domain.Test;
 import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.dto.TestDto;
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.DEIException;
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.ErrorMessage;
+import pt.ulisboa.tecnico.rnl.dei.dms.file.domain.File;
+import pt.ulisboa.tecnico.rnl.dei.dms.file.repository.FileRepository;
 import pt.ulisboa.tecnico.rnl.dei.dms.testgrade.repository.TestGradeRepository;
 
 @Transactional
@@ -27,6 +29,9 @@ public class TestService {
     @Autowired
 	private TestGradeRepository testGradeRepository;
 
+    @Autowired
+	private FileRepository fileRepository;
+
     private CurricularUnit fetchCurricularUnitOrThrow(long curricularUnitId) {
         return curricularUnitRepository.findById(curricularUnitId)
                 .orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_CURRICULAR_UNIT, Long.toString(curricularUnitId)));
@@ -35,6 +40,11 @@ public class TestService {
     private Test fetchTestOrThrow(long testId) {
         return testRepository.findById(testId)
                 .orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_TEST, Long.toString(testId)));
+    }
+
+    private File fetchFileOrThrow(String fileName) {
+        return fileRepository.findByName(fileName)
+                .orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_FILE, fileName));
     }
 
     @Transactional
@@ -69,6 +79,20 @@ public class TestService {
         return testRepository.findAllByCurricularUnit(curricularUnit).stream()
                 .map(TestDto::new)
                 .toList();
+    }
+
+    @Transactional
+    public TestDto assignTestSheet(Long testId, String testSheet) {
+        Test test = fetchTestOrThrow(testId);
+        test.setTestSheet(testSheet);
+        return new TestDto(test);
+    }
+
+    @Transactional
+    public File getTestSheet(Long testId) {
+        Test test = fetchTestOrThrow(testId);
+        String TestSheetName = test.getTestSheet();
+        return fetchFileOrThrow(TestSheetName);
     }
 
     @Transactional

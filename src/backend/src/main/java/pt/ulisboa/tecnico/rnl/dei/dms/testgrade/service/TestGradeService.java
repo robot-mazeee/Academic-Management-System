@@ -15,7 +15,8 @@ import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.repository.TestRepository;
 
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.DEIException;
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.ErrorMessage;
-
+import pt.ulisboa.tecnico.rnl.dei.dms.file.domain.File;
+import pt.ulisboa.tecnico.rnl.dei.dms.file.repository.FileRepository;
 import pt.ulisboa.tecnico.rnl.dei.dms.person.domain.Person;
 import pt.ulisboa.tecnico.rnl.dei.dms.person.repository.PersonRepository;
 
@@ -31,6 +32,19 @@ public class TestGradeService {
     @Autowired
 	private TestRepository testRepository;
 
+	@Autowired
+	private FileRepository fileRepository;
+
+	private File fetchFileOrThrow(String fileName) {
+        return fileRepository.findByName(fileName)
+                .orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_FILE, fileName));
+    }
+
+	private TestGrade fetchTestGradeOrThrow(long id) {
+		return testGradeRepository.findById(id)
+				.orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_TEST, Long.toString(id)));
+	}
+
     private Person fetchPersonOrThrow(long id) {
 		return personRepository.findById(id)
 				.orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_PERSON, Long.toString(id)));
@@ -38,7 +52,7 @@ public class TestGradeService {
 
     private Test fetchTestOrThrow(long id) {
 		return testRepository.findById(id)
-				.orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_TEST, Long.toString(id)));
+				.orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_TEST_GRADE, Long.toString(id)));
 	}
 
     @Transactional
@@ -80,4 +94,17 @@ public class TestGradeService {
 		testGrade.setId(null);
 		return new TestGradeDto(testGradeRepository.save(testGrade));
 	}
+
+	@Transactional
+    public void assignCorrection(Long testGradeId, String correction) {
+        TestGrade testGrade = fetchTestGradeOrThrow(testGradeId);
+        testGrade.setCorrection(correction);
+    }
+
+    @Transactional
+    public File getCorrection(Long testGradeId) {
+        TestGrade testGrade = fetchTestGradeOrThrow(testGradeId);
+        String correctionName = testGrade.getCorrection();
+        return fetchFileOrThrow(correctionName);
+    }
 }
