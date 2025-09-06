@@ -30,6 +30,8 @@ public class Project extends Evaluation {
     @JsonBackReference
     private List<Group> groups;
 
+    private String projectSheet;
+
     protected Project() {}
 
     public Project(

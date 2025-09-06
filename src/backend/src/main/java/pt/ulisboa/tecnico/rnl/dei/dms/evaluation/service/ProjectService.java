@@ -11,6 +11,8 @@ import pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.repository.CurricularUnitRe
 import pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.domain.CurricularUnit;
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.DEIException;
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.ErrorMessage;
+import pt.ulisboa.tecnico.rnl.dei.dms.file.domain.File;
+import pt.ulisboa.tecnico.rnl.dei.dms.file.repository.FileRepository;
 import pt.ulisboa.tecnico.rnl.dei.dms.projectsubmission.dto.GroupDto;
 import pt.ulisboa.tecnico.rnl.dei.dms.projectsubmission.repository.ProjectSubmissionRepository;
 import pt.ulisboa.tecnico.rnl.dei.dms.projectsubmission.service.GroupService;
@@ -32,6 +34,9 @@ public class ProjectService {
     @Autowired
     private ProjectSubmissionRepository projectSubmissionRepository;
 
+    @Autowired
+    private FileRepository fileRepository;
+
     private CurricularUnit fetchCurricularUnitOrThrow(long curricularUnitId) {
         return curricularUnitRepository.findById(curricularUnitId)
                 .orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_CURRICULAR_UNIT, Long.toString(curricularUnitId)));
@@ -40,6 +45,11 @@ public class ProjectService {
     private Project fetchProjectOrThrow(long projectId) {
         return projectRepository.findById(projectId)
                 .orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_PROJECT, Long.toString(projectId)));
+    }
+
+    private File fetchFileOrThrow(String fileName) {
+        return fileRepository.findByName(fileName)
+                .orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_FILE, fileName));
     }
 
     @Transactional
@@ -80,6 +90,20 @@ public class ProjectService {
     @Transactional
     public GroupDto getGroupByProjectAndStudent(Long projectId, Long studentId) {
         return groupService.getGroupByProjectAndStudent(projectId, studentId);
+    }
+
+    @Transactional
+    public ProjectDto assignProjectSheet(Long projectId, String projectSheet) {
+        Project project = fetchProjectOrThrow(projectId);
+        project.setProjectSheet(projectSheet);
+        return new ProjectDto(project);
+    }
+
+    @Transactional
+    public File getProjectSheet(Long projectId) {
+        Project project = fetchProjectOrThrow(projectId);
+        String projectSheetName = project.getProjectSheet();
+        return fetchFileOrThrow(projectSheetName);
     }
 
     @Transactional

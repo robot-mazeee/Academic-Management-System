@@ -21,4 +21,8 @@ export default class FileService {
   static async assignTestSheet(testSheet: string, testId: number) {
     return httpClient.patch(`/tests/${testId}/test-sheet`, testSheet)
   }
+
+  static async assignProjectSheet(projectSheet: string, projectId: number) {
+    return httpClient.patch(`/projects/${projectId}/project-sheet`, projectSheet)
+  }
 }

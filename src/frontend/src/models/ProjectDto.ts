@@ -5,6 +5,7 @@ export default class ProjectDto {
     deadline?: string
     curricularUnitId?: number
     maxGroupSize?: number
+    projectSheet?: string
 
   constructor(obj?: Partial<ProjectDto>) {
     Object.assign(this, obj)

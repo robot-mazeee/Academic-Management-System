@@ -4,7 +4,15 @@ import java.time.LocalDate;
 
 import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.domain.Project;
 
-public record ProjectDto(long id, String title, Double weight, long curricularUnitId, LocalDate deadline, int maxGroupSize) {
+public record ProjectDto(
+        long id, 
+        String title, 
+        Double weight, 
+        long curricularUnitId, 
+        LocalDate deadline, 
+        int maxGroupSize,
+        String projectSheet
+    ) {
     public ProjectDto(Project project) {
         this(
             project.getId(),
@@ -12,7 +20,8 @@ public record ProjectDto(long id, String title, Double weight, long curricularUn
             project.getWeight(),
             project.getCurricularUnit().getId(),
             project.getDeadline(),
-            project.getMaxGroupSize()
+            project.getMaxGroupSize(),
+            project.getProjectSheet()
         );
     } 
 }

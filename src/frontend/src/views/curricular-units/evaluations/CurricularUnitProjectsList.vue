@@ -21,7 +21,22 @@
     no-data-text="Sem projetos a apresentar."
   >
     <template v-slot:[`item.projectSheet`]="{ item }">
-      <FileUpload :test="item" v-if="roleStore.isMainTeacher || roleStore.isTeachingAssistant" />
+      <div class="d-flex align-center ga-2">
+        <template v-if="item.projectSheet">
+          <FileDownload :file-name="item.projectSheet" />
+          <FileUpload
+            v-if="roleStore.isMainTeacher || roleStore.isTeachingAssistant"
+            @file-uploaded="(fileName) => assignProjectSheet(item.id, fileName)"
+          />
+        </template>
+
+        <template v-else>
+          <FileUpload
+            v-if="roleStore.isMainTeacher || roleStore.isTeachingAssistant"
+            @file-uploaded="(fileName) => assignProjectSheet(item.id, fileName)"
+          />
+        </template>
+      </div>
     </template>
     <template v-slot:[`item.submissions`]="{ item }" v-if="roleStore.isTeachingAssistant || roleStore.isMainTeacher">
       <v-btn @click="openProjectSubmissionsManagementView(curricularUnitId, item.id)" class="mb-3" color="secondary">
@@ -49,18 +64,20 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import { reactive, ref, onMounted } from 'vue'
-import TestDto from '../../../models/TestDto'
 import CurricularUnitService from '../../../services/CurricularUnitService'
 import { useRoleStore } from '../../../stores/role'
 import FileUpload from '../../../components/file/FileUpload.vue'
 import CreateProjectDialog from '../../dialogs/evaluation/CreateProjectDialog.vue'
 import EvaluationService from '../../../services/EvaluationService'
 import EditProjectDialog from '../../dialogs/evaluation/EditProjectDialog.vue'
+import ProjectDto from '../../../models/ProjectDto'
+import FileService from '../../../services/FileService'
+import FileDownload from '../../../components/file/FileDownload.vue'
 
 let search = ref('')
 let loading = ref(true)
 
-const projects: TestDto[] = reactive([])
+const projects: ProjectDto[] = reactive([])
 const route = useRoute()
 const router = useRouter()
 const curricularUnitId = parseInt(route.params.id as string, 10)
@@ -131,13 +148,24 @@ async function getCurricularUnitProjects() {
 }
 
 async function deleteProject(projectId: number) {
-  console.log('Deleting test: ', projectId)
+  console.log('Deleting project: ', projectId)
   try {
     const response = await EvaluationService.deleteProject(projectId)
     await getCurricularUnitProjects()
-    console.log('Test deleted: ', response)
+    console.log('project deleted: ', response)
   } catch (error) {
-    console.log('Error deleting test: ', error)
+    console.log('Error deleting project: ', error)
+  }
+}
+
+async function assignProjectSheet(projectId: number, fileName: string) {
+  try {
+    console.log('file: ', fileName)
+    const response = await FileService.assignProjectSheet(fileName, projectId)
+    console.log('Assigned project sheet: ', response)
+    await getCurricularUnitProjects()
+  } catch (error) {
+    console.error("Error assigning project sheet:", error)
   }
 }
 

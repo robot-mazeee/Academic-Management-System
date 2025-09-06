@@ -5,12 +5,14 @@ import java.util.List;
 import org.springframework.web.bind.annotation.RestController;
 
 import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.service.ProjectService;
+import pt.ulisboa.tecnico.rnl.dei.dms.file.domain.File;
 import pt.ulisboa.tecnico.rnl.dei.dms.projectsubmission.dto.GroupDto;
 import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.dto.ProjectDto;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -55,5 +57,15 @@ class ProjectController {
     @DeleteMapping("projects/{projectId}")
     public void deleteProject(@PathVariable long projectId) {
         projectService.deleteProject(projectId);
+    }
+
+    @PatchMapping("/projects/{projectId}/project-sheet")
+    public ProjectDto assignProjectSheet(@PathVariable Long projectId, @RequestBody String projectSheet) {
+        return projectService.assignProjectSheet(projectId, projectSheet);
+    }
+
+    @GetMapping("/tests/{projectId}/test-sheet")
+    public File getProjectSheet(@PathVariable long projectId) {
+        return projectService.getProjectSheet(projectId);
     }
 }
