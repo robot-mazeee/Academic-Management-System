@@ -7,6 +7,7 @@ export default class ProjectSubmissionDto {
   group?: GroupDto
   subDateTime?: string
   grade?: number
+  submission?: string
 
   constructor(obj?: Partial<ProjectSubmissionDto>) {
     Object.assign(this, obj)

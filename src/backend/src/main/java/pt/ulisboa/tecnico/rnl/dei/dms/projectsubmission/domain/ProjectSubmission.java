@@ -28,7 +28,7 @@ public class ProjectSubmission {
 
     private LocalDateTime subDateTime;
 
-    // submission
+    private String submission;
 
     private double grade;
 

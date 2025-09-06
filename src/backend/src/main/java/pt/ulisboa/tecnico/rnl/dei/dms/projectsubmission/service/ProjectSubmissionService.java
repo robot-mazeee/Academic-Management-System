@@ -16,7 +16,8 @@ import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.repository.ProjectRepository;
 
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.DEIException;
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.ErrorMessage;
-
+import pt.ulisboa.tecnico.rnl.dei.dms.file.domain.File;
+import pt.ulisboa.tecnico.rnl.dei.dms.file.repository.FileRepository;
 import pt.ulisboa.tecnico.rnl.dei.dms.projectsubmission.domain.ProjectSubmission;
 import pt.ulisboa.tecnico.rnl.dei.dms.projectsubmission.dto.ProjectSubmissionDto;
 import pt.ulisboa.tecnico.rnl.dei.dms.projectsubmission.repository.ProjectSubmissionRepository;
@@ -32,6 +33,19 @@ public class ProjectSubmissionService {
 
     @Autowired
 	private GroupRepository groupRepository;
+
+    @Autowired
+	private FileRepository fileRepository;
+
+    private File fetchFileOrThrow(String fileName) {
+        return fileRepository.findByName(fileName)
+                .orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_FILE, fileName));
+    }
+
+    private ProjectSubmission fetchProjectSubmissionOrThrow(long id) {
+		return projectSubmissionRepository.findById(id)
+				.orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_PROJECT_SUBMISSION, Long.toString(id)));
+	}
 
     private Project fetchProjectOrThrow(long projectId) {
 		return projectRepository.findById(projectId)
@@ -90,5 +104,19 @@ public class ProjectSubmissionService {
     public List<ProjectSubmissionDto> getProjectSubmissionsByGroup(long groupId) {
         List<ProjectSubmission> submissions = projectSubmissionRepository.findByGroup_Id(groupId);
         return submissions.stream().map(ProjectSubmissionDto::new).toList();
+    }
+
+    @Transactional
+    public ProjectSubmissionDto assignSubmission(Long projectSubmissionId, String submission) {
+        ProjectSubmission projectSubmission = fetchProjectSubmissionOrThrow(projectSubmissionId);
+        projectSubmission.setSubmission(submission);
+        return new ProjectSubmissionDto(projectSubmission);
+    }
+
+    @Transactional
+    public File getSubmission(Long projectSubmissionId) {
+        ProjectSubmission projectSubmission = fetchProjectSubmissionOrThrow(projectSubmissionId);
+        String submissionName = projectSubmission.getSubmission();
+        return fetchFileOrThrow(submissionName);
     }
 }

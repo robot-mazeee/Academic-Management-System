@@ -43,6 +43,16 @@
         {{ item.grade }}
       </div>
     </template>
+
+    <template v-slot:[`item.testCorrection`]="{ item }">
+      <div
+        class="d-flex align-center justify-center ga-2"
+        v-if="roleStore.isMainTeacher || roleStore.isTeachingAssistant"
+      >
+        <FileDownload v-if="item.submission" :file-name="item.submission" />
+        <span v-else>Sem submissões</span>
+      </div>
+    </template>
   </v-data-table>
 </template>
 
@@ -53,6 +63,7 @@ import EvaluationService from '../../../services/EvaluationService'
 import ProjectSubmissionDto from '../../../models/ProjectSubmissionDto'
 import { useRoleStore } from '../../../stores/role'
 import ProjectDto from '../../../models/ProjectDto'
+import FileDownload from '../../../components/file/FileDownload.vue'
 
 const search = ref('')
 const loading = ref(true)
@@ -70,7 +81,9 @@ const headers = [
   { title: 'Projeto', key: 'project', sortable: true },
   { title: 'Grupo', key: 'group', sortable: true },
   { title: 'Data de Submissão', key: 'date', sortable: true },
-  { title: 'Nota', key: 'grade', sortable: true }
+  { title: 'Submissão', key: 'submission', sortable: true },
+  { title: 'Nota', key: 'grade', sortable: true },
+  { title: 'Editar Nota', key: 'edit', sortable: true }
 ]
 
 onMounted(async () => {
