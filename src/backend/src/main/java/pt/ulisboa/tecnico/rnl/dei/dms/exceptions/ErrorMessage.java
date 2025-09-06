@@ -15,7 +15,9 @@ public enum ErrorMessage {
 	CANNOT_DELETE_UC("Não é permitido apagar a UC %s (ID) com inscrições ativas", 1011),
 	NO_SUCH_PROJECT_SUBMISSION("Não existe nenhuma submissão de projeto com ID %s", 1012),
 	NO_SUCH_TEST_GRADE("Não existe nenhuma nota de teste com ID %s", 1013),
-	NO_SUCH_FILE("Não existe nenhum ficheiro com nome %s", 1014);
+	NO_SUCH_FILE("Não existe nenhum ficheiro com nome %s", 1014),
+	FILE_TOO_LARGE("Ficheiro demasiado grande", 1015),
+	NO_SUCH_REVISION("Não existe nenhum workflow de revisão com ID %s", 1016);
 
 	private final String label;
 	private final int code;
