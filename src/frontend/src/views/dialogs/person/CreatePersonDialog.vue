@@ -13,16 +13,30 @@
 
       <v-card prepend-icon="mdi-account" title="Nova">
         <v-card-text>
-          <v-text-field label="Nome*" required v-model="newPerson.name"></v-text-field>
-          <v-text-field label="IST ID*" required v-model="newPerson.istId"></v-text-field>
-          <v-text-field label="Email*" required v-model="newPerson.email"></v-text-field>
+          <v-text-field
+            label="Nome*"
+            v-model="newPerson.name"
+            :error-messages="errors.name"
+          />
 
-            <v-select
+          <v-text-field
+            label="IST ID*"
+            v-model="newPerson.istId"
+            :error-messages="errors.istId"
+          />
+
+          <v-text-field
+            label="Email*"
+            v-model="newPerson.email"
+            :error-messages="errors.email"
+          />
+
+          <v-select
             :items="['Administrador', 'Professor', 'Aluno']"
             label="Categoria*"
-            required
             v-model="newPerson.type"
-            ></v-select>
+            :error-messages="errors.type"
+          />
         </v-card-text>
 
         <v-divider></v-divider>
@@ -36,10 +50,7 @@
             color="primary"
             text="Save"
             variant="tonal"
-            @click="
-              dialog = false,
-              savePerson()
-            "
+            @click="savePerson()"
           ></v-btn>
         </v-card-actions>
       </v-card>
@@ -56,6 +67,7 @@ import { typeMappings } from '../../../mappings/peopleMappings'
 const dialog = ref(false)
 
 const emit = defineEmits(['person-created'])
+const errors = ref<Record<string, string>>({})
 
 const newPerson = ref<PersonDto>({
   name: '',
@@ -65,13 +77,22 @@ const newPerson = ref<PersonDto>({
 })
 
 const savePerson = async () => {
+  if (!newPerson.value.type) {
+    errors.value.type = "Campo tipo é obrigatório"
+    return
+  }
   newPerson.value.type = typeMappings[newPerson.value.type as keyof typeof typeMappings]
 
   try {
     await PersonService.createPerson(newPerson.value)
     emit('person-created')
-  } catch (error) {
-    console.error("Error creating person: ", error)
+    dialog.value = false
+  } catch (error: any) {
+    if (error.response && error.response.status === 400) {
+      errors.value = error.response.data
+    } else {
+      console.error("Error creating person: ", error)
+    }
   }
 
   newPerson.value = {
