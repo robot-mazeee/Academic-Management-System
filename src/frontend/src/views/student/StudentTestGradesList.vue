@@ -52,6 +52,11 @@
         @revision-created="reloadData"
       />
     </template>
+    <template v-slot:[`item.history`]="{ item }">
+			<v-btn class="mb-3" color="contrast" @click="displayRevisionHistoryView(revisions[`${item.student.id}-${item.test.id}`].id)">
+        Histórico
+      </v-btn>
+		</template>
   </v-data-table>
 </template>
 
@@ -65,6 +70,7 @@ import CreateRevisionDialog from '../dialogs/revision/CreateRevisionDialog.vue'
 import { useRoleStore } from '../../stores/role'
 import RevisionService from '../../services/RevisionService'
 import { getColorByStatus } from '../../mappings/revisionMappings'
+import { useRouter } from 'vue-router'
 
 let search = ref('')
 let loading = ref(true)
@@ -73,6 +79,7 @@ const grades: TestGradeDto[] = reactive([])
 const revisions = ref<Record<string, any>>({})
 
 const roleStore = useRoleStore()
+const router = useRouter()
 
 const props = defineProps<{
   student: PersonDto
@@ -85,7 +92,15 @@ const headers = [
   { title: 'Nota', key: 'grade', sortable: true, filterable: true },
   { title: 'Enunciado', key: 'testSheet', sortable: false, filterable: false },
   { title: 'Correção', key: 'correction', sortable: false, filterable: false },
-  { title: 'Revisão', key: 'revision', sortable: false, align: 'center' }
+  { title: 'Revisão', key: 'revision', sortable: false, align: 'center' },
+  {
+		title: 'Histórico',
+		key: 'history',
+		value: 'history',
+		sortable: false,
+		filterable: false,
+    align: 'center'
+	}
 ]
 
 onMounted(async () => {
@@ -120,6 +135,10 @@ async function getAllRevisions() {
   } catch (error) {
     console.error('Error getting revisions: ', error)
   }
+}
+
+function displayRevisionHistoryView(id: number) {
+  router.push({ name: 'revision-history-view', params: { id } })
 }
 
 async function reloadData() {
