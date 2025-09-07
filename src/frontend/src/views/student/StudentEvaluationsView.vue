@@ -2,6 +2,7 @@
 	<v-container>
 		<v-row justify="center">
 			<v-col cols="12" v-if="student">
+        <h1>Aluno: {{ student.name }}</h1>
         <v-tabs v-model="activeTab" background-color="primary" dark>
           <v-tab value="tests">Notas de Testes</v-tab>
           <v-tab value="projects">Submissões de Projetos</v-tab>
