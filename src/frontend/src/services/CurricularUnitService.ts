@@ -10,6 +10,10 @@ export default {
     return httpClient.get("/curricular-units")
   },
 
+  getCurricularUnit(curricularUnitId: number): Promise<CurricularUnitDto> {
+    return httpClient.get(`/curricular-units/${curricularUnitId}`)
+  },
+
   getCurricularUnitStudents(id: number): Promise<PersonDto[]> {
     return httpClient.get(`/curricular-units/${id}/students`)
   },
@@ -64,6 +68,10 @@ export default {
 
   getCurricularUnitEnrollments(id: number): Promise<EnrollmentDto[]> {
     return httpClient.get(`/curricular-units/${id}/enrollments`);
+  },
+
+  getStudentEnrollments(studentId: number): Promise<EnrollmentDto[]> {
+    return httpClient.get(`/enrollments/${studentId}`)
   },
 
   deleteEnrollment(enrollmentId: number) {

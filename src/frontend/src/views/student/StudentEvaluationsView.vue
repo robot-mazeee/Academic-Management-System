@@ -5,6 +5,7 @@
         <v-tabs v-model="activeTab" background-color="primary" dark>
           <v-tab value="tests">Notas de Testes</v-tab>
           <v-tab value="projects">Submissões de Projetos</v-tab>
+          <v-tab value="enrollments">Unidades Currculares</v-tab>
         </v-tabs>
 
         <v-window v-model="activeTab" class="mt-4">
@@ -16,6 +17,14 @@
           <v-window-item value="projects">
             <div>
               <StudentProjectSubmissionsView :student-id="student.id" />
+            </div>
+          </v-window-item>
+          <v-window-item value="enrollments">
+            <div>
+              <StudentEnrollmentsView
+                :key="activeTab === 'enrollments' ? Date.now() : 'dummy'"
+                :student-id="student.id"
+              />
             </div>
           </v-window-item>
         </v-window>
@@ -33,6 +42,7 @@ import PersonService from '../../services/PersonService';
 import PersonDto from '../../models/PersonDto';
 import { onMounted, ref } from 'vue';
 import StudentProjectSubmissionsView from './StudentProjectSubmissionsView.vue';
+import StudentEnrollmentsView from './StudentEnrollmentsView.vue';
 
 const activeTab = ref('tests')
 

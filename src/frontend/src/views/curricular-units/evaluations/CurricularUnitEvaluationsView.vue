@@ -3,8 +3,9 @@
 		<v-row justify="center">
 			<v-col cols="12">
         <v-tabs v-model="activeTab" background-color="primary" dark>
-          <v-tab value="tests">Testes</v-tab>
-          <v-tab value="projects">Projetos</v-tab>
+          <v-tab value="tests">Testes e Notas</v-tab>
+          <v-tab value="projects">Projetos e Submissões
+          </v-tab>
         </v-tabs>
 
         <v-window v-model="activeTab" class="mt-4">

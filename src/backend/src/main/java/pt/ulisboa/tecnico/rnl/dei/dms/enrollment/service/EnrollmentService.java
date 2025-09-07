@@ -81,6 +81,13 @@ public class EnrollmentService {
 	}
 
     @Transactional
+    public List<EnrollmentDto> getEnrollmentsByStudent(long studentId) {
+        return enrollmentRepository.findAllByStudent_Id(studentId).stream()
+            .map(EnrollmentDto::new)
+            .toList();
+    }
+
+    @Transactional
     public Enrollment getEnrollmentByStudentAndCurricularUnit(long studentId, long curricularUnitId) {
         return enrollmentRepository.findByStudent_IdAndCurricularUnit_Id(studentId, curricularUnitId)
             .orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_ENROLLMENT));

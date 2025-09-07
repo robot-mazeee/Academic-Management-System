@@ -24,6 +24,11 @@ public class EnrollmentController {
         return enrollmentService.getEnrollmentsByCurricularUnit(curricularUnitId);
     }
 
+    @GetMapping("/enrollments/{studentId}")
+    public List<EnrollmentDto> getEnrollmentsByStudent(@PathVariable long studentId) {
+        return enrollmentService.getEnrollmentsByStudent(studentId);
+    }
+
     @PostMapping("/curricular-units/{curricularUnitId}/enrollments")
     public EnrollmentDto createEnrollment(@PathVariable long curricularUnitId, @RequestBody EnrollmentDto enrollmentDto) {
         return enrollmentService.createEnrollment(enrollmentDto);

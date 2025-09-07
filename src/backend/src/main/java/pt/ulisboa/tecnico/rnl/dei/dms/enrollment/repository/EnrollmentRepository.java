@@ -13,6 +13,7 @@ import pt.ulisboa.tecnico.rnl.dei.dms.enrollment.domain.Enrollment;
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
     List<Enrollment> findAllByCurricularUnit(CurricularUnit curricularUnit);
     List<Enrollment> findByCurricularUnit_Id(Long curricularUnitId);
+    List<Enrollment> findAllByStudent_Id(long studenId);
     Optional<Enrollment> findByStudent_IdAndCurricularUnit_Id(long studentId, long curricularUnitId);
 }
 
