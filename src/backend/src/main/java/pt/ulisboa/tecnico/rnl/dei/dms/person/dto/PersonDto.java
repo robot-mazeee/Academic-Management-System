@@ -7,11 +7,10 @@ import jakarta.validation.constraints.*;
 public record PersonDto(
 	long id,
     @NotBlank(message = "Campo nome é obrigatório")
-    @Size(min = 3, max = 50, message = "Nome tem de ser 3-20 charateres")
+    @Size(min = 3, max = 50, message = "Nome tem de ser 3-50 charateres")
     String name,
 
     @NotBlank(message = "Campo IstId é obrigatório")
-    @Pattern(regexp = "^ist\\d+$", message = "Campo IstId tem de começar com 'ist' seguido de números")
     String istId,
 
     @NotNull(message = "Campo tipo é obrigatório")

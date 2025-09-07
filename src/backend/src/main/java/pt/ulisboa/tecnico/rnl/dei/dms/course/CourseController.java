@@ -3,6 +3,8 @@ package pt.ulisboa.tecnico.rnl.dei.dms.course;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import pt.ulisboa.tecnico.rnl.dei.dms.course.dto.CourseDto;
 import pt.ulisboa.tecnico.rnl.dei.dms.course.service.CourseService;
 
@@ -25,13 +28,15 @@ public class CourseController {
     }
 
     @PostMapping("/courses")
-    public CourseDto createCourse(@RequestBody CourseDto courseDto) {
-        return courseService.createCourse(courseDto);
+    public ResponseEntity<CourseDto> createCourse(@Valid @RequestBody CourseDto courseDto) {
+        CourseDto created = courseService.createCourse(courseDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @PutMapping("/courses/{courseId}")
-    public CourseDto updateCourse(@PathVariable long courseId, @RequestBody CourseDto courseDto) {
-        return courseService.updateCourse(courseId, courseDto);
+    public ResponseEntity<CourseDto> updateCourse(@PathVariable long courseId, @Valid @RequestBody CourseDto courseDto) {
+        CourseDto updated = courseService.updateCourse(courseId, courseDto);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/courses/{courseId}")
