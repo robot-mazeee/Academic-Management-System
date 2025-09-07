@@ -57,7 +57,7 @@
         v-if="revisions[`${item.student.id}-${item.test.id}`]"
         class="mb-3" 
         color="contrast" 
-        @click="displayRevisionHistoryView(item.id)"
+        @click="displayRevisionHistoryView(revisions[`${item.student.id}-${item.test.id}`].id)"
       >
         Histórico
       </v-btn>
