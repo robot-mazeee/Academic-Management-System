@@ -64,7 +64,7 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import { reactive, ref, onMounted } from 'vue'
-import TestDto from '../../../models/TestDto'
+import TestDto from '../../../models/evaluations/TestDto'
 import CurricularUnitService from '../../../services/CurricularUnitService'
 import CreateTestDialog from '../../dialogs/evaluation/CreateTestDialog.vue'
 import { useRoleStore } from '../../../stores/role'

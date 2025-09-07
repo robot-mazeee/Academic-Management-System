@@ -1,9 +1,9 @@
-import type TestGradeDto from "@/models/TestGradeDto";
+import type TestGradeDto from "@/models/evaluations/TestGradeDto";
 import httpClient from "./ApiClient";
-import type TestDto from "@/models/TestDto";
-import type ProjectDto from "@/models/ProjectDto";
-import type ProjectSubmissionDto from "@/models/ProjectSubmissionDto";
-import type GroupDto from "@/models/GroupDto";
+import type TestDto from "../models/evaluations/TestDto";
+import type ProjectDto from "../models/evaluations/ProjectDto";
+import type ProjectSubmissionDto from "@/models/evaluations/ProjectSubmissionDto";
+import type GroupDto from "@/models/evaluations/GroupDto";
 
 export default {
   getTests(): Promise<TestDto[]> {

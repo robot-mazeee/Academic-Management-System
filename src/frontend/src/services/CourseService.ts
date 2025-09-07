@@ -1,4 +1,4 @@
-import type CourseDto from "@/models/CourseDto"
+import type CourseDto from "../models/course/CourseDto"
 import httpClient from "./ApiClient"
 
 export default {

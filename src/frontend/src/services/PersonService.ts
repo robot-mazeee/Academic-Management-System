@@ -1,5 +1,5 @@
 import httpClient from "./ApiClient";
-import type PersonDto from "@/models/PersonDto";
+import type PersonDto from "../models/person/PersonDto";
 
 export default {
   getPeople(): Promise<PersonDto[]> {

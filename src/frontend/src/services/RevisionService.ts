@@ -1,6 +1,6 @@
-import RevisionDto from "@/models/RevisionDto";
+import RevisionDto from "@/models/revisions/RevisionDto";
 import httpClient from "./ApiClient";
-import type RevisionHistoryDto from "@/models/RevisionHistoryDto";
+import type RevisionHistoryDto from "@/models/revisions/RevisionHistoryDto";
 
 export default {
   getRevisions(): Promise<RevisionDto[]> {

@@ -46,7 +46,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import TestDto from '../../../models/TestDto'
+import TestDto from '../../../models/evaluations/TestDto'
 import EvaluationService from '../../../services/EvaluationService';
 
 const dialog = ref(false)

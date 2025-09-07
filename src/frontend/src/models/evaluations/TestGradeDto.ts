@@ -1,5 +1,5 @@
 import type PersonDto from "./PersonDto";
-import type TestDto from "./TestDto";
+import type TestDto from "./evaluations/TestDto";
 
 export default class TestGradeDto {
   id?: number

@@ -1,4 +1,4 @@
-import type TestDto from "./TestDto";
+import type TestDto from "./evaluations/TestDto";
 import type PersonDto from "./PersonDto";
 
 export default class RevisionDto {

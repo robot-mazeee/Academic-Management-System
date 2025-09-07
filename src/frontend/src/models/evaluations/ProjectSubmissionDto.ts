@@ -1,5 +1,5 @@
 import type GroupDto from "./GroupDto";
-import type ProjectDto from "./ProjectDto";
+import type ProjectDto from "./evaluations/ProjectDto";
 
 export default class ProjectSubmissionDto {
   id?: number

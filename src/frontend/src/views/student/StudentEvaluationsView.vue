@@ -40,7 +40,7 @@
 <script setup lang="ts">
 import StudentTestGradesList from './StudentTestGradesList.vue';
 import PersonService from '../../services/PersonService';
-import PersonDto from '../../models/PersonDto';
+import PersonDto from '../../models/person/PersonDto';
 import { onMounted, ref } from 'vue';
 import StudentProjectSubmissionsView from './StudentProjectSubmissionsView.vue';
 import StudentEnrollmentsView from './StudentEnrollmentsView.vue';

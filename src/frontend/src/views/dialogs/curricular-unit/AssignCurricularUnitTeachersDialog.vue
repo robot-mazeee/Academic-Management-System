@@ -50,7 +50,7 @@
 
 <script setup lang="ts">
 import { ref, watch, onMounted } from 'vue'
-import PersonDto from '../../../models/PersonDto'
+import PersonDto from '../../../models/person/PersonDto'
 import CurricularUnitService from '../../../services/CurricularUnitService'
 import PersonService from '../../../services/PersonService'
 

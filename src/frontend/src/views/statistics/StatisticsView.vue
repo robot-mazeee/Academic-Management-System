@@ -41,8 +41,8 @@ import RevisionService from '../../services/RevisionService'
 import CurricularUnitService from '../../services/CurricularUnitService'
 import StatGrid from '../../components/statistics/StatGrid.vue'
 import BarChart from '../../components/statistics/BarChart.vue'
-import EnrollmentDto from '../../models/EnrollmentDto'
-import CurricularUnitDto from '../../models/CurricularUnitDto'
+import EnrollmentDto from '../../models/curricular-units/EnrollmentDto'
+import CurricularUnitDto from '../../models/curricular-units/CurricularUnitDto'
 
 import { ChartData, ChartOptions } from 'chart.js'
 

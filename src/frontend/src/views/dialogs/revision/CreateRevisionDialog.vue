@@ -42,8 +42,8 @@
 import { ref } from 'vue'
 import RevisionDto from '../../../models/RevisionDto'
 import RevisionService from '../../../services/RevisionService'
-import TestDto from '../../../models/TestDto'
-import PersonDto from '../../../models/PersonDto'
+import TestDto from '../../../models/evaluations/TestDto'
+import PersonDto from '../../../models/person/PersonDto'
 
 const dialog = ref(false)
 

@@ -60,7 +60,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import PersonDto from '../../../models/PersonDto'
+import PersonDto from '../../../models/person/PersonDto'
 import PersonService from '../../../services/PersonService'
 import { typeMappings } from '../../../mappings/peopleMappings'
 

@@ -68,7 +68,7 @@
 import { reactive, ref, onMounted } from 'vue'
 import EvaluationService from '../../services/EvaluationService'
 import ProjectSubmissionDto from '../../models/ProjectSubmissionDto'
-import ProjectDto from '../../models/ProjectDto'
+import ProjectDto from '../../models/evaluations/ProjectDto'
 import { useRoleStore } from '../../stores/role'
 import FileUpload from '../../components/file/FileUpload.vue'
 import FileDownload from '../../components/file/FileDownload.vue'

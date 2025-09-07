@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import PersonDto from '../../../models/PersonDto'
+import PersonDto from '../../../models/person/PersonDto'
 import CurricularUnitService from '../../../services/CurricularUnitService'
 import { reactive, ref } from 'vue'
 import { onMounted } from 'vue'

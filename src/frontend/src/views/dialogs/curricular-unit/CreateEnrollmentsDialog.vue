@@ -50,7 +50,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
-import PersonDto from '../../../models/PersonDto'
+import PersonDto from '../../../models/person/PersonDto'
 import CurricularUnitService from '../../../services/CurricularUnitService'
 import PersonService from '../../../services/PersonService'
 import EnrollmentDto from '../../../models/EnrollmentDto';

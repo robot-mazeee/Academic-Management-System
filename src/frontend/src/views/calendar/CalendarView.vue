@@ -18,9 +18,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import Calendar from '../../components/calendar/Calendar.vue'
-import TestDto from '../../models/TestDto'
+import TestDto from '../../models/evaluations/TestDto'
 import EvaluationService from '../../services/EvaluationService'
-import ProjectDto from '../../models/ProjectDto'
+import ProjectDto from '../../models/evaluations/ProjectDto'
 
 const events = ref<any[]>([])
 const loaded = ref(false)

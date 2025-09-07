@@ -50,7 +50,7 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import TestDto from '../../../models/TestDto'
+import TestDto from '../../../models/evaluations/TestDto'
 import EvaluationService from '../../../services/EvaluationService'
 
 const dialog = ref(false)

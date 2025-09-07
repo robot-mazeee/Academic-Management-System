@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import PersonDto from '../../models/PersonDto'
+import PersonDto from '../../models/person/PersonDto'
 import PersonService from '../../services/PersonService'
 import CreatePersonDialog from '../dialogs/person/CreatePersonDialog.vue'
 import { reactive, ref } from 'vue'

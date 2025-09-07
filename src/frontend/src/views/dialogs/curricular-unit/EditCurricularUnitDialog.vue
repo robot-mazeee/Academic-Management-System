@@ -74,9 +74,9 @@ import { ref, reactive, watch } from 'vue'
 import CurricularUnitDto from '../../../models/CurricularUnitDto'
 import CurricularUnitService from '../../../services/CurricularUnitService'
 import { onMounted } from 'vue'
-import PersonDto from '../../../models/PersonDto'
+import PersonDto from '../../../models/person/PersonDto'
 import PersonService from '../../../services/PersonService'
-import CourseDto from '../../../models/CourseDto'
+import CourseDto from '../../../models/course/CourseDto'
 import CourseService from '../../../services/CourseService'
 
 const dialog = ref(false)

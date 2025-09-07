@@ -52,7 +52,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import EvaluationService from '../../../services/EvaluationService'
-import ProjectDto from '../../../models/ProjectDto';
+import ProjectDto from '../../../models/evaluations/ProjectDto';
 
 const dialog = ref(false)
 const emit = defineEmits(['project-edited'])

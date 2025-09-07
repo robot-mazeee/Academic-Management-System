@@ -69,7 +69,7 @@
 import { reactive, ref, onMounted } from 'vue'
 import EvaluationService from '../../services/EvaluationService'
 import TestGradeDto from '../../models/TestGradeDto'
-import PersonDto from '../../models/PersonDto'
+import PersonDto from '../../models/person/PersonDto'
 import FileDownload from '../../components/file/FileDownload.vue'
 import CreateRevisionDialog from '../dialogs/revision/CreateRevisionDialog.vue'
 import { useRoleStore } from '../../stores/role'

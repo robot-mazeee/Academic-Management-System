@@ -40,7 +40,7 @@
 import { reactive, ref } from 'vue'
 import { onMounted } from 'vue'
 import { useRoleStore } from '../../stores/role'
-import CourseDto from '../../models/CourseDto'
+import CourseDto from '../../models/course/CourseDto'
 import CourseService from '../../services/CourseService'
 import CreateCourseDialog from '../dialogs/course/CreateCourseDialog.vue'
 import EditCourseDialog from '../dialogs/course/EditCourseDialog.vue'

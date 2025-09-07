@@ -33,7 +33,7 @@ import { useRoute } from 'vue-router'
 import CurricularUnitService from '../../../services/CurricularUnitService'
 import { reactive, ref } from 'vue'
 import { onMounted, watch } from 'vue'
-import PersonDto from '../../../models/PersonDto'
+import PersonDto from '../../../models/person/PersonDto'
 import { getColorByType, translateType } from '../../../mappings/peopleMappings'
 
 let search = ref('')

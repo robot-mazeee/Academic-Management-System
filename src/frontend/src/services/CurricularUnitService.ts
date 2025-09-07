@@ -1,9 +1,9 @@
-import type PersonDto from "@/models/PersonDto";
+import type PersonDto from "../models/person/PersonDto";
 import httpClient from "./ApiClient";
-import CurricularUnitDto from "@/models/CurricularUnitDto";
-import type TestDto from "@/models/TestDto";
-import ProjectDto from "@/models/ProjectDto";
-import type EnrollmentDto from "@/models/EnrollmentDto";
+import CurricularUnitDto from "@/models/curricular-units/CurricularUnitDto";
+import type TestDto from "../models/evaluations/TestDto";
+import ProjectDto from "../models/evaluations/ProjectDto";
+import type EnrollmentDto from "@/models/curricular-units/EnrollmentDto";
 
 export default {
   getCurricularUnits(): Promise<CurricularUnitDto[]> {

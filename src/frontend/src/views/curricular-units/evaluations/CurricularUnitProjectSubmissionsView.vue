@@ -86,7 +86,7 @@ import { useRoute, useRouter } from 'vue-router'
 import EvaluationService from '../../../services/EvaluationService'
 import ProjectSubmissionDto from '../../../models/ProjectSubmissionDto'
 import { useRoleStore } from '../../../stores/role'
-import ProjectDto from '../../../models/ProjectDto'
+import ProjectDto from '../../../models/evaluations/ProjectDto'
 import FileDownload from '../../../components/file/FileDownload.vue'
 import formatDateTime from '../../../mappings/dateMappings'
 
