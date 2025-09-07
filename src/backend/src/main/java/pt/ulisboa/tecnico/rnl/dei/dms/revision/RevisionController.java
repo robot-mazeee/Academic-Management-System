@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import pt.ulisboa.tecnico.rnl.dei.dms.revision.dto.RevisionDto;
+import pt.ulisboa.tecnico.rnl.dei.dms.revision.dto.RevisionHistoryDto;
 import pt.ulisboa.tecnico.rnl.dei.dms.revision.service.RevisionService;
 
 @RestController
@@ -31,6 +32,11 @@ public class RevisionController {
     @GetMapping("/revisions/student/{studentId}")
     public List<RevisionDto> getRevisionByStudent(@PathVariable long studentId) {
         return revisionService.getRevisionByStudent(studentId);
+    }
+
+    @GetMapping("/revisions/{revisionId}/history")
+    public List<RevisionHistoryDto> getRevisionHistory(@PathVariable long revisionId) {
+        return revisionService.getRevisionHistory(revisionId);
     }
 
     @PostMapping("/revisions") 

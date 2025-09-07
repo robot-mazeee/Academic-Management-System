@@ -10,8 +10,11 @@ import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.ErrorMessage;
 import pt.ulisboa.tecnico.rnl.dei.dms.person.domain.Person;
 import pt.ulisboa.tecnico.rnl.dei.dms.person.repository.PersonRepository;
 import pt.ulisboa.tecnico.rnl.dei.dms.revision.domain.Revision;
+import pt.ulisboa.tecnico.rnl.dei.dms.revision.domain.RevisionHistory;
 import pt.ulisboa.tecnico.rnl.dei.dms.revision.domain.RevisionStatus;
 import pt.ulisboa.tecnico.rnl.dei.dms.revision.dto.RevisionDto;
+import pt.ulisboa.tecnico.rnl.dei.dms.revision.dto.RevisionHistoryDto;
+import pt.ulisboa.tecnico.rnl.dei.dms.revision.repository.RevisionHistoryRepository;
 import pt.ulisboa.tecnico.rnl.dei.dms.revision.repository.RevisionRepository;
 
 import java.util.List;
@@ -28,6 +31,9 @@ public class RevisionService {
 
     @Autowired
     private PersonRepository personRepository;
+
+    @Autowired
+    private RevisionHistoryRepository revisionHistoryRepository;
 
     private Revision fetchRevisionOrThrow(long id) {
         return revisionRepository.findById(id)
@@ -56,6 +62,13 @@ public class RevisionService {
     }
 
     @Transactional
+    public void createRevisionHistory(Revision revision) {
+        RevisionHistory history = new RevisionHistory(revision, revision.getStatus());
+        revisionHistoryRepository.save(history);
+        revision.getHistory().add(history);
+    }
+
+    @Transactional
     public RevisionDto createRevision(RevisionDto revisionDto) {
         Test test = testRepository.findById(revisionDto.test().id())
             .orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_TEST, Long.toString(revisionDto.test().id())));
@@ -69,8 +82,11 @@ public class RevisionService {
             student,
             revisionDto.reason()
         );
+        revisionRepository.save(revision);
 
-        return new RevisionDto(revisionRepository.save(revision));
+        createRevisionHistory(revision);
+
+        return new RevisionDto(revision);
     }
 
     @Transactional
@@ -78,6 +94,19 @@ public class RevisionService {
         Revision revision = fetchRevisionOrThrow(revisionDto.id());
         revision.setStatus(RevisionStatus.valueOf(revisionDto.status().toUpperCase()));
         revisionRepository.save(revision);
+
+        createRevisionHistory(revision);
+
         return new RevisionDto(revision);
+    }
+
+    @Transactional
+    public List<RevisionHistoryDto> getRevisionHistory(long revisionId) {
+        Revision revision = fetchRevisionOrThrow(revisionId);
+
+        return revisionHistoryRepository.findByRevisionOrderByDateTimeAsc(revision)
+                .stream()
+                .map(RevisionHistoryDto::new)
+                .toList();
     }
 }
