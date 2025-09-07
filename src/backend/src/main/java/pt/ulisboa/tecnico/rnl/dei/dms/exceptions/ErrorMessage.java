@@ -8,12 +8,16 @@ public enum ErrorMessage {
 	PERSON_EMAIL_NOT_VALID("O email da pessoa especificado não é válido.", 1002),
 	PERSON_TYPE_NOT_VALID("O tipo da pessoa especificado não é válido.", 1002),
 
+	NO_SUCH_COURSE("Não existe nenhum curso com ID %s", 1009),
+	COURSE_CODE_NOT_VALID("O código do curso especificado não é válido.", 1009),
+	COURSE_NAME_NOT_VALID("O nome do curso especificado não é válido.", 1009),
+	COURSE_DURATION_NOT_VALID("A duração do curso especificado não é válido.", 1009),
+
 	NO_SUCH_CURRICULAR_UNIT("Não existe nenhuma unidade curricular com o ID %s", 1004),
 	NO_SUCH_TEST("Não existe nenhum teste com o ID %s", 1005),
 	NO_SUCH_ENROLLMENT("Não existe nenhuma incrição com o ID %s", 1006),
 	NO_SUCH_TEACHING_ASSISTANT_FOR_UC("Não existe na UC nenhum professor assistente com ID %s", 1007),
 	NO_SUCH_STUDENT_FOR_UC("Não existe na UC nenhum aluno com ID %s", 1008),
-	NO_SUCH_COURSE("Não existe nenhum curso com ID %s", 1009),
 	NO_SUCH_PROJECT("Não existe nenhum projeto com ID %s", 1010),
 	CANNOT_DELETE_UC("Não é permitido apagar a UC %s (ID) com inscrições ativas", 1011),
 	NO_SUCH_PROJECT_SUBMISSION("Não existe nenhuma submissão de projeto com ID %s", 1012),

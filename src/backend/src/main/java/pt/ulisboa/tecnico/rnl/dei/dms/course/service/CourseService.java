@@ -23,6 +23,23 @@ public class CourseService {
 				.orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_COURSE, Long.toString(id)));
 	}
 
+	private void checkValidCourseDto(CourseDto courseDto) {
+		if (courseDto.name() == null || courseDto.name().length() == 0) {
+			throw new DEIException(ErrorMessage.COURSE_NAME_NOT_VALID);
+		}
+		if (courseDto.code() == null || courseDto.code().length() == 0) {
+			throw new DEIException(ErrorMessage.COURSE_CODE_NOT_VALID);
+		}
+		try {
+			if (courseDto.duration() <= 0) {
+				throw new DEIException(ErrorMessage.COURSE_DURATION_NOT_VALID);
+			}
+		} catch (NumberFormatException e) {
+			throw new DEIException(ErrorMessage.COURSE_DURATION_NOT_VALID);
+		}
+
+	}
+
     @Transactional
     public List<CourseDto> getCourses() {
         return courseRepository.findAll().stream()
@@ -32,6 +49,7 @@ public class CourseService {
 
     @Transactional
 	public CourseDto createCourse(CourseDto courseDto) {
+		checkValidCourseDto(courseDto);
 		Course course = new Course(courseDto);
 		course.setId(null);
 		return new CourseDto(courseRepository.save(course));
@@ -39,6 +57,7 @@ public class CourseService {
 
     @Transactional
 	public CourseDto updateCourse(long id, CourseDto courseDto) {
+		checkValidCourseDto(courseDto);
 		Course existingCourse = fetchCourseOrThrow(id);
 		
 		existingCourse.setName(courseDto.name());
