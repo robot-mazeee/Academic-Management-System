@@ -42,7 +42,7 @@ public class PersonService {
 	@Autowired
 	private ProjectSubmissionRepository projectSubmissionRepository;
 
-
+	@Autowired
 	private TestGradeRepository testGradeRepository;
 
 	private Person fetchPersonOrThrow(long id) {
