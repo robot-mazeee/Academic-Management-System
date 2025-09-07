@@ -43,6 +43,11 @@
 				/>
 			</div>
 		</template>
+		<template v-slot:[`item.history`]="{ item }">
+			<v-btn class="mb-3" color="contrast" @click="displayRevisionHistoryView(item.id)">
+        Histórico
+      </v-btn>
+		</template>
 	</v-data-table>
 </template>
 
@@ -54,6 +59,7 @@ import RevisionService from '../../services/RevisionService'
 import RevisionDto from '../../models/RevisionDto'
 import MainTeacherActions from './MainTeacherActions.vue'
 import TeachingAssistantActions from './TeachingAssistantActions.vue'
+import { useRouter } from 'vue-router'
 
 let search = ref('')
 let loading = ref(true)
@@ -96,11 +102,20 @@ const headers = [
 		value: 'actions',
 		sortable: false,
 		filterable: false,
-    align: 'center'
+    	align: 'center'
+	},
+	{
+		title: 'Histórico',
+		key: 'history',
+		value: 'history',
+		sortable: false,
+		filterable: false,
+    	align: 'center'
 	}
 ]
 
 const roleStore = useRoleStore()
+const router = useRouter()
 
 onMounted(async () => {
   await getRevisions()
@@ -114,6 +129,10 @@ async function getRevisions() {
     console.log('Error getting revisions')
   }
   loading.value = false
+}
+
+function displayRevisionHistoryView(id: number) {
+  router.push({ name: 'revision-history-view', params: { id } })
 }
 
 const fuzzySearch = (value: string, search: string) => {

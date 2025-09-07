@@ -1,5 +1,6 @@
 import RevisionDto from "@/models/RevisionDto";
 import httpClient from "./ApiClient";
+import type RevisionHistoryDto from "@/models/RevisionHistoryDto";
 
 export default {
   getRevisions(): Promise<RevisionDto[]> {
@@ -12,6 +13,10 @@ export default {
 
   getRevisionsByStudent(studentId: number): Promise<RevisionDto[]> {
     return httpClient.get(`/revisions/student/${studentId}`)
+  },
+
+  getRevisionHistory(revisionId: number): Promise<RevisionHistoryDto[]> {
+    return httpClient.get(`/revisions/${revisionId}/history`)
   },
 
   createRevision(revisionDto: RevisionDto): Promise<RevisionDto> {

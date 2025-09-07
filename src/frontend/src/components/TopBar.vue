@@ -16,7 +16,7 @@ const navbarItems = computed(() => {
     { name: 'Pessoal', path: '/people', icon: 'mdi-account-group' },
     { name: 'Cursos', path: '/courses', icon: 'mdi-book' },
     { name: 'Unidades Curiculares', path: '/curricular-units', icon: 'mdi-school' },
-    { name: 'Revisões de Prova', path: '/revisions', icon: 'mdi-chart-bar' },
+    { name: 'Revisões de Prova', path: '/revisions', icon: 'mdi-file' },
     { name: 'Calendário', path: '/calendar', icon: 'mdi-calendar' },
     { name: 'Estatísticas', path: '/statistics', icon: 'mdi-chart-bar' },
   ]
