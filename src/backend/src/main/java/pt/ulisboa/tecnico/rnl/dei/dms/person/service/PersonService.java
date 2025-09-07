@@ -6,12 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.repository.CurricularUnitRepository;
+import pt.ulisboa.tecnico.rnl.dei.dms.enrollment.repository.EnrollmentRepository;
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.DEIException;
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.ErrorMessage;
 import pt.ulisboa.tecnico.rnl.dei.dms.person.domain.Person;
 import pt.ulisboa.tecnico.rnl.dei.dms.person.domain.Person.PersonType;
 import pt.ulisboa.tecnico.rnl.dei.dms.person.dto.PersonDto;
 import pt.ulisboa.tecnico.rnl.dei.dms.person.repository.PersonRepository;
+import pt.ulisboa.tecnico.rnl.dei.dms.projectsubmission.repository.GroupRepository;
+import pt.ulisboa.tecnico.rnl.dei.dms.projectsubmission.repository.ProjectSubmissionRepository;
+import pt.ulisboa.tecnico.rnl.dei.dms.revision.repository.RevisionRepository;
+import pt.ulisboa.tecnico.rnl.dei.dms.testgrade.repository.TestGradeRepository;
 
 // Service class for managing Person entities
 @Service
@@ -20,6 +26,24 @@ public class PersonService {
 
 	@Autowired
 	private PersonRepository personRepository;
+
+		@Autowired
+	private CurricularUnitRepository curricularUnitRepository;
+
+	@Autowired
+	private GroupRepository groupRepository;
+
+	@Autowired
+	private RevisionRepository revisionRepository;
+
+	@Autowired
+	private EnrollmentRepository enrollmentRepository;
+
+	@Autowired
+	private ProjectSubmissionRepository projectSubmissionRepository;
+
+
+	private TestGradeRepository testGradeRepository;
 
 	private Person fetchPersonOrThrow(long id) {
 		return personRepository.findById(id)
@@ -103,9 +127,35 @@ public class PersonService {
 	}
 
 	@Transactional
-	public void deletePerson(long id) {
-		fetchPersonOrThrow(id); // ensure exists
+	public void deletePerson(long personId) {
+		Person person = fetchPersonOrThrow(personId);
 
-		personRepository.deleteById(id);
+		// remove curricular unit references
+		curricularUnitRepository.findAll().forEach(cu -> {
+			cu.getStudents().remove(person);
+			cu.getTeachingAssistants().remove(person);
+			if (person.equals(cu.getMainTeacher())) cu.setMainTeacher(null);
+		});
+
+		// delete test grades
+		testGradeRepository.deleteByStudentId(personId);
+
+		// delete all enrollments
+		enrollmentRepository.deleteByStudentId(personId);
+
+		// delete all group references
+		groupRepository.findAll().forEach(group -> {
+			group.getMembers().remove(person);
+			if (group.getMembers().isEmpty()) {
+				projectSubmissionRepository.deleteByGroup_Id(group.getId());
+				groupRepository.delete(group);
+			}
+		});
+
+		// delete all revisions
+		revisionRepository.deleteByStudent_Id(personId);
+
+		// delete the person
+		personRepository.deleteById(personId);
 	}
 }

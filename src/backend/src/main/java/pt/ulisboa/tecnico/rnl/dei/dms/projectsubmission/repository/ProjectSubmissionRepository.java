@@ -17,4 +17,5 @@ public interface ProjectSubmissionRepository extends JpaRepository<ProjectSubmis
     List<ProjectSubmission> findByProject_IdAndGroup_Members_Id(Long projectId, Long personId);
     List<ProjectSubmission> findByGroup_Id(Long groupId);
     void deleteByProject_Id(long id);
+    void deleteByGroup_Id(long groupId);
 }
