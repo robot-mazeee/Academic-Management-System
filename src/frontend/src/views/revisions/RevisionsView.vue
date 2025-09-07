@@ -36,7 +36,7 @@
 					:revision="item" 
 					@revision-updated="getRevisions"
 				/>
-        		<TeachingAssistantActions 
+        <TeachingAssistantActions 
 					v-if="roleStore.isTeachingAssistant" 
 					:revision="item" 
 					@revision-updated="getRevisions"
@@ -44,7 +44,12 @@
 			</div>
 		</template>
 		<template v-slot:[`item.history`]="{ item }">
-			<v-btn class="mb-3" color="contrast" @click="displayRevisionHistoryView(item.id)">
+			<v-btn 
+        v-if="item"
+        class="mb-3" 
+        color="contrast" 
+        @click="displayRevisionHistoryView(item.id)"
+      >
         Histórico
       </v-btn>
 		</template>

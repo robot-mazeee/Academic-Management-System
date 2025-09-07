@@ -53,7 +53,12 @@
       />
     </template>
     <template v-slot:[`item.history`]="{ item }">
-			<v-btn class="mb-3" color="contrast" @click="displayRevisionHistoryView(revisions[`${item.student.id}-${item.test.id}`].id)">
+			<v-btn 
+        v-if="revisions[`${item.student.id}-${item.test.id}`]"
+        class="mb-3" 
+        color="contrast" 
+        @click="displayRevisionHistoryView(item.id)"
+      >
         Histórico
       </v-btn>
 		</template>
