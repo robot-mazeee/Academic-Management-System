@@ -54,19 +54,7 @@ public class ProjectSubmissionService {
 	}
 
     @Transactional
-	public ProjectSubmissionDto createProjectSubmission(ProjectSubmissionDto projectSubmissionDto) {
-        ProjectSubmission projectSubmission = new ProjectSubmission(projectSubmissionDto);
-
-        projectSubmission.setId(null);
-        double randomGrade = ThreadLocalRandom.current().nextDouble(0, 20);
-        double roundedGrade = Math.round(randomGrade * 100.0) / 100.0;
-        projectSubmission.setGrade(roundedGrade);
-        
-        return new ProjectSubmissionDto(projectSubmissionRepository.save(projectSubmission));
-	}
-
-    @Transactional
-    public ProjectSubmissionDto createSubmission(Long projectId, Long studentId) {
+    public ProjectSubmissionDto createSubmission(Long projectId, Long studentId, String submissionFile) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_PROJECT, Long.toString(projectId)));
 
@@ -76,11 +64,11 @@ public class ProjectSubmissionService {
         submission.setProject(project);
         submission.setGroup(group);
         submission.setSubDateTime(LocalDateTime.now());
+        submission.setSubmission(submissionFile);
         double randomGrade = ThreadLocalRandom.current().nextDouble(0, 20);
         double roundedGrade = Math.round(randomGrade * 100.0) / 100.0;
         submission.setGrade(roundedGrade);
-
-        System.out.println(submission);
+        System.out.println(submission.getSubmission());
 
         return new ProjectSubmissionDto(projectSubmissionRepository.save(submission));
     }
@@ -125,13 +113,6 @@ public class ProjectSubmissionService {
     public ProjectSubmissionDto getGroupLatestSubmission(long groupId) {
         List<ProjectSubmissionDto> submissions = getProjectSubmissionsByGroup(groupId);
         return submissions.getLast();
-    }
-
-    @Transactional
-    public ProjectSubmissionDto assignSubmission(Long projectSubmissionId, String submission) {
-        ProjectSubmission projectSubmission = fetchProjectSubmissionOrThrow(projectSubmissionId);
-        projectSubmission.setSubmission(submission);
-        return new ProjectSubmissionDto(projectSubmission);
     }
 
     @Transactional

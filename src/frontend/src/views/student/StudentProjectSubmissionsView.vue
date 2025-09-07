@@ -139,8 +139,8 @@ function beforeSubmissionDeadline(project: ProjectDto) {
 async function createProjectSubmission(fileName: string, project: ProjectDto) {
   console.log('creating project submission')
   try {
-    await EvaluationService.createProjectSubmission(project.id, props.studentId)
-    const response = await FileService.assignProjectSubmission(fileName, project.id)
+    console.log('submission name: ', fileName)
+    const response = await EvaluationService.createProjectSubmission(project.id, props.studentId, fileName)
     console.log('Created submission: ', response)
     await getProjectsAndSubmissions()
   } catch (error) {

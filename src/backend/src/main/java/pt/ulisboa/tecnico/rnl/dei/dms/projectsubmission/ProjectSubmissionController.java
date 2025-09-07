@@ -16,8 +16,8 @@ public class ProjectSubmissionController {
     private ProjectSubmissionService submissionService;
 
     @PostMapping("/project/{projectId}/student/{studentId}")
-    public ProjectSubmissionDto createSubmission(@PathVariable Long projectId, @PathVariable Long studentId) {
-        return submissionService.createSubmission(projectId, studentId);
+    public ProjectSubmissionDto createSubmission(@PathVariable Long projectId, @PathVariable Long studentId, @RequestBody String submission) {
+        return submissionService.createSubmission(projectId, studentId, submission);
     }
 
     @GetMapping("/submissions/project/{projectId}")
@@ -25,9 +25,9 @@ public class ProjectSubmissionController {
         return submissionService.getProjectSubmissionsByProject(projectId);
     }
 
-    @GetMapping("/submissions/student/{personId}")
-    public List<ProjectSubmissionDto> getSubmissionsByStudent(@PathVariable long personId) {
-        return submissionService.getProjectSubmissionsByStudent(personId);
+    @GetMapping("/submissions/student/{studentId}")
+    public List<ProjectSubmissionDto> getSubmissionsByStudent(@PathVariable long studentId) {
+        return submissionService.getProjectSubmissionsByStudent(studentId);
     }
 
     @GetMapping("/submissions/student/{personId}/project/{projectId}")
@@ -38,11 +38,6 @@ public class ProjectSubmissionController {
     @GetMapping("/submissions/group/{groupId}")
     public List<ProjectSubmissionDto> getSubmissionsByGroup(@PathVariable long groupId) {
         return submissionService.getProjectSubmissionsByGroup(groupId);
-    }
-
-    @PatchMapping("/project-submissions/{projectId}/submission")
-    public ProjectSubmissionDto assignProjectSubmission(@PathVariable Long projectId, @RequestBody String submission) {
-        return submissionService.assignSubmission(projectId, submission);
     }
 
     @GetMapping("/project-submissions/{projectId}/submission")

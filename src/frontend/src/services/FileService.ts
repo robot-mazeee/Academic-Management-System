@@ -29,8 +29,4 @@ export default class FileService {
   static async assignTestGradeCorrection(correction: string, testGradeId: number) {
     return httpClient.patch(`/test-grades/${testGradeId}/correction`, correction)
   }
-
-  static async assignProjectSubmission(submission: string, projectId: number) {
-    return httpClient.patch(`/project-submissions/${projectId}/submission`, submission)
-  }
 }

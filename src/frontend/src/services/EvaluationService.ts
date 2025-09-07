@@ -70,7 +70,7 @@ export default {
     return httpClient.get(`/submissions/group/${groupId}`)
   },
 
-  createProjectSubmission(projectId: number, studentId: number): Promise<ProjectSubmissionDto> {
-    return httpClient.post(`/project/${projectId}/student/${studentId}`)
+  createProjectSubmission(projectId: number, studentId: number, submission: string): Promise<ProjectSubmissionDto> {
+    return httpClient.post(`/project/${projectId}/student/${studentId}`, submission)
   }
 }
