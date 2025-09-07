@@ -56,6 +56,24 @@ public class CurricularUnitService {
 				.orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_PERSON, Long.toString(id)));
 	}
 
+	private void checkValidCurricularUnitDto(CurricularUnitDto curricularUnitDto) {
+		if (curricularUnitDto.code() == null || curricularUnitDto.code().length() == 0) {
+			throw new DEIException(ErrorMessage.CURRICULAR_UNIT_CODE_NOT_VALID);
+		}
+		if (curricularUnitDto.name() == null || curricularUnitDto.name().length() == 0) {
+			throw new DEIException(ErrorMessage.CURRICULAR_UNIT_NAME_NOT_VALID);
+		}
+		if (curricularUnitDto.semester() == null) {
+			throw new DEIException(ErrorMessage.CURRICULAR_UNIT_SEMESTER_NOT_VALID);
+		}
+		if (curricularUnitDto.course() == null) {
+			throw new DEIException(ErrorMessage.CURRICULAR_UNIT_COURSE_NOT_VALID);
+		}
+		if (curricularUnitDto.mainTeacher() == null) {
+			throw new DEIException(ErrorMessage.CURRICULAR_UNIT_MAIN_TEACHER_NOT_VALID);
+		}
+	}
+
     @Transactional
 	public List<CurricularUnitDto> getCurricularUnits() {
 		return curricularUnitRepository.findAll().stream()
@@ -65,6 +83,7 @@ public class CurricularUnitService {
 
     @Transactional
 	public CurricularUnitDto createCurricularUnit(CurricularUnitDto curricularUnitDto) {
+		checkValidCurricularUnitDto(curricularUnitDto);
 		CurricularUnit curricularUnit = new CurricularUnit(curricularUnitDto);
 		curricularUnit.setId(null);
 		personService.updateType(curricularUnitDto.mainTeacher().getId(), PersonType.MAIN_TEACHER);
@@ -166,6 +185,7 @@ public class CurricularUnitService {
 
 	@Transactional
 	public CurricularUnitDto updateCurricularUnit(long id, CurricularUnitDto curricularUnitDto) {
+		checkValidCurricularUnitDto(curricularUnitDto);
 		CurricularUnit curricularUnit = fetchCurricularUnitOrThrow(id);
 		personService.updateType(curricularUnit.getMainTeacher().getId(), PersonType.TEACHER);
 

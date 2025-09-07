@@ -20,10 +20,16 @@ public enum ErrorMessage {
 	REVISION_REASON_NOT_VALID("A justificação de revisão especificada não é válida.", 1005),
 
 	NO_SUCH_CURRICULAR_UNIT("Não existe nenhuma unidade curricular com o ID %s", 1004),
-
-	NO_SUCH_ENROLLMENT("Não existe nenhuma incrição com o ID %s", 1006),
 	NO_SUCH_TEACHING_ASSISTANT_FOR_UC("Não existe na UC nenhum professor assistente com ID %s", 1007),
 	NO_SUCH_STUDENT_FOR_UC("Não existe na UC nenhum aluno com ID %s", 1008),
+	CURRICULAR_UNIT_MAIN_TEACHER_NOT_VALID("O professor regente especificado não é válido.", 1005),
+	CURRICULAR_UNIT_CODE_NOT_VALID("O código especificado não é válido.", 1005),
+	CURRICULAR_UNIT_NAME_NOT_VALID("O nome especificado não é válido.", 1005),
+	CURRICULAR_UNIT_SEMESTER_NOT_VALID("O semestre especificado não é válido.", 1005),
+	CURRICULAR_UNIT_COURSE_NOT_VALID("O curso especificado não é válido.", 1005),
+
+	NO_SUCH_ENROLLMENT("Não existe nenhuma incrição com o ID %s", 1006),
+	
 	NO_SUCH_PROJECT("Não existe nenhum projeto com ID %s", 1010),
 	CANNOT_DELETE_UC("Não é permitido apagar a UC %s (ID) com inscrições ativas", 1011),
 	NO_SUCH_PROJECT_SUBMISSION("Não existe nenhuma submissão de projeto com ID %s", 1012),
