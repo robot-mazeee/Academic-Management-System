@@ -52,6 +52,22 @@ public class ProjectService {
                 .orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_FILE, fileName));
     }
 
+    private void checkValidProjectDto(ProjectDto projectDto) {
+		if (projectDto.title() == null || projectDto.title().length() == 0) {
+			throw new DEIException(ErrorMessage.PROJECT_TITLE_NOT_VALID);
+		}
+        try {
+			if (projectDto.maxGroupSize() <= 0) {
+				throw new DEIException(ErrorMessage.PROJECT_GROUP_SIZE_NOT_VALID);
+			}
+		} catch (NumberFormatException e) {
+			throw new DEIException(ErrorMessage.PROJECT_GROUP_SIZE_NOT_VALID);
+		}
+		if (projectDto.deadline() == null) {
+			throw new DEIException(ErrorMessage.PROJECT_DEADLINE_NOT_VALID);
+		}
+	}
+
     @Transactional
 	public List<ProjectDto> getProjects() {
 		return projectRepository.findAll().stream()
@@ -67,6 +83,7 @@ public class ProjectService {
 
     @Transactional
 	public ProjectDto createProject(ProjectDto projectDto) {
+        checkValidProjectDto(projectDto);
         CurricularUnit curricularUnit = fetchCurricularUnitOrThrow(projectDto.curricularUnitId());
 
         Project project = new Project(projectDto, curricularUnit);
@@ -108,6 +125,7 @@ public class ProjectService {
 
     @Transactional
 	public ProjectDto updateProject(long projectId, ProjectDto projectDto) {
+        checkValidProjectDto(projectDto);
 		Project existingProject = fetchProjectOrThrow(projectId);
         CurricularUnit curricularUnit = fetchCurricularUnitOrThrow(projectDto.curricularUnitId());
 		
