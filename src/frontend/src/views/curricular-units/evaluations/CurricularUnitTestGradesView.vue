@@ -34,12 +34,14 @@
         {{ item.grade }}
       </div>
       <div v-else>
-        <v-text-field
+        <v-text-field 
+          v-if="roleStore.isMainTeacher || roleStore.isTeachingAssistant"
           v-model="gradesDraft[item.id]"
           label="Nota"
           type="number"
         />
         <v-btn
+          v-if="roleStore.isMainTeacher || roleStore.isTeachingAssistant"
           @click="gradeTest(item.student, gradesDraft[item.id])"
           color="secondary"
           class="mb-3"

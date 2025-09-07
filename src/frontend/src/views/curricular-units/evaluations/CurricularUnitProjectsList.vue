@@ -38,7 +38,7 @@
         </template>
       </div>
     </template>
-    <template v-slot:[`item.submissions`]="{ item }" v-if="roleStore.isTeachingAssistant || roleStore.isMainTeacher">
+    <template v-slot:[`item.submissions`]="{ item }">
       <v-btn @click="openProjectSubmissionsManagementView(curricularUnitId, item.id)" class="mb-3" color="secondary">
         Submissões
       </v-btn>

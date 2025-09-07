@@ -57,11 +57,13 @@
     <template v-slot:[`item.editGrade`]="{ item }">
       <div>
         <v-text-field
+          v-if="roleStore.isTeachingAssistant || roleStore.isMainTeacher"
           v-model="gradesDraft[item.id]"
           label="Nota"
           type="number"
         />
         <v-btn
+          v-if="roleStore.isTeachingAssistant || roleStore.isMainTeacher"
           @click="gradeProject(item.id, gradesDraft[item.id])"
           color="secondary"
           class="mb-3"

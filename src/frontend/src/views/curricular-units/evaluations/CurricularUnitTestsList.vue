@@ -38,7 +38,7 @@
         </template>
       </div>
     </template>
-    <template v-slot:[`item.grades`]="{ item }" v-if="roleStore.isTeachingAssistant || roleStore.isMainTeacher">
+    <template v-slot:[`item.grades`]="{ item }">
       <v-btn @click="openTestGradesManagementView(curricularUnitId, item.id)" class="mb-3" color="secondary">
         Notas
       </v-btn>
