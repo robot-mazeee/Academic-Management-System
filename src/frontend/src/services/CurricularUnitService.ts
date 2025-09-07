@@ -88,5 +88,9 @@ export default {
 
   getApproved(): Promise<number> {
     return httpClient.get(`/enrollments/approved`)
+  },
+
+  getEnrollmentsByCurricularUnit(curricularUnitId: number): Promise<EnrollmentDto[]> {
+    return httpClient.get(`/curricular-units/${curricularUnitId}/enrollments`)
   }
 };
