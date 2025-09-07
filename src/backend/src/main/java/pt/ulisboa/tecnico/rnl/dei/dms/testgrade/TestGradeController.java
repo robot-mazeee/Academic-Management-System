@@ -3,6 +3,7 @@ package pt.ulisboa.tecnico.rnl.dei.dms.testgrade;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,8 +21,13 @@ public class TestGradeController {
 	private TestGradeService testGradeService;
 
     @GetMapping("curricular-units/{curricularUnitId}/tests/{testId}/grades/students/{studentId}")
-	public TestGradeDto getTestGradeByTestAndStudent(@PathVariable long studentId, @PathVariable long testId) {
-	    return testGradeService.getTestGradesByStudentByTest(studentId, testId);
+	public ResponseEntity<TestGradeDto> getTestGradeByTestAndStudent(
+			@PathVariable long studentId,
+			@PathVariable long testId) {
+
+		return testGradeService.getTestGradeByStudentByTest(studentId, testId)
+				.map(ResponseEntity::ok)
+				.orElse(ResponseEntity.notFound().build());
 	}
 
     @GetMapping("/students/{studentId}/test-grades")

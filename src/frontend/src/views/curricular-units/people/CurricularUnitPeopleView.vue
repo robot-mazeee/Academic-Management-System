@@ -4,7 +4,7 @@
 			<v-col cols="12">
         <v-tabs v-model="activeTab" background-color="primary" dark>
           <v-tab value="teachers">Professores</v-tab>
-          <v-tab value="students">Alunos</v-tab>
+          <v-tab value="students">Alunos e Notas</v-tab>
           <v-tab value="people">Pessoal</v-tab>
         </v-tabs>
 

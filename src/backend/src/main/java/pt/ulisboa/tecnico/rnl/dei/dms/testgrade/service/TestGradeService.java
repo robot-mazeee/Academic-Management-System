@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -72,11 +73,12 @@ public class TestGradeService {
 	}
 
     @Transactional
-	public TestGradeDto getTestGradesByStudentByTest(long studentId, long testId) {
+	public Optional<TestGradeDto> getTestGradeByStudentByTest(long studentId, long testId) {
         Person student = fetchPersonOrThrow(studentId);
         Test test = fetchTestOrThrow(testId);
 
-		return new TestGradeDto(testGradeRepository.findByStudentAndTest(student, test));
+		return testGradeRepository.findByStudentAndTest(student, test)
+				.map(TestGradeDto::new);
 	}
 
 	@Transactional

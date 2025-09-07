@@ -98,11 +98,9 @@ public class TestService {
     @Transactional
 	public TestDto updateTest(long testId, TestDto testDto) {
 		Test existingTest = fetchTestOrThrow(testId);
-        CurricularUnit curricularUnit = fetchCurricularUnitOrThrow(testDto.curricularUnitId());
 		
 		existingTest.setTitle(testDto.title());
 		existingTest.setWeight(testDto.weight());
-		existingTest.setCurricularUnit(curricularUnit);
         existingTest.setTestDate(testDto.testDate());
 
 		return new TestDto(testRepository.save(existingTest));

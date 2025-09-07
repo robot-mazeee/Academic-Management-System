@@ -30,8 +30,8 @@ public class EnrollmentController {
     }
 
     @PatchMapping("/curricular-units/{curricularUnitId}/enrollments/{enrollmentId}") 
-    public EnrollmentDto assignEnrollmentFinalGrade(@PathVariable long enrollmentId, double finalGrade) {
-        return enrollmentService.assignEnrollmentFinalGrade(enrollmentId, finalGrade);
+    public EnrollmentDto adjustEnrollmentFinalGrade(@PathVariable long enrollmentId, double finalGrade) {
+        return enrollmentService.adjustEnrollmentFinalGrade(enrollmentId, finalGrade);
     }
 
     @DeleteMapping("/enrollments/{enrollmentId}")

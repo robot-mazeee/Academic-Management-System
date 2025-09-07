@@ -39,9 +39,7 @@
     </template>
 
     <template v-slot:[`item.finalGrade`]="{ item }">
-      <div v-if="item.status === 'APPROVED'">
-        {{ item.finalGrade }}
-      </div>
+      {{ item.finalGrade }}
     </template>
 
     <template v-slot:[`item.actions`]="{ item }" v-if="roleStore.isMainTeacher">
@@ -104,14 +102,14 @@ const headers = [
     filterable: true
   },
   {
-    title: 'Estado',
+    title: 'Estado Atual',
     key: 'status',
     value: 'status',
     sortable: true,
     filterable: true
   },
   {
-    title: 'Nota Final',
+    title: 'Nota Final Atual',
     key: 'finalGrade',
     value: 'finalGrade',
     sortable: true,
