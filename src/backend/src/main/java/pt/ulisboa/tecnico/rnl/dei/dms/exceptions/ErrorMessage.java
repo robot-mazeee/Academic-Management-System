@@ -17,6 +17,8 @@ public enum ErrorMessage {
 	TEST_DATE_NOT_VALID("A data do teste especificada não é válida.", 1005),
 	TEST_TITLE_NOT_VALID("O título do teste especificado não é válido.", 1005),
 
+	REVISION_REASON_NOT_VALID("A justificação de revisão especificada não é válida.", 1005),
+
 	NO_SUCH_CURRICULAR_UNIT("Não existe nenhuma unidade curricular com o ID %s", 1004),
 
 	NO_SUCH_ENROLLMENT("Não existe nenhuma incrição com o ID %s", 1006),

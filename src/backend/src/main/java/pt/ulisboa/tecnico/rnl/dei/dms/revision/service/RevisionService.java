@@ -40,6 +40,12 @@ public class RevisionService {
                 .orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_REVISION, Long.toString(id)));
     }
 
+    private void checkValidRevision(RevisionDto revisionDto) {
+		if (revisionDto.reason() == null || revisionDto.reason().length() == 0) {
+			throw new DEIException(ErrorMessage.REVISION_REASON_NOT_VALID);
+		}
+	}
+
     @Transactional
     public List<RevisionDto> getRevisions() {
         return revisionRepository.findAll().stream()
@@ -70,6 +76,7 @@ public class RevisionService {
 
     @Transactional
     public RevisionDto createRevision(RevisionDto revisionDto) {
+        checkValidRevision(revisionDto);
         Test test = testRepository.findById(revisionDto.test().id())
             .orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_TEST, Long.toString(revisionDto.test().id())));
 
