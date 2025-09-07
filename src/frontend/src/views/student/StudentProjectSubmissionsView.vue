@@ -73,6 +73,7 @@ import { useRoleStore } from '../../stores/role'
 import FileUpload from '../../components/file/FileUpload.vue'
 import FileDownload from '../../components/file/FileDownload.vue'
 import FileService from '../../services/FileService'
+import formatDateTime, { formatDate } from '../../mappings/dateMappings'
 
 const search = ref('')
 const loading = ref(true)
@@ -151,25 +152,5 @@ async function createProjectSubmission(fileName: string, project: ProjectDto) {
 function fuzzySearch(value: string, search: string) {
   const searchRegex = new RegExp(search.split('').join('.*'), 'i')
   return searchRegex.test(value)
-}
-
-function formatDate(dateString?: string) {
-  if (!dateString) return ''
-  return new Date(dateString).toLocaleDateString('pt-PT', {
-    year: 'numeric',
-    month: 'short',
-    day: '2-digit',
-  })
-}
-
-function formatDateTime(dateString?: string) {
-  if (!dateString) return ''
-  return new Date(dateString).toLocaleString('pt-PT', {
-    year: 'numeric',
-    month: 'short',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-  })
 }
 </script>
