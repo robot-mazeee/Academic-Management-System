@@ -1,10 +1,13 @@
 package pt.ulisboa.tecnico.rnl.dei.dms.exceptions;
 
 public enum ErrorMessage {
-
 	NO_SUCH_PERSON("Não existe nenhuma pessoa com o ID %s", 1001),
-	PERSON_NAME_NOT_VALID("O nome da pessoa especificado não é válido.", 1002),
 	PERSON_ALREADY_EXISTS("Já existe uma pessoa com o ID %s", 1003),
+	PERSON_NAME_NOT_VALID("O nome da pessoa especificado não é válido.", 1002),
+	PERSON_ISTID_NOT_VALID("O IstId da pessoa especificado não é válido.", 1002),
+	PERSON_EMAIL_NOT_VALID("O email da pessoa especificado não é válido.", 1002),
+	PERSON_TYPE_NOT_VALID("O tipo da pessoa especificado não é válido.", 1002),
+
 	NO_SUCH_CURRICULAR_UNIT("Não existe nenhuma unidade curricular com o ID %s", 1004),
 	NO_SUCH_TEST("Não existe nenhum teste com o ID %s", 1005),
 	NO_SUCH_ENROLLMENT("Não existe nenhuma incrição com o ID %s", 1006),

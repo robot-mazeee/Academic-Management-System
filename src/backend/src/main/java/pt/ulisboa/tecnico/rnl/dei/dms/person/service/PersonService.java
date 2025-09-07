@@ -32,6 +32,21 @@ public class PersonService {
 				.toList();
 	}
 
+	private void checkValidPersonDto(PersonDto personDto) {
+		if (personDto.name() == null || personDto.name().length() == 0) {
+			throw new DEIException(ErrorMessage.PERSON_NAME_NOT_VALID);
+		}
+		if (personDto.istId() == null || personDto.istId().length() == 0) {
+			throw new DEIException(ErrorMessage.PERSON_ISTID_NOT_VALID);
+		}
+		if (personDto.email() == null || !personDto.email().matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
+			throw new DEIException(ErrorMessage.PERSON_EMAIL_NOT_VALID);
+		}
+		if (personDto.type() == null) {
+			throw new DEIException(ErrorMessage.PERSON_TYPE_NOT_VALID);
+		}
+	}
+
 	@Transactional
 	public List<PersonDto> getPeople() {
 		return personRepository.findAll().stream()
@@ -56,6 +71,7 @@ public class PersonService {
 
 	@Transactional
 	public PersonDto createPerson(PersonDto personDto) {
+		checkValidPersonDto(personDto);
 		Person person = new Person(personDto);
 		person.setId(null);
 		return new PersonDto(personRepository.save(person));
@@ -68,6 +84,7 @@ public class PersonService {
 
 	@Transactional
 	public PersonDto updatePerson(long id, PersonDto personDto) {
+		checkValidPersonDto(personDto);
 		Person existingPerson = fetchPersonOrThrow(id);
 		
 		existingPerson.setName(personDto.name());
