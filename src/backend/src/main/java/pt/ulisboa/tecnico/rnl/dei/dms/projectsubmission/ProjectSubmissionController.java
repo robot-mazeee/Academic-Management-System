@@ -40,6 +40,16 @@ public class ProjectSubmissionController {
         return submissionService.getProjectSubmissionsByGroup(groupId);
     }
 
+    @GetMapping("/submissions/project/{projectId}/latest")
+    public List<ProjectSubmissionDto> getLatestProjectSubmissionsByProject(@PathVariable long projectId) {
+        return submissionService.getLatestProjectSubmissionsByProject(projectId);
+    }
+
+    @GetMapping("/submissions/project/{projectId}/groups/{groupId}")
+    public List<ProjectSubmissionDto> getLatestProjectSubmissionsByProject(@PathVariable long projectId, @PathVariable long groupId) {
+        return submissionService.getSubmissionsByProjectAndGroupAsc(projectId, groupId);
+    }
+
     @GetMapping("/project-submissions/{projectId}/submission")
     public File getSubmission(@PathVariable long projectId) {
         return submissionService.getSubmission(projectId);

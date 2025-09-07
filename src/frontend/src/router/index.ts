@@ -12,6 +12,7 @@ import CurricularUnitProjectSubmissionsView from '@/views/curricular-units/evalu
 import CalendarView from '@/views/calendar/CalendarView.vue'
 import RevisionsView from '@/views/revisions/RevisionsView.vue'
 import RevisionHistoryView from '@/views/revisions/RevisionHistoryView.vue'
+import ProjectSubmissionsHistoryView from '@/views/curricular-units/evaluations/ProjectSubmissionsHistoryView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -80,7 +81,12 @@ const router = createRouter({
       path: '/curricular-units/:curricularUnitId/tests/:projectId/submissions',
       name: 'curricular-unit-project-submissions-management',
       component: CurricularUnitProjectSubmissionsView
-    }
+    },
+    {
+      path: '/submissions/projects/:projectId/groups/:groupId',
+      name: 'project-submissions-history-view',
+      component: ProjectSubmissionsHistoryView
+    },
   ]
 })
 

@@ -62,12 +62,20 @@ export default {
     return httpClient.get(`/submissions/project/${projectId}`)
   },
 
+  getLatestProjectSubmissionsByProject(projectId: number): Promise<ProjectSubmissionDto[]> {
+    return httpClient.get(`/submissions/project/${projectId}/latest`)
+  },
+
   getProjectSubmissionsByStudent(studentId: number): Promise<ProjectSubmissionDto[]> {
     return httpClient.get(`/submissions/student/${studentId}`)
   },
 
   getProjectSubmissionsByGroup(groupId: number): Promise<ProjectSubmissionDto[]> {
     return httpClient.get(`/submissions/group/${groupId}`)
+  },
+
+  getProjectSubmissionsByProjectAndGroup(projectId: number, groupId: number): Promise<ProjectSubmissionDto[]> {
+    return httpClient.get(`/submissions/project/${projectId}/groups/${groupId}`)
   },
 
   createProjectSubmission(projectId: number, studentId: number, submission: string): Promise<ProjectSubmissionDto> {

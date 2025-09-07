@@ -1,5 +1,5 @@
 <template>
-  <h2>Submissões</h2>
+  <h2>Histórico de Submissões</h2>
 
   <v-text-field
     v-model="search"
@@ -53,28 +53,6 @@
         <span v-else>Sem submissões</span>
       </div>
     </template>
-
-    <template v-slot:[`item.editGrade`]="{ item }">
-      <div>
-        <v-text-field
-          v-model="gradesDraft[item.id]"
-          label="Nota"
-          type="number"
-        />
-        <v-btn
-          @click="gradeProject(item.id, gradesDraft[item.id])"
-          color="secondary"
-          class="mb-3"
-        >
-          Submit
-        </v-btn>
-      </div>
-    </template>
-    <template v-slot:[`item.history`]="{ item }">
-			<v-btn class="mb-3" color="contrast" @click="displayProjectSubmissionsView(item.project.id, item.group.id)">
-        Histórico
-      </v-btn>
-		</template>
   </v-data-table>
 </template>
 
@@ -94,9 +72,9 @@ const loading = ref(true)
 const route = useRoute()
 const router = useRouter()
 const projectId = Number(route.params.projectId)
+const groupId = parseInt(route.params.groupId as string, 10)
 
 const project = ref<ProjectDto | null>(null)
-const gradesDraft: Record<number, number | null> = reactive({})
 const projectSubmissions: ProjectSubmissionDto[] = reactive([])
 
 const roleStore = useRoleStore()
@@ -107,9 +85,7 @@ const headers = [
   { title: 'Grupo', key: 'group', sortable: true },
   { title: 'Data de Submissão', key: 'date', sortable: true },
   { title: 'Submissão', key: 'submission', sortable: true, align: 'center' },
-  { title: 'Nota', key: 'grade', sortable: true },
-  { title: 'Ajustar Nota', key: 'editGrade', sortable: true, align: 'center' },
-  { title: 'Histórico', key: 'history', sortable: true, align: 'center' },
+  { title: 'Nota', key: 'grade', sortable: true }
 ]
 
 onMounted(async () => {
@@ -130,26 +106,12 @@ async function getProject() {
 async function getProjectSubmissions() {
   projectSubmissions.splice(0, projectSubmissions.length)
   try {
-    projectSubmissions.push(...(await EvaluationService.getLatestProjectSubmissionsByProject(projectId)))
+    projectSubmissions.push(...(await EvaluationService.getProjectSubmissionsByProjectAndGroup(projectId, groupId)))
     console.log('Fetched test project submissions: ', projectSubmissions)
   } catch (error) {
     console.error('Error getting project submissions: ', error)
   }
   loading.value = false
-}
-
-function displayProjectSubmissionsView(projectId: number, groupId: number) {
-  router.push({ name: 'project-submissions-history-view', params: { projectId, groupId } })
-}
-
-async function gradeProject(submissionId: number, grade: number) {
-  try {
-    const response = await EvaluationService.updateProjectGrade(submissionId, grade)
-    console.log('Updated project submission grade: ', response)
-    await getProjectSubmissions()
-  } catch (error) {
-    console.error('Error adjusting project submission grade: ', error)
-  }
 }
 
 function beforeSubmissionDeadline(submission: ProjectSubmissionDto) {

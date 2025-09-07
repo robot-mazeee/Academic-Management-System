@@ -4,9 +4,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -107,6 +109,29 @@ public class ProjectSubmissionService {
     public List<ProjectSubmissionDto> getProjectSubmissionsByGroup(long groupId) {
         List<ProjectSubmission> submissions = projectSubmissionRepository.findByGroup_Id(groupId);
         return submissions.stream().map(ProjectSubmissionDto::new).toList();
+    }
+
+    @Transactional
+    public List<ProjectSubmissionDto> getLatestProjectSubmissionsByProject(long projectId) {
+        List<ProjectSubmission> submissions = projectSubmissionRepository.findAllByProject_Id(projectId);
+        return submissions.stream()
+                .collect(Collectors.groupingBy(
+                        s -> s.getGroup().getId(),
+                        Collectors.maxBy(Comparator.comparing(ProjectSubmission::getGrade))
+                ))
+                .values().stream()
+                .flatMap(Optional::stream)
+                .map(ProjectSubmissionDto::new)
+                .toList();
+    }
+
+    @Transactional
+    public List<ProjectSubmissionDto> getSubmissionsByProjectAndGroupAsc(long projectId, long groupId) {
+        return projectSubmissionRepository
+                .findAllByProject_IdAndGroup_IdOrderBySubDateTimeAsc(projectId, groupId)
+                .stream()
+                .map(ProjectSubmissionDto::new)
+                .toList();
     }
 
     @Transactional

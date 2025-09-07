@@ -11,6 +11,8 @@ import pt.ulisboa.tecnico.rnl.dei.dms.evaluation.domain.Project;
 @Repository
 public interface ProjectSubmissionRepository extends JpaRepository<ProjectSubmission, Long> {
     List<ProjectSubmission> findAllByProject(Project project);
+    List<ProjectSubmission> findAllByProject_Id(long projectId);
+    List<ProjectSubmission> findAllByProject_IdAndGroup_IdOrderBySubDateTimeAsc(Long projectId, Long groupId);
     List<ProjectSubmission> findByGroup_Members_Id(Long personId);
     List<ProjectSubmission> findByProject_IdAndGroup_Members_Id(Long projectId, Long personId);
     List<ProjectSubmission> findByGroup_Id(Long groupId);
