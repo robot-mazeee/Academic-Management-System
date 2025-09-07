@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.domain.CurricularUnit;
 import pt.ulisboa.tecnico.rnl.dei.dms.enrollment.domain.Enrollment;
+import pt.ulisboa.tecnico.rnl.dei.dms.enrollment.domain.EnrollmentStatus;
 
 @Repository
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
@@ -15,5 +16,6 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
     List<Enrollment> findByCurricularUnit_Id(Long curricularUnitId);
     List<Enrollment> findAllByStudent_Id(long studenId);
     Optional<Enrollment> findByStudent_IdAndCurricularUnit_Id(long studentId, long curricularUnitId);
+    long countByStatus(EnrollmentStatus status);
 }
 

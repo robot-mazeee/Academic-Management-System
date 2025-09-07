@@ -150,6 +150,11 @@ public class EnrollmentService {
     }
 
     @Transactional
+    public long getCountByStatus(EnrollmentStatus status) {
+        return enrollmentRepository.countByStatus(status);
+    }
+
+    @Transactional
 	public void deleteEnrollment(long enrollmentId) {
 		Enrollment enrollment = fetchEnrollmentOrThrow(enrollmentId);
         CurricularUnit curricularUnit = fetchCurricularUnitOrThrow(enrollment.getCurricularUnit().getId());

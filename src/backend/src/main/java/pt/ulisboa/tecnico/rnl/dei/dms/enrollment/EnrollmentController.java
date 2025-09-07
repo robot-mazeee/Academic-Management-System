@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import pt.ulisboa.tecnico.rnl.dei.dms.enrollment.domain.EnrollmentStatus;
 import pt.ulisboa.tecnico.rnl.dei.dms.enrollment.dto.EnrollmentDto;
 import pt.ulisboa.tecnico.rnl.dei.dms.enrollment.service.EnrollmentService;
 
@@ -27,6 +28,21 @@ public class EnrollmentController {
     @GetMapping("/enrollments/{studentId}")
     public List<EnrollmentDto> getEnrollmentsByStudent(@PathVariable long studentId) {
         return enrollmentService.getEnrollmentsByStudent(studentId);
+    }
+
+    @GetMapping("/enrollments/enrolled")
+    public long getEnrolled() {
+        return enrollmentService.getCountByStatus(EnrollmentStatus.ENROLLED);
+    }
+
+    @GetMapping("/enrollments/approved")
+    public long getApproved() {
+        return enrollmentService.getCountByStatus(EnrollmentStatus.APPROVED);
+    }
+
+    @GetMapping("/enrollments/failed")
+    public long getFailed() {
+        return enrollmentService.getCountByStatus(EnrollmentStatus.FAILED);
     }
 
     @PostMapping("/curricular-units/{curricularUnitId}/enrollments")

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import pt.ulisboa.tecnico.rnl.dei.dms.revision.domain.RevisionStatus;
 import pt.ulisboa.tecnico.rnl.dei.dms.revision.dto.RevisionDto;
 import pt.ulisboa.tecnico.rnl.dei.dms.revision.dto.RevisionHistoryDto;
 import pt.ulisboa.tecnico.rnl.dei.dms.revision.service.RevisionService;
@@ -47,5 +48,25 @@ public class RevisionController {
     @PatchMapping("/revisions/{revisionId}")
     public RevisionDto updateStatus(@RequestBody RevisionDto revision) {
         return revisionService.updateStatus(revision);
+    }
+
+    @GetMapping("/revisions/in-review")
+    public long getInRevision() {
+        return revisionService.getCountByStatus(RevisionStatus.APPROVED_BY_TEACHING_ASSISTANT);
+    }
+
+    @GetMapping("/revisions/approved")
+    public long getApproved() {
+        return revisionService.getCountByStatus(RevisionStatus.APPROVED);
+    }
+
+    @GetMapping("/revisions/rejected")
+    public long getRejected() {
+        return revisionService.getCountByStatus(RevisionStatus.REJECTED);
+    }
+
+    @GetMapping("/revisions/requested")
+    public long getRequested() {
+        return revisionService.getCountByStatus(RevisionStatus.REQUESTED_BY_STUDENT);
     }
 }

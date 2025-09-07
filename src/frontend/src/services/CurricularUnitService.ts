@@ -76,5 +76,17 @@ export default {
 
   deleteEnrollment(enrollmentId: number) {
     return httpClient.delete(`/enrollments/${enrollmentId}`);
+  },
+
+  getEnrolled(): Promise<number> {
+    return httpClient.get(`/enrollments/enrolled`)
+  },
+
+  getFailed(): Promise<number> {
+    return httpClient.get(`/enrollments/failed`)
+  },
+
+  getApproved(): Promise<number> {
+    return httpClient.get(`/enrollments/approved`)
   }
 };

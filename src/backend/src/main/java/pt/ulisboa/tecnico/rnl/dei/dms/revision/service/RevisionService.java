@@ -101,6 +101,11 @@ public class RevisionService {
     }
 
     @Transactional
+    public long getCountByStatus(RevisionStatus status) {
+        return revisionRepository.countByStatus(status);
+    }
+
+    @Transactional
     public List<RevisionHistoryDto> getRevisionHistory(long revisionId) {
         Revision revision = fetchRevisionOrThrow(revisionId);
 

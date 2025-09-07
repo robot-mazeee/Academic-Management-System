@@ -25,5 +25,21 @@ export default {
 
   updateStatus(revision: RevisionDto): Promise<RevisionDto> {
     return httpClient.patch(`/revisions/${revision.id}`, revision)
+  },
+
+  getRequested(): Promise<number> {
+    return httpClient.get(`/revisions/requested`)
+  },
+
+  getApproved(): Promise<number> {
+    return httpClient.get(`/revisions/approved`)
+  },
+
+  getInReview(): Promise<number> {
+    return httpClient.get(`/revisions/in-review`)
+  },
+
+  getRejected(): Promise<number> {
+    return httpClient.get(`/revisions/rejected`)
   }
 };
