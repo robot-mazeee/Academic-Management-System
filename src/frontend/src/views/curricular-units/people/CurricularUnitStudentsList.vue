@@ -44,9 +44,7 @@
 
     <template v-slot:[`item.actions`]="{ item }" v-if="roleStore.isMainTeacher">
       <div class="d-flex align-center justify-center ga-2"></div>
-				<v-icon @click="deleteEnrollment(item)" color="red" class="cursor-pointer">
-					mdi-delete
-				</v-icon>
+				<DeleteButton :fn="deleteEnrollment" :item="item" />
     </template>
   </v-data-table>
 
@@ -68,6 +66,7 @@ import EnrollmentDto from '../../../models/EnrollmentDto'
 import { translateStatus } from '../../../mappings/enrollmentMappings'
 import { getColorByStatus } from '../../../mappings/enrollmentMappings'
 import CreateEnrollmentsDialog from '../../dialogs/curricular-unit/CreateEnrollmentsDialog.vue'
+import DeleteButton from '../../../components/buttons/DeleteButton.vue'
 
 let search = ref('')
 let loading = ref(true)

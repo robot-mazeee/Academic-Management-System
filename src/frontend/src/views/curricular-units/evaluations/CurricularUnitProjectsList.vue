@@ -47,9 +47,7 @@
     <template v-slot:[`item.actions`]="{ item }" v-if="roleStore.isMainTeacher">
 			<div class="d-flex align-center justify-center ga-2">
 				<EditProjectDialog :project-to-edit="item" @project-edited="getCurricularUnitProjects" />
-				<v-icon @click="deleteProject(item.id)" color="red" class="cursor-pointer">
-					mdi-delete
-				</v-icon>
+				<DeleteButton :fn="deleteProject" :item="item.id" />
 			</div>
     </template>
   </v-data-table>
@@ -73,6 +71,7 @@ import EditProjectDialog from '../../dialogs/evaluation/EditProjectDialog.vue'
 import ProjectDto from '../../../models/ProjectDto'
 import FileService from '../../../services/FileService'
 import FileDownload from '../../../components/file/FileDownload.vue'
+import DeleteButton from '../../../components/buttons/DeleteButton.vue'
 
 let search = ref('')
 let loading = ref(true)
@@ -126,7 +125,8 @@ const headers = [
     key: 'actions',
     value: 'actions',
     sortable: false,
-    filterable: false
+    filterable: false,
+    align: 'center'
   }
 ]
 

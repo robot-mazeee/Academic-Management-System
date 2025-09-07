@@ -30,9 +30,7 @@
     <template v-slot:[`item.actions`]="{ item }" v-if="roleStore.isAdministrator">
       <div class="d-flex align-center justify-center ga-2">
 				<EditCourseDialog :course-to-edit="item" @course-edited="getCourses" />
-				<v-icon @click="deleteCourse(item)" color="red" class="cursor-pointer">
-					mdi-delete
-				</v-icon>
+        <DeleteButton :fn="deleteCourse" :item="item" />
 			</div>
     </template>
   </v-data-table>
@@ -46,6 +44,7 @@ import CourseDto from '../../models/CourseDto'
 import CourseService from '../../services/CourseService'
 import CreateCourseDialog from '../dialogs/course/CreateCourseDialog.vue'
 import EditCourseDialog from '../dialogs/course/EditCourseDialog.vue'
+import DeleteButton from '../../components/buttons/DeleteButton.vue'
 
 let search = ref('')
 let loading = ref(true)

@@ -35,9 +35,7 @@
     <template v-slot:[`item.actions`]="{ item }" v-if="roleStore.isAdministrator">
       <div class="d-flex align-center justify-center ga-2">
 				<EditPersonDialog :person-to-edit="item" :can-alter-type="true" @close-dialog="getPeople" />
-				<v-icon @click="deletePerson(item)" color="red" class="cursor-pointer">
-					mdi-delete
-				</v-icon>
+				<DeleteButton :fn="deletePerson" :item="item" />
 			</div>
     </template>
   </v-data-table>
@@ -52,6 +50,7 @@ import { onMounted } from 'vue'
 import { getColorByType, translateType } from '../../mappings/peopleMappings'
 import EditPersonDialog from '../dialogs/person/EditPersonDialog.vue'
 import { useRoleStore } from '../../stores/role'
+import DeleteButton from '../../components/buttons/DeleteButton.vue'
 
 let search = ref('')
 let loading = ref(true)

@@ -36,9 +36,7 @@
     <template v-slot:[`item.actions`]="{ item }">
 			<div class="d-flex align-center justify-center ga-2" v-if="roleStore.isAdministrator">
 				<EditCurricularUnitDialog :curricular-unit-to-edit="item" @curricular-unit-edited="getCurricularUnits" />
-				<v-icon @click="deleteCurricularUnit(item)" color="red" class="cursor-pointer">
-					mdi-delete
-				</v-icon>
+				<DeleteButton :fn="deleteCurricularUnit" :item="item" />
 			</div>
 
       <div>
@@ -65,6 +63,7 @@ import { onMounted } from 'vue'
 import CurricularUnitService from '../../services/CurricularUnitService'
 import { useRoleStore } from '../../stores/role'
 import { useRouter } from 'vue-router'
+import DeleteButton from '../../components/buttons/DeleteButton.vue'
 
 let search = ref('')
 let loading = ref(true)

@@ -27,9 +27,7 @@
     </template>
     <template v-slot:[`item.actions`]="{ item }" v-if="roleStore.isMainTeacher">
       <div class="d-flex align-center justify-center ga-2" v-if="item?.type !== 'MAIN_TEACHER'">
-        <v-icon @click="removeTeachingAssistant(item)" color="red" class="cursor-pointer">
-          mdi-delete
-        </v-icon>
+        <DeleteButton :fn="removeTeachingAssistant" :item="item" />
       </div>
     </template>
   </v-data-table>
@@ -51,6 +49,7 @@ import { onMounted } from 'vue'
 import AssignCurricularUnitTeachersDialog from '../../dialogs/curricular-unit/AssignCurricularUnitTeachersDialog.vue'
 import { useRoleStore } from '../../../stores/role'
 import { getColorByType, translateType } from '../../../mappings/peopleMappings'
+import DeleteButton from '../../../components/buttons/DeleteButton.vue'
 
 let search = ref('')
 let loading = ref(true)
