@@ -40,7 +40,7 @@ public enum ErrorMessage {
 	NO_SUCH_PROJECT_SUBMISSION("Não existe nenhuma submissão de projeto com ID %s", 1012),
 	NO_SUCH_TEST_GRADE("Não existe nenhuma nota de teste com ID %s", 1013),
 	NO_SUCH_FILE("Não existe nenhum ficheiro com nome %s", 1014),
-	FILE_TOO_LARGE("Ficheiro demasiado grande", 1015),
+	FILE_TOO_LARGE("Ficheiro demasiado grande. Tamanho máximo é 10MB", 1015),
 	FILE_ALREADY_EXISTS("Já existe um ficheiro com este nome no sistema", 1015);
 
 	private final String label;

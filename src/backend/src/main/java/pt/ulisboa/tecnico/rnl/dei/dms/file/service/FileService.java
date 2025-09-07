@@ -25,6 +25,17 @@ public class FileService {
                 .orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_FILE, fileName));
     }
 
+    private void checkValidFile(MultipartFile file) {
+        if (fileRepository.findByName(file.getOriginalFilename()).isPresent()) {
+            throw new DEIException(ErrorMessage.FILE_ALREADY_EXISTS);
+        }
+
+        long maxSizeInBytes = 10 * 1024 * 1024; // 10MB
+        if (file.getSize() > maxSizeInBytes) {
+            throw new DEIException(ErrorMessage.FILE_TOO_LARGE);
+        }
+    }
+
     @Transactional
     public static byte[] compressFile(byte[] data) {
         Deflater deflater = new Deflater();
@@ -64,6 +75,8 @@ public class FileService {
 
     @Transactional
     public String uploadFile(MultipartFile file) throws IOException {
+        checkValidFile(file);
+
         File newFile = fileRepository.save(File.builder()
                 .name(file.getOriginalFilename())
                 .type(file.getContentType())
