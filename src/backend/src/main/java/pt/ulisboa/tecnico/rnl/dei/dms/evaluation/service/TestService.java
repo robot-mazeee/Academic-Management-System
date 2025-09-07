@@ -47,6 +47,15 @@ public class TestService {
                 .orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_FILE, fileName));
     }
 
+    private void checkValidTestDto(TestDto testDto) {
+		if (testDto.title() == null || testDto.title().length() == 0) {
+			throw new DEIException(ErrorMessage.TEST_TITLE_NOT_VALID);
+		}
+		if (testDto.testDate() == null) {
+			throw new DEIException(ErrorMessage.TEST_DATE_NOT_VALID);
+		}
+	}
+
     @Transactional
 	public List<TestDto> getTests() {
 		return testRepository.findAll().stream()
@@ -62,6 +71,7 @@ public class TestService {
 
     @Transactional
 	public TestDto createTest(TestDto testDto) {
+        checkValidTestDto(testDto);
         CurricularUnit curricularUnit = fetchCurricularUnitOrThrow(testDto.curricularUnitId());
 
         Test test = new Test(testDto, curricularUnit);
@@ -97,6 +107,7 @@ public class TestService {
 
     @Transactional
 	public TestDto updateTest(long testId, TestDto testDto) {
+        checkValidTestDto(testDto);
 		Test existingTest = fetchTestOrThrow(testId);
 		
 		existingTest.setTitle(testDto.title());

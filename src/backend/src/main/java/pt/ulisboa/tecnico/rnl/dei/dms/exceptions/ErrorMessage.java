@@ -13,8 +13,12 @@ public enum ErrorMessage {
 	COURSE_NAME_NOT_VALID("O nome do curso especificado não é válido.", 1009),
 	COURSE_DURATION_NOT_VALID("A duração do curso especificado não é válido.", 1009),
 
-	NO_SUCH_CURRICULAR_UNIT("Não existe nenhuma unidade curricular com o ID %s", 1004),
 	NO_SUCH_TEST("Não existe nenhum teste com o ID %s", 1005),
+	TEST_DATE_NOT_VALID("A data do teste especificada não é válida.", 1005),
+	TEST_TITLE_NOT_VALID("O título do teste especificado não é válido.", 1005),
+
+	NO_SUCH_CURRICULAR_UNIT("Não existe nenhuma unidade curricular com o ID %s", 1004),
+
 	NO_SUCH_ENROLLMENT("Não existe nenhuma incrição com o ID %s", 1006),
 	NO_SUCH_TEACHING_ASSISTANT_FOR_UC("Não existe na UC nenhum professor assistente com ID %s", 1007),
 	NO_SUCH_STUDENT_FOR_UC("Não existe na UC nenhum aluno com ID %s", 1008),
