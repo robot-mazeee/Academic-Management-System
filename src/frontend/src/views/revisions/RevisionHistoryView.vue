@@ -26,7 +26,7 @@
         </template>
         <template v-slot:[`item.status`]="{ item }">
             <v-chip :color="getColorByStatus(item.status)" text-color="white">
-                {{ item.status }}
+                {{ translateStatus(item.status) }}
             </v-chip>
         </template>
         <template v-slot:[`item.date`]="{ item }">
@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { getColorByStatus } from '../../mappings/revisionMappings'
+import { getColorByStatus, translateStatus } from '../../mappings/revisionMappings'
 import RevisionService from '../../services/RevisionService'
 import { useRoute } from 'vue-router'
 import RevisionHistoryDto from '../../models/RevisionHistoryDto'

@@ -43,7 +43,7 @@
         :color="getColorByStatus(revisions[`${item.student.id}-${item.test.id}`].status)"
         text-color="white"
       >
-        {{ revisions[`${item.student.id}-${item.test.id}`].status }}
+        {{ translateStatus(revisions[`${item.student.id}-${item.test.id}`].status) }}
       </v-chip>
       <CreateRevisionDialog
         v-else-if="roleStore.isStudent && item.grade" 
@@ -68,13 +68,13 @@
 <script setup lang="ts">
 import { reactive, ref, onMounted } from 'vue'
 import EvaluationService from '../../services/EvaluationService'
-import TestGradeDto from '../../models/TestGradeDto'
+import TestGradeDto from '../../models/evaluations/TestGradeDto'
 import PersonDto from '../../models/person/PersonDto'
 import FileDownload from '../../components/file/FileDownload.vue'
 import CreateRevisionDialog from '../dialogs/revision/CreateRevisionDialog.vue'
 import { useRoleStore } from '../../stores/role'
 import RevisionService from '../../services/RevisionService'
-import { getColorByStatus } from '../../mappings/revisionMappings'
+import { getColorByStatus, translateStatus } from '../../mappings/revisionMappings'
 import { useRouter } from 'vue-router'
 
 let search = ref('')

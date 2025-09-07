@@ -18,15 +18,15 @@
 		class="text-left"
 		no-data-text="Sem revisões."
 	>
-        <template v-slot:[`item.student`]="{ item }">
-            {{ item.student.name }} ({{ item.student.istId }})
+    <template v-slot:[`item.student`]="{ item }">
+      {{ item.student.name }} ({{ item.student.istId }})
 		</template>
-        <template v-slot:[`item.test`]="{ item }">
-            {{ item.test.title }}
+    <template v-slot:[`item.test`]="{ item }">
+      {{ item.test.title }}
 		</template>
 		<template v-slot:[`item.status`]="{ item }">
 			<v-chip :color="getColorByStatus(item.status)" text-color="white">
-				{{ item.status }}
+				{{ translateStatus(item.status) }}
 			</v-chip>
 		</template>
 		<template v-slot:[`item.actions`]="{ item }">
@@ -59,7 +59,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useRoleStore } from '../../stores/role'
-import { getColorByStatus } from '../../mappings/revisionMappings'
+import { getColorByStatus, translateStatus } from '../../mappings/revisionMappings'
 import RevisionService from '../../services/RevisionService'
 import RevisionDto from '../../models/RevisionDto'
 import MainTeacherActions from './MainTeacherActions.vue'
