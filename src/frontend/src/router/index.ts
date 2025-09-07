@@ -7,12 +7,12 @@ import CurricularUnitPeopleView from '@/views/curricular-units/people/Curricular
 import CurricularUnitEvaluationsView from '@/views/curricular-units/evaluations/CurricularUnitEvaluationsView.vue'
 import CurricularUnitTestGradesView from '@/views/curricular-units/evaluations/CurricularUnitTestGradesView.vue'
 import CoursesView from '@/views/courses/CoursesView.vue'
-import StudentEvaluationsView from '@/views/student/StudentEvaluationsView.vue'
 import CurricularUnitProjectSubmissionsView from '@/views/curricular-units/evaluations/CurricularUnitProjectSubmissionsView.vue'
 import CalendarView from '@/views/calendar/CalendarView.vue'
 import RevisionsView from '@/views/revisions/RevisionsView.vue'
 import RevisionHistoryView from '@/views/revisions/RevisionHistoryView.vue'
 import ProjectSubmissionsHistoryView from '@/views/curricular-units/evaluations/ProjectSubmissionsHistoryView.vue'
+import StudentProfileView from '../views/student/StudentProfileView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -58,9 +58,9 @@ const router = createRouter({
       component: StatisticsView
     },
     {
-      path: '/evaluations',
-      name: 'evaluations',
-      component: StudentEvaluationsView
+      path: '/profile',
+      name: 'profile',
+      component: StudentProfileView
     },
     {
       path: '/curricular-units/:id/people',

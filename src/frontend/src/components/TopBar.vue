@@ -22,7 +22,7 @@ const navbarItems = computed(() => {
   ]
 
   if (roleStore.isStudent || roleStore.isAdministrator) {
-    items.push({ name: 'Avaliações', path: '/evaluations', icon: 'mdi-file-document' })
+    items.unshift({ name: 'profile', path: '/profile', icon: 'mdi-file-document' })
   }
 
   return items
