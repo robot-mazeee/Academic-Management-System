@@ -82,9 +82,13 @@ public class EnrollmentService {
 
     @Transactional
     public List<EnrollmentDto> getEnrollmentsByStudent(long studentId) {
-        return enrollmentRepository.findAllByStudent_Id(studentId).stream()
-            .map(EnrollmentDto::new)
-            .toList();
+        List<Enrollment> enrollments = enrollmentRepository.findAllByStudent_Id(studentId);
+        List<EnrollmentDto> enrollmentDtos = new ArrayList<>();
+        
+        for (Enrollment enrollment : enrollments) {
+            enrollmentDtos.add(setEnrollmentFinalGrade(enrollment));
+        }
+        return enrollmentDtos;
     }
 
     @Transactional
