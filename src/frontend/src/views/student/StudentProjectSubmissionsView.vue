@@ -57,7 +57,7 @@
 
     <template v-slot:[`item.submit`]="{ item }">
       <FileUpload v-if="roleStore.isStudent"
-        @file-uploaded="createProjectSubmission(item.project)"
+        @file-uploaded="(fileName) => createProjectSubmission(fileName, item.project)"
         :disabled="!beforeSubmissionDeadline(item.project)"
       />
     </template>
@@ -72,6 +72,7 @@ import ProjectDto from '../../models/ProjectDto'
 import { useRoleStore } from '../../stores/role'
 import FileUpload from '../../components/file/FileUpload.vue'
 import FileDownload from '../../components/file/FileDownload.vue'
+import FileService from '../../services/FileService'
 
 const search = ref('')
 const loading = ref(true)
@@ -135,10 +136,11 @@ function beforeSubmissionDeadline(project: ProjectDto) {
   }
 }
 
-async function createProjectSubmission(project: ProjectDto) {
+async function createProjectSubmission(fileName: string, project: ProjectDto) {
   console.log('creating project submission')
   try {
-    const response = await EvaluationService.createProjectSubmission(project.id, props.studentId)
+    await EvaluationService.createProjectSubmission(project.id, props.studentId)
+    const response = await FileService.assignProjectSubmission(fileName, project.id)
     console.log('Created submission: ', response)
     await getProjectsAndSubmissions()
   } catch (error) {
