@@ -44,4 +44,9 @@ public class ProjectSubmissionController {
     public File getSubmission(@PathVariable long projectId) {
         return submissionService.getSubmission(projectId);
     }
+
+    @PatchMapping("/project-submissions/{submissionId}/grade")
+    public ProjectSubmissionDto updateGrade(@PathVariable long submissionId, @RequestBody double grade) {
+        return submissionService.updateGrade(submissionId, grade);
+    }
 }

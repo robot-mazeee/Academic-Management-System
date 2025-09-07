@@ -110,9 +110,13 @@ public class ProjectSubmissionService {
     }
 
     @Transactional
-    public ProjectSubmissionDto getGroupLatestSubmission(long groupId) {
-        List<ProjectSubmissionDto> submissions = getProjectSubmissionsByGroup(groupId);
-        return submissions.getLast();
+    public Optional<ProjectSubmissionDto> getGroupLatestSubmission(long groupId) {
+        List<ProjectSubmissionDto> submissions =
+                getProjectSubmissionsByGroup(groupId);
+
+        return submissions.isEmpty()
+                ? Optional.empty()
+                : Optional.of(submissions.get(submissions.size() - 1));
     }
 
     @Transactional
@@ -120,5 +124,12 @@ public class ProjectSubmissionService {
         ProjectSubmission projectSubmission = fetchProjectSubmissionOrThrow(projectSubmissionId);
         String submissionName = projectSubmission.getSubmission();
         return fetchFileOrThrow(submissionName);
+    }
+
+    @Transactional
+    public ProjectSubmissionDto updateGrade(long submissionId, double grade) {
+        ProjectSubmission submission = fetchProjectSubmissionOrThrow(submissionId);
+        submission.setGrade(grade);
+        return new ProjectSubmissionDto(submission);
     }
 }

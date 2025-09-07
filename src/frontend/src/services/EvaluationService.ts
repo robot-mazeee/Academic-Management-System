@@ -72,5 +72,9 @@ export default {
 
   createProjectSubmission(projectId: number, studentId: number, submission: string): Promise<ProjectSubmissionDto> {
     return httpClient.post(`/project/${projectId}/student/${studentId}`, submission)
+  },
+
+  updateProjectGrade(submissionId: number, grade: number): Promise<ProjectSubmissionDto> {
+    return httpClient.patch(`/project-submissions/${submissionId}/grade`, grade)
   }
 }

@@ -53,6 +53,23 @@
         <span v-else>Sem submissões</span>
       </div>
     </template>
+
+    <template v-slot:[`item.editGrade`]="{ item }">
+      <div>
+        <v-text-field
+          v-model="gradesDraft[item.id]"
+          label="Nota"
+          type="number"
+        />
+        <v-btn
+          @click="gradeProject(item.id, gradesDraft[item.id])"
+          color="secondary"
+          class="mb-3"
+        >
+          Submit
+        </v-btn>
+      </div>
+    </template>
   </v-data-table>
 </template>
 
@@ -72,6 +89,7 @@ const route = useRoute()
 const projectId = Number(route.params.projectId)
 
 const project = ref<ProjectDto | null>(null)
+const gradesDraft: Record<number, number | null> = reactive({})
 const projectSubmissions: ProjectSubmissionDto[] = reactive([])
 
 const roleStore = useRoleStore()
@@ -81,9 +99,9 @@ const headers = [
   { title: 'Projeto', key: 'project', sortable: true },
   { title: 'Grupo', key: 'group', sortable: true },
   { title: 'Data de Submissão', key: 'date', sortable: true },
-  { title: 'Submissão', key: 'submission', sortable: true },
+  { title: 'Submissão', key: 'submission', sortable: true, align: 'center' },
   { title: 'Nota', key: 'grade', sortable: true },
-  { title: 'Editar Nota', key: 'edit', sortable: true }
+  { title: 'Ajustar Nota', key: 'editGrade', sortable: true, align: 'center' }
 ]
 
 onMounted(async () => {
@@ -110,6 +128,16 @@ async function getProjectSubmissions() {
     console.error('Error getting project submissions: ', error)
   }
   loading.value = false
+}
+
+async function gradeProject(submissionId: number, grade: number) {
+  try {
+    const response = await EvaluationService.updateProjectGrade(submissionId, grade)
+    console.log('Updated project submission grade: ', response)
+    await getProjectSubmissions()
+  } catch (error) {
+    console.error('Error adjusting project submission grade: ', error)
+  }
 }
 
 function beforeSubmissionDeadline(submission: ProjectSubmissionDto) {
