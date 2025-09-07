@@ -15,4 +15,5 @@ public interface RevisionRepository extends JpaRepository<Revision, Long> {
     List<Revision> findByStudent_Id(long studentId);
     long countByStatus(RevisionStatus status);
     void deleteByStudent_Id(long studentId);
+    void deleteALLByTest_Id(long testId);
 }
