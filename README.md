@@ -57,7 +57,7 @@ cp src/main/resources/application.properties.example src/main/resources/applicat
 mvn clean spring-boot:run
 ```
 
-Se quiser a população automática da base de dados ao iniciar a aplicação, basta definir a propriedade `spring.jpa.hibernate.ddl-auto` como `none` ou `update` no ficheiro `application.properties`.
+Se não quiser a população automática da base de dados ao iniciar a aplicação, basta definir a propriedade `spring.jpa.hibernate.ddl-auto` como `create` no ficheiro `application.properties`.
 
 ### 4. Frontend (Vue 3 + Vite)
 ```bash
