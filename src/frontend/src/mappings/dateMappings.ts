@@ -1,6 +1,10 @@
 export const formatDate = (dateString?: string) => {
   if (!dateString) return ''
-  return new Date(dateString).toLocaleDateString('pt-PT', {
+  
+  const date = new Date(dateString)
+  date.setDate(date.getDate() + 1)
+
+  return date.toLocaleDateString('pt-PT', {
     year: 'numeric',
     month: 'short',
     day: '2-digit',

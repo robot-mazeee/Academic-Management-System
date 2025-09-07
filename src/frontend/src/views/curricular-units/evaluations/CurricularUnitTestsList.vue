@@ -43,6 +43,9 @@
         Notas
       </v-btn>
     </template>
+    <template v-slot:[`item.testDate`]="{ item }" v-if="roleStore.isTeachingAssistant || roleStore.isMainTeacher">
+      {{ formatDate(item.testDate) }}
+    </template>
     <template v-slot:[`item.actions`]="{ item }" v-if="roleStore.isMainTeacher">
 			<div class="d-flex align-center justify-center ga-2">
 				<EditTestDialog :test-to-edit="item" @test-edited="getCurricularUnitTests" />
@@ -72,6 +75,7 @@ import EvaluationService from '../../../services/EvaluationService'
 import FileService from '../../../services/FileService'
 import EditTestDialog from '../../dialogs/evaluation/EditTestDialog.vue'
 import FileDownload from '../../../components/file/FileDownload.vue'
+import { formatDate } from '../../../mappings/dateMappings'
 
 let search = ref('')
 let loading = ref(true)
