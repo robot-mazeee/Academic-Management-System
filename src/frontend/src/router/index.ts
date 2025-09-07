@@ -33,9 +33,14 @@ const router = createRouter({
       component: CoursesView
     },
     {
-      path: '/evaluations',
-      name: 'evaluations',
-      component: StudentEvaluationsView
+      path: '/curricular-units',
+      name: 'curricular-units',
+      component: CurricularUnitsView
+    },
+    {
+      path: '/calendar',
+      name: 'calendar',
+      component: CalendarView
     },
     {
       path: '/revisions',
@@ -53,14 +58,9 @@ const router = createRouter({
       component: StatisticsView
     },
     {
-      path: '/calendar',
-      name: 'calendar',
-      component: CalendarView
-    },
-    {
-      path: '/curricular-units',
-      name: 'curricular-units',
-      component: CurricularUnitsView
+      path: '/evaluations',
+      name: 'evaluations',
+      component: StudentEvaluationsView
     },
     {
       path: '/curricular-units/:id/people',
