@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +59,8 @@ public class ProjectSubmissionService {
 
         projectSubmission.setId(null);
         double randomGrade = ThreadLocalRandom.current().nextDouble(0, 20);
-        projectSubmission.setGrade(randomGrade);
+        double roundedGrade = Math.round(randomGrade * 100.0) / 100.0;
+        projectSubmission.setGrade(roundedGrade);
         
         return new ProjectSubmissionDto(projectSubmissionRepository.save(projectSubmission));
 	}
@@ -66,7 +68,7 @@ public class ProjectSubmissionService {
     @Transactional
     public ProjectSubmissionDto createSubmission(Long projectId, Long studentId) {
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new RuntimeException("Project not found"));
+                .orElseThrow(() -> new DEIException(ErrorMessage.NO_SUCH_PROJECT, Long.toString(projectId)));
 
         Group group = groupRepository.findByProjectAndStudent(projectId, studentId);
 
@@ -74,6 +76,9 @@ public class ProjectSubmissionService {
         submission.setProject(project);
         submission.setGroup(group);
         submission.setSubDateTime(LocalDateTime.now());
+        double randomGrade = ThreadLocalRandom.current().nextDouble(0, 20);
+        double roundedGrade = Math.round(randomGrade * 100.0) / 100.0;
+        submission.setGrade(roundedGrade);
 
         System.out.println(submission);
 
@@ -101,9 +106,25 @@ public class ProjectSubmissionService {
     }
 
     @Transactional
+    public Optional<ProjectSubmissionDto> getStudentLatestSubmission(long personId, long projectId) {
+        List<ProjectSubmissionDto> submissions =
+                getProjectSubmissionsByStudentAndProject(personId, projectId);
+
+        return submissions.isEmpty()
+                ? Optional.empty()
+                : Optional.of(submissions.get(submissions.size() - 1));
+    }
+
+    @Transactional
     public List<ProjectSubmissionDto> getProjectSubmissionsByGroup(long groupId) {
         List<ProjectSubmission> submissions = projectSubmissionRepository.findByGroup_Id(groupId);
         return submissions.stream().map(ProjectSubmissionDto::new).toList();
+    }
+
+    @Transactional
+    public ProjectSubmissionDto getGroupLatestSubmission(long groupId) {
+        List<ProjectSubmissionDto> submissions = getProjectSubmissionsByGroup(groupId);
+        return submissions.getLast();
     }
 
     @Transactional
