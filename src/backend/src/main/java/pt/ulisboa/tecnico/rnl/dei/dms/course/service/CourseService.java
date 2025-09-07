@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pt.ulisboa.tecnico.rnl.dei.dms.course.domain.Course;
 import pt.ulisboa.tecnico.rnl.dei.dms.course.dto.CourseDto;
 import pt.ulisboa.tecnico.rnl.dei.dms.course.repository.CourseRepository;
+import pt.ulisboa.tecnico.rnl.dei.dms.curricularunit.repository.CurricularUnitRepository;
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.DEIException;
 import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.ErrorMessage;
 
@@ -17,6 +18,9 @@ import pt.ulisboa.tecnico.rnl.dei.dms.exceptions.ErrorMessage;
 public class CourseService {
     @Autowired
 	private CourseRepository courseRepository;
+
+	@Autowired
+	private CurricularUnitRepository curricularUnitRepository;
 
     private Course fetchCourseOrThrow(long id) {
 		return courseRepository.findById(id)
@@ -37,7 +41,6 @@ public class CourseService {
 		} catch (NumberFormatException e) {
 			throw new DEIException(ErrorMessage.COURSE_DURATION_NOT_VALID);
 		}
-
 	}
 
     @Transactional
@@ -68,8 +71,11 @@ public class CourseService {
 	}
 
     @Transactional
-	public void deleteCourse(long id) {
-		fetchCourseOrThrow(id);
-		courseRepository.deleteById(id);
+	public void deleteCourse(long courseId) {
+		fetchCourseOrThrow(courseId);
+		if (!curricularUnitRepository.findAllByCourse_Id(courseId).isEmpty()) {
+			throw new DEIException(ErrorMessage.CANNOT_DELETE_COURSE, Long.toString(courseId));
+		}
+		courseRepository.deleteById(courseId);
 	}
 }

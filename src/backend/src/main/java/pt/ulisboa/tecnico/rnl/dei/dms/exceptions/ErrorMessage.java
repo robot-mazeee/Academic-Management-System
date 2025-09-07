@@ -9,6 +9,7 @@ public enum ErrorMessage {
 	PERSON_TYPE_NOT_VALID("O tipo da pessoa especificado não é válido.", 1002),
 
 	NO_SUCH_COURSE("Não existe nenhum curso com ID %s", 1009),
+	CANNOT_DELETE_COURSE("Não é permitido apagar o curso %s (ID) com UCs ativas", 1011),
 	COURSE_CODE_NOT_VALID("O código do curso especificado não é válido.", 1009),
 	COURSE_NAME_NOT_VALID("O nome do curso especificado não é válido.", 1009),
 	COURSE_DURATION_NOT_VALID("A duração do curso especificado não é válido.", 1009),
