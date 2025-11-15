@@ -1,17 +1,18 @@
-# DEI Academic Management System (AMS)
+# Academic Management System (AMS)
 
 ## Visão Geral
-O DEI Academic Management System (AMS) é uma plataforma web para a gestão académica do Departamento de Engenharia Informática (DEI), permitindo a administração centralizada de Unidades Curriculares (UCs), pessoas, avaliações, projetos, recursos e calendário. O sistema foi desenvolvido como exercício prático, seguindo o enunciado oficial.
+O Academic Management System (AMS) é uma plataforma web para a gestão académica, permitindo a administração centralizada de Unidades Curriculares (UCs), pessoas, avaliações, projetos, recursos e calendário.
 
 ## Funcionalidades Principais
 - Gestão de pessoas (alunos, professores regentes, assistentes, administradores)
 - Gestão de cursos e unidades curriculares
 - Gestão de avaliações (testes e projetos)
-- Submissão e revisão de provas
+- Submissão e workflow de revisão de provas
 - Upload/download de recursos (enunciados, materiais)
 - Calendário de avaliações com deteção de conflitos
 - Visualização de estatísticas e dashboards
-- Histórico de submissões de projetos
+- Submissões múltiplas de projetos com histórico
+- Estatísticas avançadas (incrições em unidades curriculares, progresso de revisões de prova)
 
 ## Estrutura do Projeto
 ```
@@ -79,10 +80,3 @@ npm run dev
 
 ## Documentação e Enunciado
 Consulte o ficheiro `enunciado.md` para os requisitos detalhados e regras de gestão do sistema.
-
-## Funcionalidades Extra (para nota superior)
-- Submissões múltiplas de projetos com histórico
-- Estatísticas avançadas (incrições em unidades curriculares, progresso de revisões de prova)
-
----
-> Projeto académico para a disciplina de AMS @ DEI/IST. Para mais detalhes, consulte o enunciado oficial.
