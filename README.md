@@ -79,4 +79,4 @@ npm run dev
 - `src/populate.sql` — Dados de teste para a base de dados
 
 ## Documentação e Enunciado
-Consulte o ficheiro `enunciado.md` para os requisitos detalhados e regras de gestão do sistema.
+Consulte o ficheiro `descrição.md` para os requisitos detalhados e regras de gestão do sistema.
